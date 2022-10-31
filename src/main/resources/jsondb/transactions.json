@@ -1,0 +1,213 @@
+{"schemaVersion":"1.0"}
+{"id":"14a168ef-69a8-4278-b46d-ecb75c3cc7a3","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1664488800000,"amount":-300.0,"balance":64146.56}
+{"id":"e9753b9e-5730-4899-92fc-836ae436ef1c","description":"COMISIÓN RETIRADA EFECTIVO DBTO","date":1664488800000,"amount":-2.5,"balance":64446.56}
+{"id":"b9fc618a-7ed5-4329-96f4-5e09976698f6","description":"REINTEGRO CAJERO AUTOMATICO 5402XXXXXXXX1028 30.09","date":1664488800000,"amount":-90.0,"balance":64449.06}
+{"id":"043a0a88-ce10-4e7a-be69-f9b9b1dacb84","description":"TARJETA CREDITO SEBASTIAN VENERE","date":1664488800000,"amount":-1346.05,"balance":64539.06}
+{"id":"a15e19c4-1f97-4bf4-9372-25c7286732a6","description":"SEGUROS SOCIALES TGSS. COTIZACION 138 REG.GRAL. (SIST.ESP","date":1664488800000,"amount":-44.35,"balance":65885.11}
+{"id":"7fa5dd6b-b882-47c1-8b1e-d68ea3636f7a","description":"NOMINA DE Nurun Crazy Labs ES6626-NURUN CRA ZY","date":1664402400000,"amount":5821.9,"balance":65929.46}
+{"id":"527370a0-d918-4982-a346-0bd05f0e9226","description":"COMPRA TARJ. 5402XXXXXXXX1028 LANTANIA SAU-MADRID","date":1664316000000,"amount":-2.8,"balance":60107.56}
+{"id":"bb05350c-8d05-4f26-98c7-e54738e30b19","description":"ADEUDO RECIBO BSSG","date":1664229600000,"amount":-151.93,"balance":60110.36}
+{"id":"f96f141f-0b02-46c4-a72f-844f979d4ee6","description":"COMISIÓN DIVISA NO EURO","date":1664143200000,"amount":-0.07,"balance":60262.29}
+{"id":"61e4d430-7410-4e20-b8ea-984db0a80f1c","description":"COMPRA TARJ. 5402XXXXXXXX1028 GOOGLE *Google Storage-650-253-0000","date":1664143200000,"amount":-2.05,"balance":60262.36}
+{"id":"9a5b9272-9a25-4313-9237-76f0503182a5","description":"COMPRA TARJ. 5402XXXXXXXX1028 RENFE CERCANIAS TNA 08 (6-BARCELONA","date":1664143200000,"amount":-14.0,"balance":60264.41}
+{"id":"07e3002e-a560-4d13-822e-8086ead22027","description":"ELECTRICIDAD ENDESA ENERGIA SAU FACTURA DE ELECTR","date":1664143200000,"amount":-163.92,"balance":60278.41}
+{"id":"dfd1d9ef-c30e-4e5b-a604-cda1c7bde9ad","description":"COMPRA TARJ. 5402XXXXXXXX1028 KAELDERKOLD-BARCELONA","date":1664143200000,"amount":-15.0,"balance":60442.33}
+{"id":"f099b7be-3ac1-4588-9ef7-5535e4f5d4c6","description":"COMPRA TARJ. 5402XXXXXXXX1028 SUPERMERCAT PETIT ASIA-BARCELONA","date":1664143200000,"amount":-16.43,"balance":60457.33}
+{"id":"46db0cb7-c7f6-4f1c-bff2-bf70d3759bd0","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMAZON.ES AMAZON.ES-LUXEMBOURG","date":1663884000000,"amount":-19.47,"balance":60473.76}
+{"id":"6372dbf1-6e1b-47fa-b1dc-4ea806d74d97","description":"EMBARGO COMUNICADO EL DIA 02-09-2022","date":1663884000000,"amount":-122.03,"balance":60493.23}
+{"id":"d868d191-c770-4083-916c-938d79e2a789","description":"COMPRA TARJ. 5402XXXXXXXX1028 20.09 AUCAT BAR VALLCARCA N-BARCELONA","date":1663797600000,"amount":-7.26,"balance":60615.26}
+{"id":"98e98830-e953-44d7-aedb-84ee19847edb","description":"COMPRA TARJ. 5402XXXXXXXX1028 20.09 AUCAT BAR CUBELLES N-BARCELONA","date":1663797600000,"amount":-4.33,"balance":60622.52}
+{"id":"e28c0f9c-88b5-40b3-9f69-6cfcc5ac8e23","description":"COMPRA TARJ. 5402XXXXXXXX1028 E.S. AREA DE GARRAF-CUBELLES","date":1663624800000,"amount":-6.85,"balance":60626.85}
+{"id":"4a1c21b1-e021-4954-bb5e-70b1b852e8a7","description":"COMPRA TARJ. 5402XXXXXXXX1028 ABACUS TARRAGONA-TARRAGONA","date":1663624800000,"amount":-17.65,"balance":60633.7}
+{"id":"38e61451-f653-482e-80ae-54765e7302dd","description":"COMPRA TARJ. 5402XXXXXXXX1028 16.09 AUCAT BAR VALLCARCA N-BARCELONA","date":1663624800000,"amount":-7.26,"balance":60651.35}
+{"id":"67f219ea-8d49-4f57-bb3b-cf6aeea4e392","description":"COMPRA TARJ. 5402XXXXXXXX1028 16.09 AUCAT BAR CUBELLES N-BARCELONA","date":1663624800000,"amount":-4.33,"balance":60658.61}
+{"id":"82da092b-e0c0-48b0-a7b2-a20791e4e4da","description":"COMPRA TARJ. 5402XXXXXXXX1028 13.09 AUCAT BAR VALLCARCA S-BARCELONA","date":1663624800000,"amount":-7.26,"balance":60662.94}
+{"id":"19a56349-ba9c-49a6-9454-1098d3cb87e0","description":"COMPRA TARJ. 5402XXXXXXXX1028 13.09 AUCAT BAR CUBELLES S-BARCELONA","date":1663624800000,"amount":-4.33,"balance":60670.2}
+{"id":"d3277e6b-e5eb-4443-9877-6328ca5e8287","description":"COMPRA TARJ. 5402XXXXXXXX1028 SUPERMERCAT TGN-TARRAGONA","date":1663624800000,"amount":-20.95,"balance":60674.53}
+{"id":"26cfa191-8f6d-4a02-aaf2-dbda594adff7","description":"COMPRA TARJ. 5402XXXXXXXX1028 FLECAFLAQUE-REUS","date":1663624800000,"amount":-2.0,"balance":60695.48}
+{"id":"0d17d184-1420-4351-99e5-dac1cf637049","description":"COMPRA TARJ. 5402XXXXXXXX1028 STAY U-NIQUE-BARCELONA","date":1663538400000,"amount":-26.4,"balance":60697.48}
+{"id":"c5af0865-3c93-4ca5-bbfc-c33f70a0d390","description":"COMPRA TARJ. 5402XXXXXXXX1028 (2550)STARBUCKS B HOTEL-BARCELONA","date":1663538400000,"amount":-4.3,"balance":60723.88}
+{"id":"7f2f270d-5b3b-4274-b99c-462f02ed1f3c","description":"REINTEGRO CAJERO AUTOMATICO 5402XXXXXXXX1028 17.09","date":1663538400000,"amount":-300.0,"balance":60728.18}
+{"id":"c1fa5139-6544-4d5e-8c05-ab689898a00d","description":"COMPRA TARJ. 5402XXXXXXXX1028 LA BODEGUETA ST ANDREU-BARCELONA","date":1663279200000,"amount":-15.6,"balance":61028.18}
+{"id":"c75e877b-d572-4b81-8e50-03901f1f56c8","description":"COMPRA TARJ. 5402XXXXXXXX1028 CEPSA 02063 CAMI DE MAR-CALAFELL","date":1663279200000,"amount":-54.18,"balance":61043.78}
+{"id":"690654c4-2da3-4171-b733-0a369e2d0ad3","description":"COMPRA TARJ. 5402XXXXXXXX1028 MIMA'LS BY ELENA S.L.-TARRAGONA","date":1663279200000,"amount":-23.6,"balance":61097.96}
+{"id":"1a9a8c1f-89d0-4dde-9375-d065ff27038e","description":"ADEUDO RECIBO FUNDACIO PRIVADA EN XARXA","date":1663279200000,"amount":-280.5,"balance":61121.56}
+{"id":"d610f877-524e-4b26-a5d2-e4ab1be0e49a","description":"COMPRA TARJ. 5402XXXXXXXX1028 MERCADONA SANT PERE Y SAN-TARRAGONA","date":1663192800000,"amount":-126.87,"balance":61402.06}
+{"id":"66e01360-c149-47ff-b108-2dcd53967d7b","description":"ADEUDO RECIBO VIDING FITNESS S.L.","date":1663192800000,"amount":-1.23,"balance":61528.93}
+{"id":"820c8210-edef-4c5a-af6b-253a8786de38","description":"COMPRA TARJ. 5402XXXXXXXX1028 LANTANIA SAU-MADRID","date":1663106400000,"amount":-1.45,"balance":61530.16}
+{"id":"febe1dc7-dee0-43e0-924a-6a6f6059e0c5","description":"COMPRA TARJ. 5402XXXXXXXX1028 CARNISSERIA ROIGE-TARRAGONA","date":1663106400000,"amount":-24.99,"balance":61531.61}
+{"id":"d8fd5c4f-3348-4ae9-ba56-8e400a15e681","description":"COMISIONES","date":1663106400000,"amount":-0.95,"balance":61556.6}
+{"id":"7d21e009-7b87-4a22-bdaf-7d537690e18d","description":"TRANSFERENCIA A MARCOS DEMETRIO","date":1663106400000,"amount":-1270.0,"balance":61557.55}
+{"id":"97c6c85b-0900-4e7d-8f16-3915129e9e78","description":"COMPRA TARJ. 5402XXXXXXXX1028 EMPRESA PLANA, SL-TARRAGONA","date":1663106400000,"amount":-14.95,"balance":62827.55}
+{"id":"65bdcdb6-eb99-4826-bbfc-9e826df18557","description":"COMPRA TARJ. 5402XXXXXXXX1028 PARC DE LA MAR. A.MAURA-PALMA DE MALL","date":1663020000000,"amount":-21.2,"balance":62842.5}
+{"id":"a75b0d99-2d82-41a2-b093-55a773821c5a","description":"COMPRA TARJ. 5402XXXXXXXX1028 PULL AND BEAR-PALMA MALLORC","date":1663020000000,"amount":-11.19,"balance":62863.7}
+{"id":"13c7f5d1-74c6-4256-9063-c467f12ff157","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMZN MKTP ES AMAZON.ES-LUXEMBOURG","date":1663020000000,"amount":-18.98,"balance":62874.89}
+{"id":"19f3358e-412c-48d8-a3db-5f56acc815f0","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMZNDigital-primevideo.co","date":1662933600000,"amount":-2.99,"balance":62893.87}
+{"id":"0dd918fb-86d0-4804-9227-8a6b7ebd3987","description":"COMISIÓN DIVISA NO EURO","date":1662933600000,"amount":-0.11,"balance":62896.86}
+{"id":"a89def34-e0db-4e21-b903-4eac06453a2d","description":"COMPRA TARJ. 5402XXXXXXXX1028 SKYPE.COM/GO/BILL-Luxembourg","date":1662933600000,"amount":-3.01,"balance":62896.97}
+{"id":"b4dfeb25-d59d-4a53-8434-f66c9fafe99b","description":"AGUA EMATSA (EMPRESA MUNICIPAL MIXTA D.AIGUES","date":1662674400000,"amount":-423.4,"balance":62899.98}
+{"id":"69617fbb-3819-451d-96ea-43753631fe4d","description":"COMPRA TARJ. 5402XXXXXXXX1028 SPAR T080 PALLARESOS-PALLARESOS, E","date":1662415200000,"amount":-5.83,"balance":63323.38}
+{"id":"e0f0a7d9-6adc-424b-9766-fff9bb67b29f","description":"COMPRA TARJ. 5402XXXXXXXX1028 DIA PALLARESOS-TARRAGONA","date":1662415200000,"amount":-3.6,"balance":63329.21}
+{"id":"eeb0a9a0-e1d4-4b9c-b423-602c2370e871","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1662328800000,"amount":-210.0,"balance":63332.81}
+{"id":"6e094faa-305e-4545-8799-ed9e7cbbbd0a","description":"TELEFONOS TELEFONICA MOVILES SA MOV.xxxxxx198.sep","date":1662328800000,"amount":-18.49,"balance":63542.81}
+{"id":"12b8f26b-27e1-49f4-bdbd-771d32fbc147","description":"SEGUROS AXA SEGUROS GENERALES CIF A-60917978","date":1662328800000,"amount":-147.22,"balance":63561.3}
+{"id":"6ef832ee-dce6-475a-9261-3b111990905f","description":"TELEFONOS TELEFONICA DE ESPANA SAU FIJOxxxxxxxxx.sep","date":1662328800000,"amount":-72.3,"balance":63708.52}
+{"id":"116acb4c-ad28-4a76-9a31-8ef85eb264ba","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1662328800000,"amount":-489.86,"balance":63780.82}
+{"id":"3ca64b71-7faa-41d4-a856-d2fa0a9790d6","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1662328800000,"amount":-150.0,"balance":64270.68}
+{"id":"7ba6d3e0-651d-4b98-b29d-c194865e89ef","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1662069600000,"amount":-150.0,"balance":64420.68}
+{"id":"2a348e2c-1480-489a-8122-43ce5c9cca3a","description":"ADEUDO RECIBO VIDING FITNESS S.L.","date":1662069600000,"amount":-58.9,"balance":64570.68}
+{"id":"e55c6780-6750-44e6-a501-85652f0b5dcf","description":"ADEUDO RECIBO VIDING FITNESS S.L.","date":1662069600000,"amount":-1.23,"balance":64629.58}
+{"id":"8670aa9f-e369-43c3-bbe3-da3ad2c2f3d7","description":"TARJETA CREDITO SEBASTIAN VENERE","date":1661896800000,"amount":-1148.18,"balance":64630.81}
+{"id":"dce8bcbc-fb06-43e3-b3a2-6fec9a542d1a","description":"COMPRA TARJ. 5402XXXXXXXX1028 BAZAR MODERN-PALLARESOS, E","date":1661724000000,"amount":-34.95,"balance":65778.99}
+{"id":"be4769e5-31f9-4d0a-855d-d7f131df4c4f","description":"NOMINA DE Nurun Crazy Labs ES6626-NURUN CRA ZY","date":1661724000000,"amount":5821.9,"balance":65813.94}
+{"id":"b3db7334-5341-42a9-91c1-c19494118e55","description":"COMPRA TARJ. 5402XXXXXXXX1028 24.08 AUCAT BAR VALLCARCA S-BARCELONA","date":1661724000000,"amount":-7.26,"balance":59992.04}
+{"id":"a8d2787e-8933-4f81-8f32-f87347e254a1","description":"COMPRA TARJ. 5402XXXXXXXX1028 24.08 AUCAT BAR VALLCARCA N-BARCELONA","date":1661724000000,"amount":-7.26,"balance":59999.3}
+{"id":"46a0eadb-62c4-41f6-808f-4165564d3238","description":"COMPRA TARJ. 5402XXXXXXXX1028 24.08 AUCAT BAR CUBELLES S-BARCELONA","date":1661724000000,"amount":-4.33,"balance":60006.56}
+{"id":"3927c6c0-0a6e-4020-8b48-2e88b463407e","description":"COMPRA TARJ. 5402XXXXXXXX1028 24.08 AUCAT BAR CUBELLES N-BARCELONA","date":1661724000000,"amount":-4.33,"balance":60010.89}
+{"id":"193dfd17-6fa5-407c-a35b-fe3b9b3dcd02","description":"COMPRA TARJ. 5402XXXXXXXX1028 CEPSA-EL CATLLAR","date":1661724000000,"amount":-60.84,"balance":60015.22}
+{"id":"59d94a2d-90a7-4dbd-8286-12afc6e2b1f0","description":"COMPRA TARJ. 5402XXXXXXXX1028 SPAR T080 PALLARESOS-PALLARESOS, E","date":1661724000000,"amount":-39.24,"balance":60076.06}
+{"id":"7983e54a-21f1-4a6f-94d4-706efa7540f1","description":"COMISIÓN RETIRADA EFECTIVO DBTO","date":1661464800000,"amount":-2.5,"balance":60115.3}
+{"id":"df65d0cf-d857-460f-9f6d-08d750c5e8a5","description":"REINTEGRO CAJERO AUTOMATICO 5402XXXXXXXX1028 26.08","date":1661464800000,"amount":-80.0,"balance":60117.8}
+{"id":"b97324ee-e23f-4059-8dc5-418d57d28d75","description":"COMPRA TARJ. 5402XXXXXXXX1028 SPAR T080 PALLARESOS-PALLARESOS, E","date":1661464800000,"amount":-50.84,"balance":60197.8}
+{"id":"3b6dda10-ea46-4535-a317-12932a8dacf2","description":"COMISIÓN DIVISA NO EURO","date":1661464800000,"amount":-0.07,"balance":60248.64}
+{"id":"40406df1-845b-40f4-964d-5ad7df17cda3","description":"COMPRA TARJ. 5402XXXXXXXX1028 GOOGLE *Google Storage-650-253-0000","date":1661464800000,"amount":-2.0,"balance":60248.71}
+{"id":"935009dd-3225-4342-bdb8-4a151365276c","description":"COMPRA TARJ. 5402XXXXXXXX1028 E.S. EL BRUCH, S.A.-CONSTANTI","date":1661464800000,"amount":-7.39,"balance":60250.71}
+{"id":"0fb4ff3e-d25e-4361-a093-daea6cefc93c","description":"COMPRA TARJ. 5402XXXXXXXX1028 TECLA SUPERMERCAT-TARRAGONA","date":1661464800000,"amount":-2.25,"balance":60258.1}
+{"id":"1a819aa1-cc51-4475-bc7c-ea6650106e5e","description":"COMPRA TARJ. 5402XXXXXXXX1028 FORMATGES MAGDALENA-TARRAGONA","date":1661378400000,"amount":-5.55,"balance":60260.35}
+{"id":"c70fa279-3f75-4488-bb33-6f29209a2b98","description":"COMPRA TARJ. 5402XXXXXXXX1028 AENA AEROPUERTOS-BARCELONA","date":1661292000000,"amount":-2.75,"balance":60265.9}
+{"id":"c12c85fe-95b3-43ef-be5d-730bb93036ab","description":"COMPRA TARJ. 5402XXXXXXXX1028 SPAR T080 PALLARESOS-PALLARESOS, E","date":1661292000000,"amount":-24.83,"balance":60268.65}
+{"id":"51d333d1-f721-4f7a-b98e-8b13c55b48bb","description":"TRANSFERENCIA A DYANA ABOGADA","date":1660600800000,"amount":-96.8,"balance":60293.48}
+{"id":"fc140bb2-7e1c-4a95-82af-f6756dcaeaff","description":"COMISIONES","date":1660600800000,"amount":-0.95,"balance":60390.28}
+{"id":"7ebc3b87-842f-4f61-aea1-a9a11180de85","description":"TRANSFERENCIA A MARCOS DEMETRIO","date":1660600800000,"amount":-1200.0,"balance":60391.23}
+{"id":"f500673c-1e6b-42f9-9e51-a888bb27c76c","description":"ADEUDO RECIBO VIDACORD SL","date":1660255200000,"amount":-90.0,"balance":61591.23}
+{"id":"5a8cf1e4-c50b-4164-9d91-1e2b3db85bc1","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMZN MKTP ES AMAZON.ES-LUXEMBOURG","date":1660255200000,"amount":-26.99,"balance":61681.23}
+{"id":"3057644a-b20a-434f-9082-43ea1ef7a5e7","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMZNDigital-primevideo.co","date":1660168800000,"amount":-2.99,"balance":61708.22}
+{"id":"2a67ac0f-a171-4656-af71-57ba33733e47","description":"COMISIÓN DIVISA NO EURO","date":1660168800000,"amount":-0.1,"balance":61711.21}
+{"id":"dfbf7453-b4eb-45df-9526-deeb7638db49","description":"COMPRA TARJ. 5402XXXXXXXX1028 GO.SKYPE.COM/BILL-LUXEMBOURG","date":1660168800000,"amount":-2.93,"balance":61711.31}
+{"id":"9e3df3b1-49d6-41ff-a232-3041f50de487","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1660082400000,"amount":-100.0,"balance":61714.24}
+{"id":"2c90101c-2491-40eb-a2a2-42257dcc3ae7","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMZN MKTP ES AMAZON.ES-LUXEMBOURG","date":1659909600000,"amount":-36.85,"balance":61814.24}
+{"id":"3df166d5-fc82-408b-a2ed-231cc251fa8b","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1659909600000,"amount":-100.0,"balance":61851.09}
+{"id":"17fd72f7-1801-46a8-82a6-9dfb15f2d526","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMZN MKTP ES AMAZON.ES-LUXEMBOURG","date":1659909600000,"amount":-40.41,"balance":61951.09}
+{"id":"e85b90db-5a3a-4c21-a5b8-c671a2ca032d","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1659650400000,"amount":-650.0,"balance":61991.5}
+{"id":"4abc6ad9-4f3c-4edf-9f6d-797a8e24c337","description":"COMPRA TARJ. 5402XXXXXXXX1028 METRO DE MADRID, S.A. 1-MADRID","date":1659650400000,"amount":-1.5,"balance":62641.5}
+{"id":"683d4e4d-ebb4-48c8-b473-7371d12fc32f","description":"COMPRA TARJ. 5402XXXXXXXX1028 METRO DE MADRID, S.A. 1-MADRID","date":1659564000000,"amount":-4.0,"balance":62643.0}
+{"id":"b106ace3-296a-4807-9f72-239bf9101187","description":"TELEFONOS TELEFONICA MOVILES SA MOV.xxxxxx198.ago","date":1659564000000,"amount":-31.09,"balance":62647.0}
+{"id":"e4a885c2-021b-45b8-b78b-8835e8aafcef","description":"TELEFONOS TELEFONICA DE ESPANA SAU FIJOxxxxxx620.ago","date":1659564000000,"amount":-74.44,"balance":62678.09}
+{"id":"accb5aea-30b7-475b-a93c-c16e8a571aec","description":"COMPRA TARJ. 5402XXXXXXXX1028 ALIMENTACION-MADRID","date":1659477600000,"amount":-5.6,"balance":62752.53}
+{"id":"0b15589d-46fe-4eb0-a6cd-37d201f4890a","description":"SEGUROS AXA SEGUROS GENERALES CIF A-60917978","date":1659477600000,"amount":-147.22,"balance":62758.13}
+{"id":"17386f49-6d59-4300-aa83-163bce332230","description":"COMPRA TARJ. 5402XXXXXXXX1028 METRO DE MADRID, S.A. 1-MADRID","date":1659391200000,"amount":-6.5,"balance":62905.35}
+{"id":"3ab36160-7fed-4965-a85d-119551d2dfae","description":"PAGO BIZUM VIDAL GARCIA SAMPER","date":1659391200000,"amount":-23.0,"balance":62911.85}
+{"id":"4a180192-209b-4d74-a38a-e48c052a5343","description":"NOMINA DE Nurun Crazy Labs ES6626-NURUN CRA ZY","date":1659304800000,"amount":7497.96,"balance":62934.85}
+{"id":"8615837a-5974-413d-bb33-b24eb835d35b","description":"ADEUDO RECIBO VIDING FITNESS S.L.","date":1659304800000,"amount":-58.9,"balance":55436.89}
+{"id":"a161de7b-5131-404d-86dc-59731b599796","description":"COMPRA TARJ. 5402XXXXXXXX1028 Prime Video-primevideo.es","date":1659304800000,"amount":-4.99,"balance":55495.79}
+{"id":"17279e2f-e3c7-477e-bfec-0106d6bf7e39","description":"TARJETA CREDITO SEBASTIAN VENERE","date":1659045600000,"amount":-870.73,"balance":55500.78}
+{"id":"4540fbe4-e535-472c-a6f4-87e499fc0d60","description":"ELECTRICIDAD ENDESA ENERGIA SAU FACTURA DE ELECTR","date":1658786400000,"amount":-70.45,"balance":56371.51}
+{"id":"88be9898-bff2-4db0-898c-49c9ead59649","description":"COMISIÓN DIVISA NO EURO","date":1658786400000,"amount":-0.07,"balance":56441.96}
+{"id":"ce32488d-9c38-4f40-88c6-bb9806a07323","description":"COMPRA TARJ. 5402XXXXXXXX1028 GOOGLE *Google Storage-650-253-0000","date":1658786400000,"amount":-1.95,"balance":56442.03}
+{"id":"a3296a00-cace-4512-bd80-a15bd27e0807","description":"COMPRA TARJ. 5402XXXXXXXX1028 LA PEPITA-TARRAGONA","date":1658354400000,"amount":-4.7,"balance":56443.98}
+{"id":"07d86fa7-c894-45bb-8bc2-24e4293e02cf","description":"PAGO BIZUM MARIA CORNADO CANAS","date":1657663200000,"amount":-5.32,"balance":56448.68}
+{"id":"9f3c873a-6ff7-4737-b9aa-3509c379652e","description":"FRACCIONAMIENTO WATER EMATSA (EMPRESA MUNI","date":1657663200000,"amount":430.63,"balance":56454.0}
+{"id":"48cdc385-c4b4-476a-a976-912570bd9dc5","description":"AGUA EMATSA (EMPRESA MUNICIPAL MIXTA D.AIGUES","date":1657663200000,"amount":-430.63,"balance":56023.37}
+{"id":"fdbd7b68-2329-4332-833b-92ae1ac43e7f","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMZNDigital-primevideo.co","date":1657490400000,"amount":-2.99,"balance":56454.0}
+{"id":"caf21088-d674-4cc8-9206-d204a23fb303","description":"COMISIÓN DIVISA NO EURO","date":1657490400000,"amount":-0.1,"balance":56456.99}
+{"id":"0f1108cf-3b98-4e82-85aa-c10842c66985","description":"COMPRA TARJ. 5402XXXXXXXX1028 GO.SKYPE.COM/BILL-LUXEMBOURG","date":1657490400000,"amount":-2.97,"balance":56457.09}
+{"id":"8b3d5123-e85b-42d0-80c5-3ef07c8f7e74","description":"COMPRA TARJ. 5402XXXXXXXX1028 METRO BARCELONA-BARCELONA","date":1657490400000,"amount":-2.4,"balance":56460.06}
+{"id":"7cb1090a-c1f3-4b3b-b9bf-91f1bf946d46","description":"EMBARGO COMUNICADO EL DIA 17-06-2022","date":1657231200000,"amount":-83.56,"balance":56462.46}
+{"id":"7153b8e1-ffb5-433d-83ba-a878b8b97b6e","description":"TRANSFERENCIA A MARCOS DEMETRIO","date":1657144800000,"amount":-1200.0,"balance":56546.02}
+{"id":"ca1c257d-b8db-40f3-942f-397b49244404","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1656972000000,"amount":-630.0,"balance":57746.02}
+{"id":"ded0ed50-b4f3-47d1-8b80-81cac8c4b041","description":"SEGUROS AXA SEGUROS GENERALES CIF A-60917978","date":1656972000000,"amount":-147.22,"balance":58376.02}
+{"id":"389e8244-23c5-4a0b-b62d-8e1d33bde9cb","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMZN MKTP ES AMAZON.ES-LUXEMBOURG","date":1656885600000,"amount":-25.99,"balance":58523.24}
+{"id":"a24cb57c-98c6-4aeb-a72d-f8a4a9fe2af7","description":"COMPRA TARJ. 5402XXXXXXXX1028 HP SANT CUGAT-SANT CUGAT","date":1656885600000,"amount":-0.94,"balance":58549.23}
+{"id":"eb6b10a7-f287-43c0-ac01-4bcc2273a03d","description":"COMPRA TARJ. 5402XXXXXXXX1028 TARRACO CLASSIC SCP-PERAFORT","date":1656885600000,"amount":-15.13,"balance":58550.17}
+{"id":"72a708d0-c4ff-44c5-a316-06a8dd1d5090","description":"TELEFONOS TELEFONICA MOVILES SA MOV.xxxxxx198.jul","date":1656885600000,"amount":-18.49,"balance":58565.3}
+{"id":"e0a32461-803e-4a8d-9e7c-868a3ddcf1fc","description":"TELEFONOS TELEFONICA DE ESPANA SAU FIJOxxxxxx620.jul","date":1656885600000,"amount":-77.03,"balance":58583.79}
+{"id":"fb3c85c3-28a3-4540-8633-025a05738016","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1656885600000,"amount":-240.23,"balance":58660.82}
+{"id":"b00974b8-60d6-4236-9a30-b1e12d4a58be","description":"COMPRA TARJ. 5402XXXXXXXX1028 TERRASSA-TARRAGONA","date":1656885600000,"amount":-27.85,"balance":58901.05}
+{"id":"7bf7b46f-b754-4e7c-a03f-d32639cd0a11","description":"COMPRA TARJ. 5402XXXXXXXX1028 RESTAURANT EL GALLINER DE-TARRAGONA","date":1656885600000,"amount":-42.4,"balance":58928.9}
+{"id":"f30060dd-3627-46bf-be04-84a299ad1a5e","description":"COMPRA TARJ. 5402XXXXXXXX1028 LA SARDINETA-TARRAGONA","date":1656885600000,"amount":-55.0,"balance":58971.3}
+{"id":"412a8c2e-46bd-4b8a-99dc-bf4367b6f608","description":"ADEUDO RECIBO VIDING FITNESS S.L.","date":1656626400000,"amount":-58.9,"balance":59026.3}
+{"id":"1bff93c9-7756-4663-bb0c-d37b2fc61437","description":"COMPRA TARJ. 5402XXXXXXXX1028 VIDAL GARCIA SAMPER-ELS PALLARESO","date":1656540000000,"amount":-15.0,"balance":59085.2}
+{"id":"c747bbda-3a8f-4ef9-a04b-f987ac2553c7","description":"TARJETA CREDITO SEBASTIAN VENERE","date":1656540000000,"amount":-1890.24,"balance":59100.2}
+{"id":"b7448b98-dd37-487b-9052-9ca112f5303d","description":"ELECTRICIDAD ENDESA ENERGIA SAU FACTURA DE ELECTR","date":1656453600000,"amount":-85.31,"balance":60990.44}
+{"id":"ff1d8a37-5859-4519-a250-4a8be42c0f3d","description":"NOMINA DE Nurun Crazy Labs ES6626-NURUN CRA ZY","date":1656367200000,"amount":5227.07,"balance":61075.75}
+{"id":"76583ca7-f9eb-4cd0-9bb1-234f4c237f22","description":"COMPRA TARJ. 5402XXXXXXXX1028 VIDAL GARCIA SAMPER-ELS PALLARESO","date":1656367200000,"amount":-15.0,"balance":55848.68}
+{"id":"b0e2c362-2ea5-48d6-bf43-3d7503cb700b","description":"ADEUDO RECIBO BSSG","date":1656367200000,"amount":-160.76,"balance":55863.68}
+{"id":"350c139c-a93f-4126-bf4e-829c735a9197","description":"COMPRA TARJ. 5402XXXXXXXX1028 GARDEN TAPIOLES-CATLLAR, EL","date":1656280800000,"amount":-15.9,"balance":56024.44}
+{"id":"df895eef-189c-4ce8-94b0-e24175187093","description":"COMPRA TARJ. 5402XXXXXXXX1028 MAS PAÑALES-ESPINARDO","date":1656280800000,"amount":-69.98,"balance":56040.34}
+{"id":"1f6d935e-3550-4315-982b-253395b6b3f2","description":"COMISIÓN DIVISA NO EURO","date":1656280800000,"amount":-0.07,"balance":56110.32}
+{"id":"a3f7c1b5-25d9-4c17-a14a-f4ab174b4ff4","description":"COMPRA TARJ. 5402XXXXXXXX1028 GOOGLE *Google Storage-g.co/helppayÑ","date":1656280800000,"amount":-1.9,"balance":56110.39}
+{"id":"6160f6b2-c097-4a5c-b5eb-137e7e17219f","description":"COMPRA TARJ. 5402XXXXXXXX1028 Amazon Prime-amazon.es/prm","date":1655848800000,"amount":-36.0,"balance":56112.29}
+{"id":"3d911a90-9db9-44cf-9a7c-505e9f70eb53","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1655676000000,"amount":-100.0,"balance":56148.29}
+{"id":"3f9bfa73-64a1-4f9b-8e57-94a2ff450562","description":"COMPRA TARJ. 5402XXXXXXXX1028 SPAR T080 PALLARESOS-PALLARESOS, E","date":1655676000000,"amount":-5.09,"balance":56248.29}
+{"id":"06858a7a-c297-4446-95e3-30f2a0ea66f3","description":"COMPRA TARJ. 5402XXXXXXXX1028 MERCADONA SANT PERE Y SAN-TARRAGONA","date":1655676000000,"amount":-33.47,"balance":56253.38}
+{"id":"fadc5407-3174-4dc1-bac2-14d0cf284d55","description":"COMPRA TARJ. 5402XXXXXXXX1028 RESTAURANTE MISTRAL-TARRAGONA","date":1655676000000,"amount":-24.85,"balance":56286.85}
+{"id":"8ec01fd9-d928-4ca5-92a6-207e54fe7c5f","description":"COMPRA TARJ. 5402XXXXXXXX1028 SQ *NIPO TAKE AWAY - S-Tarragona","date":1655676000000,"amount":-8.95,"balance":56311.7}
+{"id":"9c913f0d-5573-422a-a052-7a6c64680c6e","description":"COMPRA TARJ. 5402XXXXXXXX1028 CARNICERIA LOS ZAMORANOS-SABADELL","date":1655676000000,"amount":-11.77,"balance":56320.65}
+{"id":"b44307ba-1fae-4cc8-b2f7-1bb412898e7a","description":"COMPRA TARJ. 5402XXXXXXXX1028 FORMATGES MAGDALENA-TARRAGONA","date":1655676000000,"amount":-20.89,"balance":56332.42}
+{"id":"c4b6e61f-5ca2-4c65-a4b7-e5cb426ba9b6","description":"COMPRA TARJ. 5402XXXXXXXX1028 Barney's Souvenirs-Amsterdam","date":1655416800000,"amount":-57.5,"balance":56353.31}
+{"id":"d688933a-c6b7-4ccf-b3ff-6b41ebe6912b","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMZN MKTP ES AMAZON.ES-LUXEMBOURG","date":1655416800000,"amount":-69.92,"balance":56410.81}
+{"id":"5eb112a5-4239-42af-8442-67310705c012","description":"COMPRA TARJ. 5402XXXXXXXX1028 ESTANC ELS PALL-PALLARESOS","date":1655416800000,"amount":-5.1,"balance":56480.73}
+{"id":"988fb760-0af7-4021-9eb7-9319d83c54eb","description":"COMPRA TARJ. 5402XXXXXXXX1028 BSM ESTACIONAMENT AREA-BARCELONA","date":1655244000000,"amount":-6.0,"balance":56485.83}
+{"id":"f000dfb2-6a96-414a-afb8-73f80ab6454f","description":"COMPRA TARJ. 5402XXXXXXXX1028 AP. PLACA CATALUNYA-BARCELONA","date":1655244000000,"amount":-20.45,"balance":56491.83}
+{"id":"e1dd2d4b-6fbb-4693-82a7-875a43c9b539","description":"COMPRA TARJ. 5402XXXXXXXX1028 BSM ESTACIONAMENT AREA-BARCELONA","date":1655244000000,"amount":-6.0,"balance":56512.28}
+{"id":"d93f5058-2d15-47dd-893a-f7809afee2f6","description":"ADEUDO RECIBO VIDING FITNESS S.L.","date":1655244000000,"amount":-3.15,"balance":56518.28}
+{"id":"e205e2d6-3874-4046-a058-bb0abaa7e732","description":"COMPRA TARJ. 5402XXXXXXXX1028 SALA APOLO-BARCELONA","date":1655244000000,"amount":-7.5,"balance":56521.43}
+{"id":"1949338e-018f-44a2-9321-5aab7b7cc067","description":"COMPRA TARJ. 5402XXXXXXXX1028 SALA APOLO-BARCELONA","date":1655244000000,"amount":-9.0,"balance":56528.93}
+{"id":"461279ce-1ccb-4427-a037-9b1f84a9fcd6","description":"COMPRA TARJ. 5402XXXXXXXX1028 SALA APOLO-BARCELONA","date":1655244000000,"amount":-9.0,"balance":56537.93}
+{"id":"fdcc4092-302a-42a2-9ecd-e73c896871b2","description":"ABONO BIZUM DE SANTIAGO PUTRUELE","date":1655157600000,"amount":10.0,"balance":56546.93}
+{"id":"da2a858e-ec64-4925-a8b2-fc55021cd110","description":"COMPRA TARJ. 5402XXXXXXXX1028 METRO BARCELONA-BARCELONA","date":1655157600000,"amount":-11.35,"balance":56536.93}
+{"id":"c5304d3a-d147-4340-9b43-f1260b2d20f8","description":"COMPRA TARJ. 5402XXXXXXXX1028 BSM ESTACIONAMENT AREA-BARCELONA","date":1655071200000,"amount":-6.0,"balance":56548.28}
+{"id":"8f49ec48-dce2-4028-9b94-3b10d2000581","description":"COMPRA TARJ. 5402XXXXXXXX1028 BSM ESTACIONAMENT AREA-BARCELONA","date":1655071200000,"amount":-6.0,"balance":56554.28}
+{"id":"d622310a-4552-4acc-b500-28ceaa935af6","description":"COMPRA TARJ. 5402XXXXXXXX1028 BSM AP RAMBLA POBLENOU-BARCELONA","date":1655071200000,"amount":-10.05,"balance":56560.28}
+{"id":"2782a7ac-583f-4623-aa93-5af108e844c9","description":"COMISIÓN RETIRADA EFECTIVO DBTO","date":1655071200000,"amount":-2.7,"balance":56570.33}
+{"id":"fcabfb24-d652-42ad-a85d-39107b7b2710","description":"REINTEGRO CAJERO AUTOMATICO 5402XXXXXXXX1028 13.06","date":1655071200000,"amount":-60.0,"balance":56573.03}
+{"id":"2084d830-4b47-4d1b-91a4-6fed6d211c84","description":"COMPRA TARJ. 5402XXXXXXXX1028 AENA AEROPUERTOS-BARCELONA","date":1655071200000,"amount":-2.35,"balance":56633.03}
+{"id":"6942716b-a192-4a12-837a-d98289c70cd0","description":"COMISIÓN DIVISA NO EURO","date":1655071200000,"amount":-0.1,"balance":56635.38}
+{"id":"58cc6312-ad94-43f8-b860-7ba12f8b8119","description":"COMPRA TARJ. 5402XXXXXXXX1028 GO.SKYPE.COM/BILL-LUXEMBOURG","date":1655071200000,"amount":-2.85,"balance":56635.48}
+{"id":"0acb3645-ff61-47b4-a9fe-4762395c62a0","description":"COMPRA TARJ. 5402XXXXXXXX1028 SPAR T080 PALLARESOS-PALLARESOS, E","date":1654725600000,"amount":-38.44,"balance":56638.33}
+{"id":"3d435cbe-fc13-45e6-839c-b6a76e0f53d2","description":"TRANSFERENCIA A MARCOS DEMETRIO","date":1654725600000,"amount":-1305.0,"balance":56676.77}
+{"id":"c54c45c3-2c8f-46cb-816b-43058d8ac80a","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1654725600000,"amount":-128.0,"balance":57981.77}
+{"id":"2fdd6e8c-12eb-41cb-980e-d8b5897a8515","description":"COMPRA TARJ. 5402XXXXXXXX1028 SPAR T080 PALLARESOS-PALLARESOS, E","date":1654725600000,"amount":-23.41,"balance":58109.77}
+{"id":"564d93b9-2b32-4970-8660-d68cffda62e5","description":"COMPRA TARJ. 5402XXXXXXXX1028 DIA PALLARESOS-TARRAGONA","date":1654552800000,"amount":-10.24,"balance":58133.18}
+{"id":"9ca8e30e-00b7-4ef7-afec-3ff4357af770","description":"COMPRA TARJ. 5402XXXXXXXX1028 BAZAR MODERN-PALLARESOS, E","date":1654552800000,"amount":-11.15,"balance":58143.42}
+{"id":"ce7ab5d5-dca7-4571-afca-5f4c19d8a385","description":"COMISIÓN DIVISA NO EURO","date":1654466400000,"amount":-0.44,"balance":58154.57}
+{"id":"eb449e55-dce3-41fc-9c15-76c707abf80b","description":"COMPRA TARJ. 5402XXXXXXXX1028 03.06 TFL TRAVEL CH-TFL.GOV.UK/CP","date":1654466400000,"amount":-12.52,"balance":58155.01}
+{"id":"42e4e7dc-1744-4de9-ad54-6362a2ef44a3","description":"TELEFONOS TELEFONICA MOVILES SA MOV.xxxxxx198.jun","date":1654466400000,"amount":-18.49,"balance":58167.53}
+{"id":"238287be-cea5-4fe9-af05-fd2561f93632","description":"TELEFONOS TELEFONICA DE ESPANA SAU FIJOxxxxxx620.jun","date":1654466400000,"amount":-77.97,"balance":58186.02}
+{"id":"06217d33-1d1e-4d86-b3a3-dbe54dca8a4f","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1654207200000,"amount":-400.0,"balance":58263.99}
+{"id":"543af409-c596-4c38-ae00-23f6aec92a3c","description":"SEGUROS AXA SEGUROS GENERALES CIF A-60917978","date":1654207200000,"amount":-147.22,"balance":58663.99}
+{"id":"6a4b771a-9c33-4c16-9fe0-399428c5666f","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1654120800000,"amount":-200.0,"balance":58811.21}
+{"id":"9a85cc4e-4064-40de-a3bd-8cdebf4ae0bb","description":"ABONO BIZUM DE SOFIA PONCINO DE ROGATI","date":1654120800000,"amount":83.0,"balance":59011.21}
+{"id":"e0fefe54-ef68-477e-9a55-b12c6da2360b","description":"COMISIÓN DIVISA NO EURO","date":1654120800000,"amount":-0.28,"balance":58928.21}
+{"id":"935228d1-18a3-4858-9aba-e3d0df75a40f","description":"COMPRA TARJ. 5402XXXXXXXX1028 WEMBLEY - CONCESSIONS-LONDON","date":1654120800000,"amount":-8.06,"balance":58928.49}
+{"id":"c9fb8a42-1376-46e9-b959-99a1ade24078","description":"ADEUDO RECIBO VIDING FITNESS S.L.","date":1654034400000,"amount":-58.9,"balance":58936.55}
+{"id":"f590879d-18e9-410e-887f-e3a9e4690135","description":"COMISIÓN RETIRADA EFECTIVO DBTO","date":1654034400000,"amount":-6.35,"balance":58995.45}
+{"id":"cba670fd-71dd-47ba-9fd0-1c492873bc2b","description":"REINTEGRO CAJERO AUTOMATICO 5402XXXXXXXX1028 31.05","date":1654034400000,"amount":-141.3,"balance":59001.8}
+{"id":"c2c76eea-27c1-4e7b-8caa-aa54f3f9a17e","description":"PAGO BIZUM SOFIA PONCINO DE ROGATI","date":1653948000000,"amount":-31.65,"balance":59143.1}
+{"id":"55bc6533-33b0-412f-aa1d-e04a4fedb908","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1653948000000,"amount":-300.0,"balance":59174.75}
+{"id":"77b357ac-d22a-4c06-a173-09d5bec0f3af","description":"TARJETA CREDITO SEBASTIAN VENERE","date":1653948000000,"amount":-926.37,"balance":59474.75}
+{"id":"bd464f8a-49f2-41b8-8693-dd13b88870f0","description":"NOMINA DE Nurun Crazy Labs ES6626-NURUN CRA ZY","date":1653602400000,"amount":6525.17,"balance":60401.12}
+{"id":"94a0a7f7-3f54-4468-b532-edb2d1747f53","description":"PAGO BIZUM SANTIAGO PUTRUELE","date":1653516000000,"amount":-45.0,"balance":53875.95}
+{"id":"ff30baf7-ab03-440e-ae36-3e55ca3983bd","description":"COMPRA TARJ. 5402XXXXXXXX1028 FRUITA VERDURA VERDAGUER-TARRAGONA","date":1653429600000,"amount":-3.2,"balance":53920.95}
+{"id":"516a7b73-650a-446b-9474-3281acf87ad8","description":"ELECTRICIDAD ENDESA ENERGIA SAU FACTURA DE ELECTR","date":1653429600000,"amount":-69.16,"balance":53924.15}
+{"id":"9bb03492-e803-4306-9ab4-96791e88163b","description":"ABONO BIZUM DE SANTIAGO PUTRUELE","date":1653256800000,"amount":20.0,"balance":53993.31}
+{"id":"e6ce964f-d193-4ad4-b83f-e07339252e9e","description":"PAGO BIZUM SANTIAGO PUTRUELE","date":1652824800000,"amount":-15.0,"balance":53973.31}
+{"id":"72ab04f3-f10c-4a8c-8d07-088a652741d8","description":"COMPRA TARJ. 5402XXXXXXXX1028 TAXI TARRAGONA-TARRAGONA","date":1652738400000,"amount":-16.95,"balance":53988.31}
+{"id":"7e930918-2fde-416a-9094-77950acf64f7","description":"COMISIÓN RETIRADA EFECTIVO DBTO","date":1652738400000,"amount":-2.5,"balance":54005.26}
+{"id":"8799d346-13a3-4a89-ab88-003424780594","description":"REINTEGRO CAJERO AUTOMATICO 5402XXXXXXXX1028 17.05","date":1652738400000,"amount":-80.0,"balance":54007.76}
+{"id":"96ca4291-40e5-4d8e-a3df-5a05030067da","description":"COMPRA TARJ. 5402XXXXXXXX1028 VIDAL GARCIA SAMPER-ELS PALLARESO","date":1652738400000,"amount":-22.0,"balance":54087.76}
+{"id":"636ec9b1-9a1a-4a46-9bac-ef4c4f9db61d","description":"COMPRA TARJ. 5402XXXXXXXX1028 AMZN MKTP ES AMAZON.ES-LUXEMBOURG","date":1652652000000,"amount":-17.0,"balance":54109.76}
+{"id":"eead657d-0b30-412c-a548-63eedef078cd","description":"COMPRA TARJ. 5402XXXXXXXX1028 MT15-TARRAGONA","date":1652652000000,"amount":-18.9,"balance":54126.76}
+{"id":"0f381bcd-ec15-4634-a9d4-9bd11bd15289","description":"COMISIÓN DIVISA NO EURO","date":1652220000000,"amount":-0.1,"balance":54145.66}
+{"id":"ec385d57-2078-4cdd-b92f-346f797585ec","description":"COMPRA TARJ. 5402XXXXXXXX1028 SKYPE.COM/GO/BILL-Luxembourg","date":1652220000000,"amount":-2.84,"balance":54145.76}
+{"id":"f62ad1bb-3695-4d5f-a01e-639aa8f150f9","description":"AGUA EMATSA (EMPRESA MUNICIPAL MIXTA D.AIGUES","date":1652220000000,"amount":-105.15,"balance":54148.6}
+{"id":"94016106-258e-43d5-9369-fb28338d07c6","description":"COMPRA TARJ. 5402XXXXXXXX1028 CARREFOUR CITY-PERPIGNAN","date":1651788000000,"amount":-5.64,"balance":54253.75}
+{"id":"50ab16b1-70a5-404e-90d7-b6ab67089cbc","description":"COMPRA TARJ. 5402XXXXXXXX1028 INDIGO0660007-PERPIGNAN","date":1651701600000,"amount":-1.5,"balance":54259.39}
+{"id":"159a51b8-2d66-4e32-a88c-761dc2b3de1b","description":"COMPRA TARJ. 5402XXXXXXXX1028 COMMUNE DE COLLIOURE-COLLIOURE","date":1651701600000,"amount":-6.3,"balance":54260.89}
+{"id":"1bbd1ee4-e6ae-466b-97f7-b67d848c1a5b","description":"TRANSFERENCIA A Martín De Muniategui","date":1651701600000,"amount":-143.0,"balance":54267.19}
+{"id":"c193607c-7386-4352-81ca-bcbfa7ac8ced","description":"TRANSFERENCIA A CARLA ANDREA PUTRUELE","date":1651701600000,"amount":-800.0,"balance":54410.19}
+{"id":"544f5747-7d1c-4598-bf88-5c06bebaea6a","description":"SEGUROS AXA SEGUROS GENERALES CIF A-60917978","date":1651615200000,"amount":-135.99,"balance":55210.19}
+{"id":"efb36b52-2cf4-44a8-a921-5d8a68d09620","description":"TELEFONOS TELEFONICA DE ESPANA SAU FIJOxxxxxx620.may","date":1651615200000,"amount":-75.98,"balance":55346.18}
+{"id":"b4610897-e479-4968-89fd-ccf91ef7b501","description":"TELEFONOS TELEFONICA MOVILES SA MOV.xxxxxx198.may","date":1651615200000,"amount":-8.5,"balance":55422.16}
+{"id":"67e8b909-a6ef-444d-94c8-3f53799fbc83","description":"ABONO BIZUM DE SANTIAGO PUTRUELE","date":1651528800000,"amount":20.0,"balance":55430.66}
+{"id":"30541021-a46d-4629-8534-51fdc287ec3c","description":"ADEUDO RECIBO VIDING FITNESS S.L.","date":1651528800000,"amount":-58.9,"balance":55410.66}

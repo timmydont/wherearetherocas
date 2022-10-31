@@ -1,0 +1,41 @@
+#
+# Schemas must have at least a query root type
+#
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+#
+# Type definitions
+#
+type Transaction {
+    id: String!
+    date: String!
+    item: String
+    amount: Float
+    balance: Float
+    references: [String]
+    description: String!
+}
+
+type TransactionByItem {
+    id: String!
+    item: String
+    amount: Float
+}
+
+#
+# Input definitions
+#
+
+# Define queries provided
+type Query {
+    transactions: [Transaction]
+    transactionsByItems: [TransactionByItem]
+}
+
+# Define mutations provided
+type Mutation {
+    load (input: String): Boolean
+}

@@ -3,5 +3,16 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+<display-name>WhereAreTheRocas Web Application</display-name>
+
+<!-- servlet declarations -->
+<servlet>
+  <servlet-name>EndpointServlet</servlet-name>
+  <servlet-class>com.timmydont.wherearetherocas.servlet.EndpointServlet</servlet-class>
+</servlet>
+<!-- servlet mapping declarations -->
+<servlet-mapping>
+  <servlet-name>EndpointServlet</servlet-name>
+  <url-pattern>/graphqls</url-pattern>
+</servlet-mapping>
 </web-app>

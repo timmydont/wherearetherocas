@@ -28,7 +28,8 @@ public class TransactionByItem implements Model {
     /**
      * Required for JsonDB storage
      */
-    public TransactionByItem() { }
+    public TransactionByItem() {
+    }
 
     /**
      * Full argument constructor, used by lombok builder
@@ -46,7 +47,6 @@ public class TransactionByItem implements Model {
     }
 
     /**
-     *
      * @param transaction
      */
     @JsonIgnore
@@ -57,6 +57,22 @@ public class TransactionByItem implements Model {
         }
         amount += transaction.getAmount();
         transactions.add(transaction);
+    }
+
+    @JsonIgnore
+    public void remove(Transaction item) {
+        if (transactions.remove(item)) {
+            amount -= item.getAmount();
+        }
+    }
+
+    @JsonIgnore
+    public void removeAll(List<Transaction> items) {
+        for (Transaction item : items) {
+            if (transactions.remove(item)) {
+                amount -= item.getAmount();
+            }
+        }
     }
 
     @JsonIgnore

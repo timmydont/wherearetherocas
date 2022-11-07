@@ -69,8 +69,8 @@ public class ExcelLoadDataFetcher {
                 dbService.add(transaction);
                 boolean added = false;
                 for(String key : transactionByItem.keySet()) {
-                    Double distance = jaroWinklerDistance.apply(key.toUpperCase(), transaction.getDescription().toUpperCase());
-                    debug(logger, "Distance of %s to %s is %,.2f", transaction.getDescription(), key, distance);
+                    Double distance = jaroWinklerDistance.apply(key.toUpperCase(), transaction.getItem().toUpperCase());
+                    debug(logger, "Distance of %s to %s is %,.2f", transaction.getItem(), key, distance);
                     if(distance < 0.2d) {
                         TransactionByItem item = transactionByItem.get(key);
                         item.add(transaction);
@@ -80,10 +80,10 @@ public class ExcelLoadDataFetcher {
                 if(!added) {
                     TransactionByItem item = TransactionByItem.builder()
                             .id(transaction.getId())
-                            .item(transaction.getDescription())
+                            .item(transaction.getItem())
                             .build();
                     item.add(transaction);
-                    transactionByItem.put(transaction.getDescription(), item);
+                    transactionByItem.put(transaction.getItem(), item);
                 }
             }
             dbService.add(transactionByItem.values());

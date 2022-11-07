@@ -14,7 +14,6 @@ type Transaction {
     date: String!
     item: String
     amount: Float
-    balance: Float
     references: [String]
     description: String!
 }
@@ -25,6 +24,19 @@ type TransactionByItem {
     amount: Float
 }
 
+type BalanceByItem {
+    item: String
+    income: Float
+    outcome: Float
+}
+
+type BalanceByPeriod {
+    end: String
+    start: String
+    income: Float
+    outcome: Float
+}
+
 #
 # Input definitions
 #
@@ -32,7 +44,13 @@ type TransactionByItem {
 # Define queries provided
 type Query {
     transactions: [Transaction]
+    transactionsByItem(item: String): [Transaction]
     transactionsByItems: [TransactionByItem]
+    transactionsByPeriod(start: String, end: String): [Transaction]
+    transactionsByPeriodByItem(start: String, end: String, item: String): [Transaction]
+    transactionsByPeriodByItems(start: String, end: String): [TransactionByItem]
+    balanceByItem(item: String): BalanceByItem
+    balanceByPeriod(period: Int): [BalanceByPeriod]
 }
 
 # Define mutations provided

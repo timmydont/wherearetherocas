@@ -1,6 +1,7 @@
 package com.timmydont.wherearetherocas.services.impl;
 
 import com.timmydont.wherearetherocas.config.ExcelConfig;
+import com.timmydont.wherearetherocas.fetcher.BalanceDataFetcher;
 import com.timmydont.wherearetherocas.fetcher.ExcelLoadDataFetcher;
 import com.timmydont.wherearetherocas.fetcher.TransactionDataFetcher;
 import com.timmydont.wherearetherocas.lib.db.DBService;
@@ -19,6 +20,7 @@ public class WiringService implements GraphqlWiringService {
 
     private final ExcelConfig config;
 
+    private final BalanceDataFetcher balanceDataFetcher;
     private final ExcelLoadDataFetcher loadDataFetcher;
     private final TransactionDataFetcher transactionDataFetcher;
 
@@ -34,6 +36,7 @@ public class WiringService implements GraphqlWiringService {
                 .build();
         dbService = new JsonDBServiceImpl();
         loadDataFetcher = new ExcelLoadDataFetcher(dbService, config);
+        balanceDataFetcher = new BalanceDataFetcher(dbService);
         transactionDataFetcher = new TransactionDataFetcher(dbService);
     }
 
@@ -44,8 +47,14 @@ public class WiringService implements GraphqlWiringService {
                         .dataFetcher("load", loadDataFetcher.load()))
                 .type(newTypeWiring(RequestType.QUERY.id)
                         // multiple items
+                        .dataFetcher("transactions", transactionDataFetcher.fetchAll())
+                        .dataFetcher("balanceByItem", balanceDataFetcher.fetchBalanceByItem())
+                        .dataFetcher("balanceByPeriod", balanceDataFetcher.fetchBalanceByPeriod())
+                        .dataFetcher("transactionsByItem", transactionDataFetcher.fetchByItem())
                         .dataFetcher("transactionsByItems", transactionDataFetcher.fetchByItems())
-                        .dataFetcher("transactions", transactionDataFetcher.fetchAll()))
+                        .dataFetcher("transactionsByPeriod", transactionDataFetcher.fetchByPeriod())
+                        .dataFetcher("transactionsByPeriodByItem", transactionDataFetcher.fetchByPeriodByItem())
+                        .dataFetcher("transactionsByPeriodByItems", transactionDataFetcher.fetchByPeriodByItems()))
                 .build();
     }
 }

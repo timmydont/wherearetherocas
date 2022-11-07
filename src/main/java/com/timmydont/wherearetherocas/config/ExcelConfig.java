@@ -16,7 +16,6 @@ public class ExcelConfig {
     private int itemIndex;
     private int dateIndex;
     private int amountIndex;
-    private int balanceIndex;
     private int descriptionIndex;
     private DateFormat format;
 }

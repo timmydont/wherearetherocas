@@ -25,15 +25,13 @@ public class ExcelRowTransactionAdapter implements TransactionAdapter<Row> {
     public Transaction adapt(Row item) {
         String date = item.getCell(config.getDateIndex()).getStringCellValue();
         float amount = (float) item.getCell(config.getAmountIndex()).getNumericCellValue();
-        float balance = (float) item.getCell(config.getBalanceIndex()).getNumericCellValue();
         String description = item.getCell(config.getDescriptionIndex()).getStringCellValue();
         try {
             return Transaction.builder()
                     .id(UUID.randomUUID().toString())
+                    .item(description)
                     .date(config.getFormat().parse(date))
                     .amount(amount)
-                    .balance(balance)
-                    .description(description)
                     .build();
         } catch (ParseException e) {
             error(logger, "unable to parse date field, with format %s, with value %s", config.getFormat().toString(), date);

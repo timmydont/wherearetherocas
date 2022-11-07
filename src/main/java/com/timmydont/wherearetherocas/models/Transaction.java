@@ -21,12 +21,10 @@ public class Transaction implements Model {
 
     @Id
     private String id;
-    private String description;
+    private String item;
 
     private Date date;
     private float amount;
-
-    private float balance;
 
     private String[] references;
 
@@ -39,25 +37,23 @@ public class Transaction implements Model {
      * Full argument constructor, used by lombok builder
      *
      * @param id
-     * @param description
+     * @param item
      * @param date
      * @param amount
-     * @param balance
      * @param references
      */
-    public Transaction(String id, String description, Date date, float amount, float balance, String[] references) {
+    public Transaction(String id, String item, Date date, float amount, String[] references) {
         this.id = id;
-        this.description = description;
+        this.item = item;
         this.date = date;
         this.amount = amount;
-        this.balance = balance;
         this.references = references;
     }
 
     @JsonIgnore
     @Override
     public boolean isValid() {
-        return StringUtils.isNoneBlank(id, description);
+        return StringUtils.isNoneBlank(id, item);
     }
 
 }

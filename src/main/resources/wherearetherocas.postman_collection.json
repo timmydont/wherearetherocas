@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "d06fb3f2-ed20-4544-b90a-e192cb943510",
+		"name": "wherearetherocas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6915427"
+	},
+	"item": [
+		{
+			"name": "load",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\r\n    load(input: \"D:\\\\workspace\\\\timmydont\\\\wherearetherocas\\\\wherearetherocas.xls\")\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9999/graphqls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"graphqls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transactions",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    transactions {\r\n        id\r\n        item\r\n        date\r\n        amount\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9999/graphqls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"graphqls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transactionsByItem",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    transactionsByItem(item: \"1477c429-0de2-410a-972f-defb7df1337d\") {\r\n        id\r\n        item\r\n        amount\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9999/graphqls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"graphqls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transactionsByItems",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    transactionsByItems {\r\n        id\r\n        item\r\n        amount\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9999/graphqls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"graphqls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transactionsByPeriod",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    transactionsByPeriod(start: \"01/08/2022\", end: \"30/09/2022\") {\r\n        id\r\n        item\r\n        amount\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9999/graphqls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"graphqls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transactionsByPeriodByItem",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    transactionsByPeriodByItem(start: \"01/09/2022\", end: \"30/09/2022\", item: \"1477c429-0de2-410a-972f-defb7df1337d\") {\r\n        id\r\n        item\r\n        amount\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9999/graphqls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"graphqls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transactionsByPeriodByItems",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    transactionsByPeriodByItems(start: \"01/08/2022\", end: \"30/09/2022\") {\r\n        id\r\n        item\r\n        amount\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9999/graphqls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"graphqls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "balanceByItem",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    balanceByItem(item: \"1477c429-0de2-410a-972f-defb7df1337d\") {\r\n        item\r\n        income\r\n        outcome\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9999/graphqls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"graphqls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "balanceByPeriod",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    balanceByPeriod {\r\n        start        \r\n        end\r\n        income\r\n        outcome\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9999/graphqls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"graphqls"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

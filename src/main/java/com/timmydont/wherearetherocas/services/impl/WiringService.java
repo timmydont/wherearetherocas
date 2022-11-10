@@ -31,7 +31,6 @@ public class WiringService implements GraphqlWiringService {
                 .dateIndex(0)
                 .sheetIndex(0)
                 .amountIndex(3)
-                .balanceIndex(4)
                 .descriptionIndex(1)
                 .build();
         dbService = new JsonDBServiceImpl();
@@ -49,7 +48,9 @@ public class WiringService implements GraphqlWiringService {
                         // multiple items
                         .dataFetcher("transactions", transactionDataFetcher.fetchAll())
                         .dataFetcher("balanceByItem", balanceDataFetcher.fetchBalanceByItem())
+                        .dataFetcher("balanceByText", balanceDataFetcher.fetchBalanceByText())
                         .dataFetcher("balanceByPeriod", balanceDataFetcher.fetchBalanceByPeriod())
+                        .dataFetcher("transactionsByText", transactionDataFetcher.fetchByText())
                         .dataFetcher("transactionsByItem", transactionDataFetcher.fetchByItem())
                         .dataFetcher("transactionsByItems", transactionDataFetcher.fetchByItems())
                         .dataFetcher("transactionsByPeriod", transactionDataFetcher.fetchByPeriod())

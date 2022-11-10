@@ -44,12 +44,14 @@ type BalanceByPeriod {
 # Define queries provided
 type Query {
     transactions: [Transaction]
+    transactionsByText(text: String): [Transaction]
     transactionsByItem(item: String): [Transaction]
     transactionsByItems: [TransactionByItem]
     transactionsByPeriod(start: String, end: String): [Transaction]
     transactionsByPeriodByItem(start: String, end: String, item: String): [Transaction]
     transactionsByPeriodByItems(start: String, end: String): [TransactionByItem]
     balanceByItem(item: String): BalanceByItem
+    balanceByText(text: String): BalanceByItem
     balanceByPeriod(period: Int): [BalanceByPeriod]
 }
 

@@ -9,6 +9,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,6 +67,29 @@ public class TransactionDataFetcher {
                 return null;
             }
             return transactionByItem.getTransactions();
+        };
+    }
+
+    /**
+     * @return
+     */
+    public DataFetcher<List<Transaction>> fetchByText() {
+        return dataFetchingEnvironment -> {
+            // get item
+            String text = dataFetchingEnvironment.getArgument("text");
+            if (StringUtils.isBlank(text)) {
+                error(logger, "invalid parameter, text: %s", text);
+                return null;
+            }
+            // get all transactions
+            List<Transaction> items = dbService.list(Transaction.class);
+            if (items == null) {
+                error(logger, "unable to retrieve all transactions");
+                return null;
+            }
+            return items.stream()
+                    .filter(item -> item.getItem().equalsIgnoreCase(text))
+                    .collect(Collectors.toList());
         };
     }
 

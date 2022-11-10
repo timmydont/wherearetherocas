@@ -33,6 +33,20 @@ public class BalanceDataFetcher {
         };
     }
 
+    public DataFetcher<BalanceByItem> fetchBalanceByText() {
+        return dataFetchingEnvironment -> {
+            String text = dataFetchingEnvironment.getArgument("text");
+            List<Transaction> items = dbService.list(Transaction.class);
+
+            BalanceByItem balanceByItem = BalanceByItem.builder().item(text).build();
+            items.stream()
+                    .filter(item -> item.getItem().equalsIgnoreCase(text))
+                    .map(Transaction::getAmount)
+                    .forEach(balanceByItem::add);
+            return balanceByItem;
+        };
+    }
+
     public DataFetcher<List<BalanceByPeriod>> fetchBalanceByPeriod() {
         return dataFetchingEnvironment -> {
             Period period = Period.getPeriod(dataFetchingEnvironment.getArgument("period"));

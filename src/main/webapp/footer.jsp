@@ -32,11 +32,7 @@
                 label: response.data.chartLineByPeriod.datasets[1].label,
                 backgroundColor: "#45c490",
                 data: response.data.chartLineByPeriod.datasets[1].data,
-              }, {
-               label: response.data.chartLineByPeriod.datasets[2].label,
-               backgroundColor: "#672C5B",
-               data: response.data.chartLineByPeriod.datasets[2].data,
-             }],
+              }],
             },
           options: {
               plugins: {

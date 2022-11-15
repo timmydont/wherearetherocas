@@ -60,17 +60,24 @@ public class ExcelLoadDataFetcher {
             }
             int fr = config.getStartRow();
             int lr = sheet.getLastRowNum();
-            Map<Instant, TransactionByDate> transactionByDate = new HashMap<>();
-            Map<String, TransactionByItem> transactionByItem = new HashMap<>();
-            float balance = 0f;
-            for (int i = fr; i < lr; i++) {
+            //
+            List<Transaction> transactions = new ArrayList<>();
+            for (int i = fr; i <= lr; i++) {
                 Transaction transaction = transactionAdapter.adapt(sheet.getRow(i));
                 if (transaction == null) {
                     error(logger, "unable to adapt row %s to transaction", i);
                     continue;
                 }
-                //
-                dbService.add(transaction);
+                transactions.add(transaction);
+            }
+            Collections.sort(transactions);
+
+
+            Map<String, TransactionByItem> transactionByItem = new HashMap<>();
+            Map<Instant, TransactionByDate> transactionByDate = new HashMap<>();
+            float balance = 0f;
+            //
+            for(Transaction transaction : transactions) {
                 Instant instant = transaction.getDate().toInstant()
                         .truncatedTo(ChronoUnit.DAYS);
                 TransactionByDate tbd = transactionByDate.get(instant);
@@ -83,7 +90,7 @@ public class ExcelLoadDataFetcher {
                             .balance(balance)
                             .build();
                 }
-                balance -= transaction.getAmount();
+                balance += transaction.getAmount();
                 tbd.add(transaction);
                 transactionByDate.put(instant, tbd);
 
@@ -106,12 +113,16 @@ public class ExcelLoadDataFetcher {
                     transactionByItem.put(transaction.getItem(), item);
                 }
             }
+
+
+            dbService.add(transactions);
             //
             dbService.add(transactionByItem.values());
             //
-            List<TransactionByDate> dates = new ArrayList<>(transactionByDate.values());
-            Collections.sort(dates);
-            dbService.add(dates);
+
+            List<TransactionByDate> items = new ArrayList<>(transactionByDate.values());
+            Collections.sort(items);
+            dbService.add(items);
             return true;
         };
     }

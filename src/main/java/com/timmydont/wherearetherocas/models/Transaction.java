@@ -17,7 +17,7 @@ import java.util.Date;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Document(collection = "transactions", schemaVersion = "1.0")
-public class Transaction implements Model {
+public class Transaction implements Model, Comparable<Transaction> {
 
     @Id
     private String id;
@@ -56,4 +56,8 @@ public class Transaction implements Model {
         return StringUtils.isNoneBlank(id, item);
     }
 
+    @Override
+    public int compareTo(Transaction o) {
+        return date.compareTo(o.getDate());
+    }
 }

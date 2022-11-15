@@ -3,6 +3,7 @@ package com.timmydont.wherearetherocas.lib.db.impl;
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.lib.model.Model;
 import com.timmydont.wherearetherocas.models.Transaction;
+import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
 import io.jsondb.JsonDBTemplate;
 import org.apache.commons.collections.CollectionUtils;
@@ -28,7 +29,7 @@ public class JsonDBServiceImpl implements DBService {
     public JsonDBServiceImpl() {
         jsonDB = new JsonDBTemplate(DB_DISK_LOCATION, DB_MODEL_PACKAGE);
         // initialize database
-        Class<?>[] classes = {Transaction.class, TransactionByItem.class};
+        Class<?>[] classes = {Transaction.class, TransactionByItem.class, TransactionByDate.class};
         for (Class<?> clazz : classes) {
             if (!jsonDB.collectionExists(clazz)) jsonDB.createCollection(clazz);
         }

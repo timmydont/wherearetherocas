@@ -37,6 +37,17 @@ type BalanceByPeriod {
     outcome: Float
 }
 
+type ChartDataSet {
+    data: [Float]
+    label: String
+}
+
+type LineChart {
+    title: String
+    labels: [String]
+    datasets: [ChartDataSet]
+}
+
 #
 # Input definitions
 #
@@ -53,6 +64,7 @@ type Query {
     balanceByItem(item: String): BalanceByItem
     balanceByText(text: String): BalanceByItem
     balanceByPeriod(period: Int): [BalanceByPeriod]
+    chartLineByPeriod: LineChart
 }
 
 # Define mutations provided

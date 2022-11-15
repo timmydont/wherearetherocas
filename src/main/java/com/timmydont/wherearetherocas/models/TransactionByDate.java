@@ -11,37 +11,43 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Document(collection = "transactionByItems", schemaVersion = "1.0")
-public class TransactionByItem implements Model {
+@Document(collection = "transactionByDates", schemaVersion = "1.0")
+public class TransactionByDate implements Model, Comparable<TransactionByDate> {
 
     @Id
     private String id;
-    private String item;
-    private Float amount;
+    private Date date;
+    private Float income;
+    private Float outcome;
+    private Float balance;
     private List<Transaction> transactions;
 
     /**
      * Required for JsonDB storage
      */
-    public TransactionByItem() { }
+    public TransactionByDate() { }
 
     /**
      * Full argument constructor, used by lombok builder
      *
      * @param id
-     * @param item
-     * @param amount
+     * @param date
+     * @param income
+     * @param outcome
      * @param transactions
      */
-    public TransactionByItem(String id, String item, Float amount, List<Transaction> transactions) {
+    public TransactionByDate(String id, Date date, Float income, Float outcome, Float balance, List<Transaction> transactions) {
         this.id = id;
-        this.item = item;
-        this.amount = amount;
+        this.date = date;
+        this.income = income;
+        this.outcome = outcome;
+        this.balance = balance;
         this.transactions = transactions;
     }
 
@@ -51,32 +57,22 @@ public class TransactionByItem implements Model {
     @JsonIgnore
     public void add(Transaction transaction) {
         if (CollectionUtils.isEmpty(transactions)) {
-            this.amount = 0f;
             this.transactions = new ArrayList<>();
         }
-        amount += transaction.getAmount();
+        if (transaction.getAmount() < 0) outcome += transaction.getAmount();
+        else income += transaction.getAmount();
         transactions.add(transaction);
-    }
-
-    @JsonIgnore
-    public void remove(Transaction item) {
-        if (transactions.remove(item)) {
-            amount -= item.getAmount();
-        }
-    }
-
-    @JsonIgnore
-    public void removeAll(List<Transaction> items) {
-        for (Transaction item : items) {
-            if (transactions.remove(item)) {
-                amount -= item.getAmount();
-            }
-        }
     }
 
     @JsonIgnore
     @Override
     public boolean isValid() {
-        return StringUtils.isNoneBlank(id, item) && CollectionUtils.isNotEmpty(transactions);
+        return StringUtils.isNoneBlank(id) && date != null;
+    }
+
+    @JsonIgnore
+    @Override
+    public int compareTo(TransactionByDate o) {
+        return date.compareTo(o.getDate());
     }
 }

@@ -2,12 +2,14 @@ package com.timmydont.wherearetherocas.services.impl;
 
 import com.timmydont.wherearetherocas.config.ExcelConfig;
 import com.timmydont.wherearetherocas.fetcher.BalanceDataFetcher;
+import com.timmydont.wherearetherocas.fetcher.ChartDataFetcher;
 import com.timmydont.wherearetherocas.fetcher.ExcelLoadDataFetcher;
 import com.timmydont.wherearetherocas.fetcher.TransactionDataFetcher;
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.lib.db.impl.JsonDBServiceImpl;
 import com.timmydont.wherearetherocas.lib.graphql.model.RequestType;
 import com.timmydont.wherearetherocas.lib.graphql.service.GraphqlWiringService;
+import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
 import graphql.schema.idl.RuntimeWiring;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +22,7 @@ public class WiringService implements GraphqlWiringService {
 
     private final ExcelConfig config;
 
+    private final ChartDataFetcher chartDataFetcher;
     private final BalanceDataFetcher balanceDataFetcher;
     private final ExcelLoadDataFetcher loadDataFetcher;
     private final TransactionDataFetcher transactionDataFetcher;
@@ -27,7 +30,7 @@ public class WiringService implements GraphqlWiringService {
     public WiringService() {
         config = ExcelConfig.builder()
                 .format(new SimpleDateFormat("dd/MM/yyyy"))
-                .startRow(10)
+                .startRow(9)
                 .dateIndex(0)
                 .sheetIndex(0)
                 .amountIndex(3)
@@ -35,6 +38,7 @@ public class WiringService implements GraphqlWiringService {
                 .build();
         dbService = new JsonDBServiceImpl();
         loadDataFetcher = new ExcelLoadDataFetcher(dbService, config);
+        chartDataFetcher = new ChartDataFetcher(dbService);
         balanceDataFetcher = new BalanceDataFetcher(dbService);
         transactionDataFetcher = new TransactionDataFetcher(dbService);
     }
@@ -50,6 +54,7 @@ public class WiringService implements GraphqlWiringService {
                         .dataFetcher("balanceByItem", balanceDataFetcher.fetchBalanceByItem())
                         .dataFetcher("balanceByText", balanceDataFetcher.fetchBalanceByText())
                         .dataFetcher("balanceByPeriod", balanceDataFetcher.fetchBalanceByPeriod())
+                        .dataFetcher("chartLineByPeriod", chartDataFetcher.fetchChartLine())
                         .dataFetcher("transactionsByText", transactionDataFetcher.fetchByText())
                         .dataFetcher("transactionsByItem", transactionDataFetcher.fetchByItem())
                         .dataFetcher("transactionsByItems", transactionDataFetcher.fetchByItems())

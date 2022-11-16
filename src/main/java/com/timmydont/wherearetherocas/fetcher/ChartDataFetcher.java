@@ -1,6 +1,7 @@
 package com.timmydont.wherearetherocas.fetcher;
 
 import com.timmydont.wherearetherocas.lib.db.DBService;
+import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
 import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
@@ -12,6 +13,7 @@ import org.apache.log4j.Logger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.debug;
 
@@ -77,22 +79,21 @@ public class ChartDataFetcher {
                 labels.add(dateFormat.format(td.getDate()));
 
                 items.forEach(ti -> {
-                    td.getTransactions().forEach(t -> {
-                        ChartDataSet dataSet = dataSetMap.get(ti.getItem());
-                        if(dataSet == null) {
-                            dataSet = ChartDataSet.builder()
-                                    .label(ti.getItem())
-                                    .backgroundColor(randomColor())
-                                    .data(new ArrayList<>())
-                                    .build();
-                        }
+                    ChartDataSet dataSet = dataSetMap.containsKey(ti.getItem()) ?
+                            dataSetMap.get(ti.getItem()) :
+                            ChartDataSet.builder()
+                                .label(ti.getItem())
+                                .backgroundColor(randomColor())
+                                .data(new ArrayList<>())
+                                .build();
+                    Float amount = 0f;
+                    for(Transaction t : td.getTransactions()) {
                         if (jaroWinklerDistance.apply(t.getItem(), ti.getItem().toUpperCase()) < 0.2d) {
-                            dataSet.add(t.getAmount());
-                        } else {
-                            dataSet.add(0f);
+                            amount += t.getAmount();
                         }
-                        dataSetMap.put(ti.getItem(), dataSet);
-                    });
+                    }
+                    dataSet.add(amount);
+                    dataSetMap.put(ti.getItem(), dataSet);
                 });
             });
 

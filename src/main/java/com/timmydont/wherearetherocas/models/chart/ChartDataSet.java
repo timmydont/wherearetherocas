@@ -10,5 +10,10 @@ import java.util.List;
 public class ChartDataSet {
 
     private String label;
+    private String backgroundColor;
     private List<Float> data;
+
+    public void add(float amount) {
+        this.data.add(amount);
+    }
 }

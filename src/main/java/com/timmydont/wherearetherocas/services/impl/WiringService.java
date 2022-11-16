@@ -55,6 +55,7 @@ public class WiringService implements GraphqlWiringService {
                         .dataFetcher("balanceByText", balanceDataFetcher.fetchBalanceByText())
                         .dataFetcher("balanceByPeriod", balanceDataFetcher.fetchBalanceByPeriod())
                         .dataFetcher("chartLineByPeriod", chartDataFetcher.fetchChartLine())
+                        .dataFetcher("chartBarByPeriodByItem", chartDataFetcher.fetchChartDayItems())
                         .dataFetcher("transactionsByText", transactionDataFetcher.fetchByText())
                         .dataFetcher("transactionsByItem", transactionDataFetcher.fetchByItem())
                         .dataFetcher("transactionsByItems", transactionDataFetcher.fetchByItems())

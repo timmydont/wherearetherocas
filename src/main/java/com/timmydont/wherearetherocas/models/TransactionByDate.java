@@ -61,6 +61,7 @@ public class TransactionByDate implements Model, Comparable<TransactionByDate> {
         }
         if (transaction.getAmount() < 0) outcome += transaction.getAmount();
         else income += transaction.getAmount();
+        balance += transaction.getAmount();
         transactions.add(transaction);
     }
 

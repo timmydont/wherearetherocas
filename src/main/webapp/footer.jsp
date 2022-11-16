@@ -5,6 +5,47 @@
 
 <script>
 
+    var settings2 = {
+      "url": "http://localhost:9999/graphqls",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        query: "query {\r\n    chartBarByPeriodByItem {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
+        variables: {}
+      })
+    };
+
+    $.ajax(settings2).done(function (response) {
+          var ctx3 = document.getElementById("barchart").getContext('2d');
+          var myChart3 = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+              labels: response.data.chartBarByPeriodByItem.labels,
+              datasets: response.data.chartBarByPeriodByItem.datasets,
+            },
+          options: {
+              plugins: {
+                title: {
+                  display: true,
+                  text: response.data.chartBarByPeriodByItem.title
+                },
+              },
+              responsive: true,
+              scales: {
+                x: {
+                  stacked: true,
+                },
+                y: {
+                  stacked: true
+                }
+              }
+          }});
+    });
+
+
     var settings = {
       "url": "http://localhost:9999/graphqls",
       "method": "POST",

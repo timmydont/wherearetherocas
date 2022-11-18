@@ -7,15 +7,11 @@ import java.util.List;
 
 @Data
 @Builder
-public class ChartDataSet {
+public class ChartPieDataSet {
 
     private String label;
-    private String backgroundColor;
     private List<Float> data;
-
-    public void add(float amount) {
-        this.data.add(amount);
-    }
+    private List<String> backgroundColor;
 
     public void add(int index, float amount) {
         this.data.set(index, this.data.get(index) + amount);

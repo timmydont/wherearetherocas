@@ -1,25 +1,25 @@
 package com.timmydont.wherearetherocas.fetcher;
 
 import com.timmydont.wherearetherocas.lib.db.DBService;
+import com.timmydont.wherearetherocas.models.Period;
 import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
 import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
 import com.timmydont.wherearetherocas.models.chart.ChartLine;
+import com.timmydont.wherearetherocas.models.chart.ChartPie;
+import com.timmydont.wherearetherocas.models.chart.ChartPieDataSet;
 import graphql.schema.DataFetcher;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
-import org.apache.log4j.Logger;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.debug;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ChartDataFetcher {
-
-    private final Logger logger = Logger.getLogger(getClass());
 
     private final DBService dbService;
 
@@ -33,8 +33,61 @@ public class ChartDataFetcher {
     }
 
     /**
+     * Data is going to be items, dataset is going to be weeks
+     *
      * @return
      */
+    public DataFetcher<ChartPie> fetchPieChart() {
+        return dataFetchingEnvironment -> {
+            Period period = Period.Month;
+            List<String> labels = new ArrayList<>();
+            List<String> colors = new ArrayList<>();
+            Map<Integer, ChartPieDataSet> dataSets = new HashMap<>();
+            //
+            List<TransactionByItem> items = dbService.list(TransactionByItem.class);
+            items.forEach(e -> colors.add(randomColor()));
+            int i = 0;
+            for (TransactionByItem item : items) {
+                labels.add(item.getItem());
+                for (Transaction t : item.getTransactions()) {
+                    if (t.getAmount() > 0) continue;
+                    int asCalendar = period.getAsCalendar(t.getDate());
+                    ChartPieDataSet dataSet = dataSets.containsKey(asCalendar) ?
+                            dataSets.get(asCalendar) :
+                            ChartPieDataSet.builder()
+                                    .label(period.getStart(t.getDate()))
+                                    .backgroundColor(colors)
+                                    .data(lateta(items.size()))
+                                    .build();
+                    dataSet.add(i, Math.abs(t.getAmount()));
+                    dataSets.put(asCalendar, dataSet);
+                }
+                i++;
+            }
+
+            return ChartPie.builder()
+                    .title("data is items, dataset is weeks")
+                    .labels(labels)
+                    .datasets(new ArrayList<>(dataSets.values()))
+                    .build();
+        };
+    }
+
+    public static void main(String[] args) {
+        try {
+            Date date = new SimpleDateFormat("dd-MM-yyyy").parse("30-09-2022");
+            System.out.println(Period.Month.getAsCalendar(date));
+            System.out.println(Period.Month.getStart(date));
+            System.out.println(Period.Month.getEnd(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<Float> lateta(int size) {
+        return IntStream.range(0, size).mapToObj(i -> 0f).collect(Collectors.toList());
+    }
+
     public DataFetcher<ChartLine> fetchChartLine() {
         return dataFetchingEnvironment -> {
             List<TransactionByDate> items = dbService.list(TransactionByDate.class);
@@ -82,12 +135,12 @@ public class ChartDataFetcher {
                     ChartDataSet dataSet = dataSetMap.containsKey(ti.getItem()) ?
                             dataSetMap.get(ti.getItem()) :
                             ChartDataSet.builder()
-                                .label(ti.getItem())
-                                .backgroundColor(randomColor())
-                                .data(new ArrayList<>())
-                                .build();
-                    Float amount = 0f;
-                    for(Transaction t : td.getTransactions()) {
+                                    .label(ti.getItem())
+                                    .backgroundColor(randomColor())
+                                    .data(new ArrayList<>())
+                                    .build();
+                    float amount = 0f;
+                    for (Transaction t : td.getTransactions()) {
                         if (jaroWinklerDistance.apply(t.getItem(), ti.getItem().toUpperCase()) < 0.2d) {
                             amount += t.getAmount();
                         }

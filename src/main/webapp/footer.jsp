@@ -5,6 +5,39 @@
 
 <script>
 
+var settings4 = {
+  "url": "http://localhost:9999/graphqls",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    query: "query {\r\n    chartPieByWeekByItem {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
+    variables: {}
+  })
+};
+
+$.ajax(settings4).done(function (response) {
+            var ctx4 = document.getElementById("piechart").getContext('2d');
+            var myChart4 = new Chart(ctx4, {
+              type: 'pie',
+              data: {
+                labels: response.data.chartPieByWeekByItem.labels,
+                datasets: response.data.chartPieByWeekByItem.datasets,
+              },
+            options: {
+                plugins: {
+                  title: {
+                    display: true,
+                    text: response.data.chartPieByWeekByItem.title
+                  },
+                },
+                responsive: true
+            }});
+});
+
+
     var settings2 = {
       "url": "http://localhost:9999/graphqls",
       "method": "POST",
@@ -102,18 +135,21 @@
               datasets: [{
                 label: response.data.chartLineByPeriod.datasets[0].label,
                 borderColor: "#27AE60",
+                backgroundColor: "#27AE60",
                 fill: false,
                 tension: 0.5,
                 data: response.data.chartLineByPeriod.datasets[0].data,
               }, {
                 label: response.data.chartLineByPeriod.datasets[1].label,
                 borderColor: "#E74C3C",
+                backgroundColor: "#E74C3C",
                 fill: false,
                 tension: 0.5,
                 data: response.data.chartLineByPeriod.datasets[1].data,
               }, {
                label: response.data.chartLineByPeriod.datasets[2].label,
                borderColor: "#3498DB",
+               backgroundColor: "#3498DB",
                fill: false,
                tension: 0.5,
                data: response.data.chartLineByPeriod.datasets[2].data,

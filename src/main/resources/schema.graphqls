@@ -43,10 +43,22 @@ type ChartDataSet {
     backgroundColor: String
 }
 
+type ChartPieDataSet {
+    data: [Float]
+    label: String
+    backgroundColor: [String]
+}
+
 type LineChart {
     title: String
     labels: [String]
     datasets: [ChartDataSet]
+}
+
+type PieChart {
+    title: String
+    labels: [String]
+    datasets: [ChartPieDataSet]
 }
 
 #
@@ -67,6 +79,7 @@ type Query {
     balanceByPeriod(period: Int): [BalanceByPeriod]
     chartLineByPeriod: LineChart
     chartBarByPeriodByItem: LineChart
+    chartPieByWeekByItem: PieChart
 }
 
 # Define mutations provided

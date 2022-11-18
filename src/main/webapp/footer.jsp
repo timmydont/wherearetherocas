@@ -5,37 +5,37 @@
 
 <script>
 
-var settings4 = {
-  "url": "http://localhost:9999/graphqls",
-  "method": "POST",
-  "timeout": 0,
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "data": JSON.stringify({
-    query: "query {\r\n    chartPieByWeekByItem {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
-    variables: {}
-  })
-};
+    var settings4 = {
+      "url": "http://localhost:9999/graphqls",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        query: "query {\r\n    chartPieByWeekByItem {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
+        variables: {}
+      })
+    };
 
-$.ajax(settings4).done(function (response) {
-            var ctx4 = document.getElementById("piechart").getContext('2d');
-            var myChart4 = new Chart(ctx4, {
-              type: 'pie',
-              data: {
-                labels: response.data.chartPieByWeekByItem.labels,
-                datasets: response.data.chartPieByWeekByItem.datasets,
+    $.ajax(settings4).done(function (response) {
+        var ctx4 = document.getElementById("piechart").getContext('2d');
+        var myChart4 = new Chart(ctx4, {
+          type: 'pie',
+          data: {
+            labels: response.data.chartPieByWeekByItem.labels,
+            datasets: response.data.chartPieByWeekByItem.datasets,
+          },
+        options: {
+            plugins: {
+              title: {
+                display: true,
+                text: response.data.chartPieByWeekByItem.title
               },
-            options: {
-                plugins: {
-                  title: {
-                    display: true,
-                    text: response.data.chartPieByWeekByItem.title
-                  },
-                },
-                responsive: true
-            }});
-});
+            },
+            responsive: true
+        }});
+    });
 
 
     var settings2 = {

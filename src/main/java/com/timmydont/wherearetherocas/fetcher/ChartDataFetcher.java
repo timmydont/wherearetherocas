@@ -50,7 +50,6 @@ public class ChartDataFetcher {
             for (TransactionByItem item : items) {
                 labels.add(item.getItem());
                 for (Transaction t : item.getTransactions()) {
-                    if (t.getAmount() > 0) continue;
                     int asCalendar = period.getAsCalendar(t.getDate());
                     ChartPieDataSet dataSet = dataSets.containsKey(asCalendar) ?
                             dataSets.get(asCalendar) :

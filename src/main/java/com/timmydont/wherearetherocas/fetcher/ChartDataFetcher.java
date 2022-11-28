@@ -11,6 +11,7 @@ import com.timmydont.wherearetherocas.models.chart.ChartPie;
 import com.timmydont.wherearetherocas.models.chart.ChartPieDataSet;
 import graphql.schema.DataFetcher;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
+import org.apache.log4j.Logger;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -21,6 +22,8 @@ import java.util.stream.IntStream;
 
 public class ChartDataFetcher {
 
+    private final Logger logger = Logger.getLogger(getClass());
+
     private final DBService dbService;
 
     private final JaroWinklerDistance jaroWinklerDistance;
@@ -30,6 +33,47 @@ public class ChartDataFetcher {
     public ChartDataFetcher(DBService dbService) {
         this.dbService = dbService;
         this.jaroWinklerDistance = new JaroWinklerDistance();
+    }
+
+    public DataFetcher<ChartLine> fetchAnotherOne() {
+        return dataFetchingEnvironment -> {
+            Period period = Period.Month;
+            Map<Integer, String> periods = new HashMap<>();
+            Map<String, ChartDataSet> dataSetMap = new HashMap<>();
+
+            List<Transaction> transactions = dbService.list(Transaction.class);
+            Date start = transactions.get(0).getDate();
+            Date end = transactions.get(transactions.size() - 1).getDate();
+
+            int asCalendarStart = period.getAsCalendar(start);
+            int asCalendarEnd = period.getAsCalendar(end);
+
+            int magic = asCalendarEnd - asCalendarStart;
+
+            List<TransactionByItem> items = dbService.list(TransactionByItem.class);
+            for (TransactionByItem item : items) {
+                for (Transaction t : item.getTransactions()) {
+                    int asCalendar = period.getAsCalendar(t.getDate());
+                    if (!periods.containsKey(asCalendar)) {
+                        periods.put(asCalendar, period.getStart(t.getDate()));
+                    }
+                    ChartDataSet dataSet = dataSetMap.containsKey(item.getItem()) ?
+                            dataSetMap.get(item.getItem()) :
+                            ChartDataSet.builder()
+                                    .label(item.getItem())
+                                    .backgroundColor(randomColor())
+                                    .data(lateta(magic + 1))
+                                    .build();
+                    dataSet.add(asCalendar - magic, Math.abs(t.getAmount()));
+                    dataSetMap.put(item.getItem(), dataSet);
+                }
+            }
+            return ChartLine.builder()
+                    .title("ya ni se")
+                    .labels(new ArrayList<>(periods.values()))
+                    .datasets(new ArrayList<>(dataSetMap.values()))
+                    .build();
+        };
     }
 
     /**

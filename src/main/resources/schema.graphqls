@@ -80,6 +80,7 @@ type Query {
     chartLineByPeriod: LineChart
     chartBarByPeriodByItem: LineChart
     chartPieByWeekByItem: PieChart
+    chartBarByWeekByItem: LineChart
 }
 
 # Define mutations provided

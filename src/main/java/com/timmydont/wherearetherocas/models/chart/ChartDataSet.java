@@ -3,6 +3,7 @@ package com.timmydont.wherearetherocas.models.chart;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -19,5 +20,9 @@ public class ChartDataSet {
 
     public void add(int index, float amount) {
         this.data.set(index, this.data.get(index) + amount);
+    }
+
+    public void sort() {
+        Collections.sort(data);
     }
 }

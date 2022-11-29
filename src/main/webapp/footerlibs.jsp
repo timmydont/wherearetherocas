@@ -4,7 +4,7 @@
 
 
 <script>
-/*
+
 var settings5 = {
   "url": "http://localhost:9999/graphqls",
   "method": "POST",
@@ -99,6 +99,7 @@ $.ajax(settings5).done(function (response) {
                 },
               },
               responsive: true,
+              maintainAspectRatio: false,
               scales: {
                 x: {
                   stacked: true,
@@ -110,7 +111,7 @@ $.ajax(settings5).done(function (response) {
           }});
     });
 
-*/
+
     var settings = {
       "url": "http://localhost:9999/graphqls",
       "method": "POST",
@@ -171,6 +172,7 @@ $.ajax(settings5).done(function (response) {
                 fill: false,
                 tension: 0.5,
                 data: response.data.chartLineByPeriod.datasets[0].data,
+                pointRadius: 0,
               }, {
                 label: response.data.chartLineByPeriod.datasets[1].label,
                 borderColor: "#E74C3C",
@@ -178,6 +180,7 @@ $.ajax(settings5).done(function (response) {
                 fill: false,
                 tension: 0.5,
                 data: response.data.chartLineByPeriod.datasets[1].data,
+                pointRadius: 0,
               }, {
                label: response.data.chartLineByPeriod.datasets[2].label,
                borderColor: "#3498DB",
@@ -185,6 +188,7 @@ $.ajax(settings5).done(function (response) {
                fill: false,
                tension: 0.5,
                data: response.data.chartLineByPeriod.datasets[2].data,
+               pointRadius: 0,
              }],
             },
           options: {

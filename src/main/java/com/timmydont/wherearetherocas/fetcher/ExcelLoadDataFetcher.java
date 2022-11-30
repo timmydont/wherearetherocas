@@ -1,16 +1,19 @@
 package com.timmydont.wherearetherocas.fetcher;
 
 import com.timmydont.wherearetherocas.adapters.TransactionAdapter;
+import com.timmydont.wherearetherocas.adapters.TransactionsAdapter;
+import com.timmydont.wherearetherocas.adapters.impl.BalancesAdapter;
 import com.timmydont.wherearetherocas.adapters.impl.ExcelRowTransactionAdapter;
+import com.timmydont.wherearetherocas.adapters.impl.TransactionsByDatesAdapter;
+import com.timmydont.wherearetherocas.adapters.impl.TransactionsByItemsAdapter;
 import com.timmydont.wherearetherocas.config.ExcelConfig;
-import com.timmydont.wherearetherocas.lib.db.DBService;
+import com.timmydont.wherearetherocas.factory.ModelServiceFactory;
+import com.timmydont.wherearetherocas.models.Balance;
 import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
-import com.timmydont.wherearetherocas.services.ModelService;
 import graphql.schema.DataFetcher;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.similarity.JaroWinklerDistance;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -19,11 +22,11 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.IntStream;
 
-import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.debug;
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 
 public class ExcelLoadDataFetcher {
@@ -32,19 +35,21 @@ public class ExcelLoadDataFetcher {
 
     private final ExcelConfig config;
 
-    private final DBService dbService;
-
-    private final JaroWinklerDistance jaroWinklerDistance;
-
+    // transaction adapters
     private final TransactionAdapter<Row> transactionAdapter;
+    private final TransactionsAdapter<Balance> balanceAdapter;
+    private final TransactionsAdapter<TransactionByItem> transactionsByItemsAdapter;
+    private final TransactionsAdapter<TransactionByDate> transactionsByDatesAdapter;
+    // model service factory
+    private final ModelServiceFactory serviceFactory;
 
-    private ModelService<Transaction> transactionService;
-
-    public ExcelLoadDataFetcher(DBService dbService, ExcelConfig config) {
+    public ExcelLoadDataFetcher(ModelServiceFactory serviceFactory, ExcelConfig config) {
         this.config = config;
-        this.dbService = dbService;
+        this.serviceFactory = serviceFactory;
+        this.balanceAdapter = new BalancesAdapter();
         this.transactionAdapter = new ExcelRowTransactionAdapter(config);
-        this.jaroWinklerDistance = new JaroWinklerDistance();
+        this.transactionsByItemsAdapter = new TransactionsByItemsAdapter();
+        this.transactionsByDatesAdapter = new TransactionsByDatesAdapter();
     }
 
     public DataFetcher<Boolean> load() {
@@ -61,73 +66,20 @@ public class ExcelLoadDataFetcher {
                 error(logger, "unable to get sheet from file %s, sheet %s", input, config.getSheetIndex());
                 return false;
             }
-            int fr = config.getStartRow();
-            int lr = sheet.getLastRowNum();
-            //
-            List<Transaction> transactions = new ArrayList<>();
-            for (int i = fr; i <= lr; i++) {
-                Transaction transaction = transactionAdapter.adapt(sheet.getRow(i));
-                if (transaction == null) {
-                    error(logger, "unable to adapt row %s to transaction", i);
-                    continue;
-                }
-                transactions.add(transaction);
+            // get list of transactions from sheet
+            List<Transaction> transactions = getTransactions(sheet);
+            try {
+                serviceFactory.getService(Transaction.class).save(transactions);
+                // get list of balances from transactions, and save
+                serviceFactory.getService(Balance.class).save(balanceAdapter.adapt(transactions));
+                // get list of transactions by items from transactions, and save
+                serviceFactory.getService(TransactionByItem.class).save(transactionsByItemsAdapter.adapt(transactions));
+                // get list of transactions by dates from transactions, and save
+                serviceFactory.getService(TransactionByDate.class).save(transactionsByDatesAdapter.adapt(transactions));
+            } catch (Exception e) {
+                error(logger, e, "failed to load data from sheet");
+                throw new Exception("failed to load data from sheet, check previous log entries");
             }
-            Collections.sort(transactions);
-            //
-            transactionService.save(transactions);
-
-
-            Map<String, TransactionByItem> transactionByItem = new HashMap<>();
-            Map<Instant, TransactionByDate> transactionByDate = new HashMap<>();
-            float balance = 0f;
-            //
-            for(Transaction transaction : transactions) {
-                Instant instant = transaction.getDate().toInstant()
-                        .truncatedTo(ChronoUnit.DAYS);
-                TransactionByDate tbd = transactionByDate.get(instant);
-                if (tbd == null) {
-                    tbd = TransactionByDate.builder()
-                            .id(transaction.getId())
-                            .date(transaction.getDate())
-                            .income(0f)
-                            .outcome(0f)
-                            .balance(balance)
-                            .build();
-                }
-                balance += transaction.getAmount();
-                tbd.add(transaction);
-                transactionByDate.put(instant, tbd);
-
-                boolean added = false;
-                for (String key : transactionByItem.keySet()) {
-                    Double distance = jaroWinklerDistance.apply(key.toUpperCase(), transaction.getItem().toUpperCase());
-                    debug(logger, "Distance of %s to %s is %,.2f", transaction.getItem(), key, distance);
-                    if (distance < 0.2d) {
-                        TransactionByItem item = transactionByItem.get(key);
-                        item.add(transaction);
-                        added = true;
-                    }
-                }
-                if (!added) {
-                    TransactionByItem item = TransactionByItem.builder()
-                            .id(transaction.getId())
-                            .item(transaction.getItem())
-                            .build();
-                    item.add(transaction);
-                    transactionByItem.put(transaction.getItem(), item);
-                }
-            }
-
-
-            //dbService.add(transactions);
-            //
-            dbService.add(transactionByItem.values());
-            //
-
-            List<TransactionByDate> items = new ArrayList<>(transactionByDate.values());
-            Collections.sort(items);
-            dbService.add(items);
             return true;
         };
     }
@@ -140,5 +92,25 @@ public class ExcelLoadDataFetcher {
             error(logger, "unable to create workbook from file %s", input, e);
         }
         return null;
+    }
+
+    private List<Transaction> getTransactions(Sheet sheet) {
+        // get first and last transaction row
+        int fr = config.getStartRow();
+        int lr = sheet.getLastRowNum();
+        // read each row of the sheet, and try to adapt it into a Transaction
+        List<Transaction> transactions = new ArrayList<>();
+        IntStream.rangeClosed(fr, lr).forEachOrdered(i -> {
+            Transaction transaction = transactionAdapter.adapt(sheet.getRow(i));
+            if (transaction == null) {
+                error(logger, "unable to adapt row %s to transaction", i);
+                return;
+            }
+            transactions.add(transaction);
+        });
+        // sort transactions by date
+        Collections.sort(transactions);
+
+        return transactions;
     }
 }

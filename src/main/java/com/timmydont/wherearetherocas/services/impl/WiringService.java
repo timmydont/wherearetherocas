@@ -1,6 +1,8 @@
 package com.timmydont.wherearetherocas.services.impl;
 
 import com.timmydont.wherearetherocas.config.ExcelConfig;
+import com.timmydont.wherearetherocas.factory.ModelServiceFactory;
+import com.timmydont.wherearetherocas.factory.impl.ModelServiceFactoryImpl;
 import com.timmydont.wherearetherocas.fetcher.BalanceDataFetcher;
 import com.timmydont.wherearetherocas.fetcher.ChartDataFetcher;
 import com.timmydont.wherearetherocas.fetcher.ExcelLoadDataFetcher;
@@ -9,7 +11,10 @@ import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.lib.db.impl.JsonDBServiceImpl;
 import com.timmydont.wherearetherocas.lib.graphql.model.RequestType;
 import com.timmydont.wherearetherocas.lib.graphql.service.GraphqlWiringService;
-import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
+import com.timmydont.wherearetherocas.models.Transaction;
+import com.timmydont.wherearetherocas.models.TransactionByDate;
+import com.timmydont.wherearetherocas.models.TransactionByItem;
+import com.timmydont.wherearetherocas.services.ModelService;
 import graphql.schema.idl.RuntimeWiring;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +32,8 @@ public class WiringService implements GraphqlWiringService {
     private final ExcelLoadDataFetcher loadDataFetcher;
     private final TransactionDataFetcher transactionDataFetcher;
 
+    private final ModelServiceFactory serviceFactory;
+
     public WiringService() {
         config = ExcelConfig.builder()
                 .format(new SimpleDateFormat("dd/MM/yyyy"))
@@ -37,7 +44,8 @@ public class WiringService implements GraphqlWiringService {
                 .descriptionIndex(1)
                 .build();
         dbService = new JsonDBServiceImpl();
-        loadDataFetcher = new ExcelLoadDataFetcher(dbService, config);
+        serviceFactory = new ModelServiceFactoryImpl<>(dbService);
+        loadDataFetcher = new ExcelLoadDataFetcher(serviceFactory, config);
         chartDataFetcher = new ChartDataFetcher(dbService);
         balanceDataFetcher = new BalanceDataFetcher(dbService);
         transactionDataFetcher = new TransactionDataFetcher(dbService);

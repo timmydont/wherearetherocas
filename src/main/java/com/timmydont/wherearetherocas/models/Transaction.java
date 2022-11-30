@@ -56,8 +56,7 @@ public class Transaction implements Model, Comparable<Transaction> {
         return StringUtils.isNoneBlank(id, item);
     }
 
+    @JsonIgnore
     @Override
-    public int compareTo(Transaction o) {
-        return date.compareTo(o.getDate());
-    }
+    public int compareTo(Transaction o) { return date.compareTo(o.getDate()); }
 }

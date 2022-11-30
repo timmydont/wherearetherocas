@@ -26,7 +26,7 @@ public class DateUtils {
     }
 
     public static Date toDate(String date) {
-        if(StringUtils.isBlank(date)) return null;
+        if (StringUtils.isBlank(date)) return null;
         try {
             return format.parse(date);
         } catch (ParseException e) {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.timmydont.wherearetherocas.lib.model.Model;
 import io.jsondb.annotation.Document;
+import io.jsondb.annotation.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,8 @@ import java.util.Date;
 @Document(collection = "balances", schemaVersion = "1.0")
 public class Balance implements Model, Comparable<Balance> {
 
+    @Id
+    private String id;
     private float income;
     private float outcome;
     private float current;
@@ -34,6 +37,7 @@ public class Balance implements Model, Comparable<Balance> {
     /**
      * Full argument constructor, used by lombok builder
      *
+     * @param id
      * @param income
      * @param outcome
      * @param current
@@ -41,7 +45,8 @@ public class Balance implements Model, Comparable<Balance> {
      * @param end
      * @param period
      */
-    public Balance(float income, float outcome, float current, Date end, Date start, Period period) {
+    public Balance(String id, float income, float outcome, float current, Date end, Date start, Period period) {
+        this.id=id;
         this.end = end;
         this.start = start;
         this.period = period;

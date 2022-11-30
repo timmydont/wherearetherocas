@@ -7,6 +7,7 @@ import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
+import com.timmydont.wherearetherocas.services.ModelService;
 import graphql.schema.DataFetcher;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
@@ -36,6 +37,8 @@ public class ExcelLoadDataFetcher {
     private final JaroWinklerDistance jaroWinklerDistance;
 
     private final TransactionAdapter<Row> transactionAdapter;
+
+    private ModelService<Transaction> transactionService;
 
     public ExcelLoadDataFetcher(DBService dbService, ExcelConfig config) {
         this.config = config;
@@ -71,6 +74,8 @@ public class ExcelLoadDataFetcher {
                 transactions.add(transaction);
             }
             Collections.sort(transactions);
+            //
+            transactionService.save(transactions);
 
 
             Map<String, TransactionByItem> transactionByItem = new HashMap<>();
@@ -115,7 +120,7 @@ public class ExcelLoadDataFetcher {
             }
 
 
-            dbService.add(transactions);
+            //dbService.add(transactions);
             //
             dbService.add(transactionByItem.values());
             //

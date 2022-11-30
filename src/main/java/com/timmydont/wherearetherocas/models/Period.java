@@ -2,6 +2,7 @@ package com.timmydont.wherearetherocas.models;
 
 import com.timmydont.wherearetherocas.utils.DateUtils;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -25,25 +26,37 @@ public enum Period {
     }
 
     public String getEnd(Date date) {
-/*        LocalDate end = DateUtils.convertToLocalDate(when);
-        while (end.getDayOfWeek() != DayOfWeek.SUNDAY) {
-            end = end.plusDays(1);
+        switch (this) {
+            case Week:
+                LocalDate end = DateUtils.convertToLocalDate(date);
+                while (end.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                    end = end.plusDays(1);
+                }
+                return end.toString();
+            case Month:
+                LocalDate when = DateUtils.convertToLocalDate(date);
+                LocalDate start = when.withDayOfMonth(
+                        when.getMonth().length(when.isLeapYear()));
+                return start.toString();
+            default:
+                return null;
         }
-        return end.toString();*/
-        LocalDate when = DateUtils.convertToLocalDate(date);
-        LocalDate start = when.withDayOfMonth(
-                when.getMonth().length(when.isLeapYear()));
-        return start.toString();
     }
 
     public String getStart(Date date) {
-        /*LocalDate start = DateUtils.convertToLocalDate(when);
-        while (start.getDayOfWeek() != DayOfWeek.SUNDAY) {
-            start = start.minusDays(1);
+        switch (this) {
+            case Week:
+                LocalDate start = DateUtils.convertToLocalDate(date);
+                while (start.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                    start = start.minusDays(1);
+                }
+                return start.toString();
+            case Month:
+                return DateUtils.convertToLocalDate(date)
+                        .withDayOfMonth(1)
+                        .toString();
+            default:
+                return null;
         }
-        return start.toString();*/
-        LocalDate when = DateUtils.convertToLocalDate(date);
-        LocalDate start = when.withDayOfMonth(1);
-        return start.toString();
     }
 }

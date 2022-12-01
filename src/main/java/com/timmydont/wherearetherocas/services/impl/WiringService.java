@@ -3,18 +3,17 @@ package com.timmydont.wherearetherocas.services.impl;
 import com.timmydont.wherearetherocas.config.ExcelConfig;
 import com.timmydont.wherearetherocas.factory.ModelServiceFactory;
 import com.timmydont.wherearetherocas.factory.impl.ModelServiceFactoryImpl;
-import com.timmydont.wherearetherocas.fetcher.BalanceDataFetcher;
-import com.timmydont.wherearetherocas.fetcher.ChartDataFetcher;
+import com.timmydont.wherearetherocas.fetcher.impl.BalanceDataFetcher;
+import com.timmydont.wherearetherocas.fetcher.impl.ChartDataFetcher;
 import com.timmydont.wherearetherocas.fetcher.ExcelLoadDataFetcher;
-import com.timmydont.wherearetherocas.fetcher.TransactionDataFetcher;
+import com.timmydont.wherearetherocas.fetcher.impl.TransactionByItemDataFetcher;
+import com.timmydont.wherearetherocas.fetcher.impl.TransactionDataFetcher;
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.lib.db.impl.JsonDBServiceImpl;
 import com.timmydont.wherearetherocas.lib.graphql.model.RequestType;
 import com.timmydont.wherearetherocas.lib.graphql.service.GraphqlWiringService;
 import com.timmydont.wherearetherocas.models.Transaction;
-import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
-import com.timmydont.wherearetherocas.services.ModelService;
 import graphql.schema.idl.RuntimeWiring;
 
 import java.text.SimpleDateFormat;
@@ -31,6 +30,7 @@ public class WiringService implements GraphqlWiringService {
     private final BalanceDataFetcher balanceDataFetcher;
     private final ExcelLoadDataFetcher loadDataFetcher;
     private final TransactionDataFetcher transactionDataFetcher;
+    private final TransactionByItemDataFetcher transactionByItemDataFetcher;
 
     private final ModelServiceFactory serviceFactory;
 
@@ -48,7 +48,8 @@ public class WiringService implements GraphqlWiringService {
         loadDataFetcher = new ExcelLoadDataFetcher(serviceFactory, config);
         chartDataFetcher = new ChartDataFetcher(dbService);
         balanceDataFetcher = new BalanceDataFetcher(dbService);
-        transactionDataFetcher = new TransactionDataFetcher(dbService);
+        transactionDataFetcher = new TransactionDataFetcher(dbService, serviceFactory.getService(Transaction.class));
+        transactionByItemDataFetcher = new TransactionByItemDataFetcher(serviceFactory.getService(TransactionByItem.class));
     }
 
     @Override
@@ -57,8 +58,11 @@ public class WiringService implements GraphqlWiringService {
                 .type(newTypeWiring(RequestType.MUTATION.id)
                         .dataFetcher("load", loadDataFetcher.load()))
                 .type(newTypeWiring(RequestType.QUERY.id)
-                        // multiple items
+                        // transactions queries
                         .dataFetcher("transactions", transactionDataFetcher.fetchAll())
+                        .dataFetcher("transactionsByText", transactionDataFetcher.fetchByText())
+                        .dataFetcher("transactionsByItem", transactionDataFetcher.fetchByItem())
+                        // balance queries
                         .dataFetcher("balanceByItem", balanceDataFetcher.fetchBalanceByItem())
                         .dataFetcher("balanceByText", balanceDataFetcher.fetchBalanceByText())
                         .dataFetcher("balanceByPeriod", balanceDataFetcher.fetchBalanceByPeriod())
@@ -66,9 +70,7 @@ public class WiringService implements GraphqlWiringService {
                         .dataFetcher("chartBarByPeriodByItem", chartDataFetcher.fetchChartDayItems())
                         .dataFetcher("chartPieByWeekByItem", chartDataFetcher.fetchPieChart())
                         .dataFetcher("chartBarByWeekByItem", chartDataFetcher.fetchAnotherOne())
-                        .dataFetcher("transactionsByText", transactionDataFetcher.fetchByText())
-                        .dataFetcher("transactionsByItem", transactionDataFetcher.fetchByItem())
-                        .dataFetcher("transactionsByItems", transactionDataFetcher.fetchByItems())
+                        .dataFetcher("transactionsByItems", transactionByItemDataFetcher.fetchAll())
                         .dataFetcher("transactionsByPeriod", transactionDataFetcher.fetchByPeriod())
                         .dataFetcher("transactionsByPeriodByItem", transactionDataFetcher.fetchByPeriodByItem())
                         .dataFetcher("transactionsByPeriodByItems", transactionDataFetcher.fetchByPeriodByItems()))

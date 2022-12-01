@@ -13,10 +13,17 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
 
     private final Logger logger = Logger.getLogger(getClass());
 
+    protected final Class<T> clazz;
     protected final DBService dbService;
 
-    public AbstractModelService(DBService dbService) {
+    public AbstractModelService(DBService dbService, Class<T> clazz) {
+        this.clazz = clazz;
         this.dbService = dbService;
+    }
+
+    @Override
+    public List<T> all() {
+        return dbService.list(clazz);
     }
 
     @Override

@@ -4,12 +4,8 @@ import com.timmydont.wherearetherocas.adapters.TransactionsAdapter;
 import com.timmydont.wherearetherocas.models.Balance;
 import com.timmydont.wherearetherocas.models.Period;
 import com.timmydont.wherearetherocas.models.Transaction;
-import com.timmydont.wherearetherocas.utils.DateUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BalancesAdapter implements TransactionsAdapter<Balance> {
 
@@ -28,12 +24,13 @@ public class BalancesAdapter implements TransactionsAdapter<Balance> {
             Balance balance = balanceMap.containsKey(asCalendar) ?
                     balanceMap.get(asCalendar) :
                     Balance.builder()
+                            .id(UUID.randomUUID().toString())
                             .income(0f)
                             .outcome(0f)
                             .current(current)
                             .period(period)
-                            .end(DateUtils.toDate(period.getEnd(i.getDate()))) // TODO Fix This
-                            .start(DateUtils.toDate(period.getStart(i.getDate()))) // TODO Fix This
+                            .end(period.getEnd(i.getDate()))
+                            .start(period.getStart(i.getDate()))
                             .build();
             current += i.getAmount();
             balance.add(i.getAmount());

@@ -3,6 +3,7 @@ package com.timmydont.wherearetherocas.services.impl;
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.services.AbstractModelService;
+import lombok.NonNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
@@ -17,12 +18,10 @@ public class TransactionService extends AbstractModelService<Transaction> {
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    public TransactionService(DBService dbService) {
-        super(dbService);
-    }
+    public TransactionService(DBService dbService) { super(dbService, Transaction.class); }
 
     @Override
-    public List<Transaction> get(Date start, Date end) {
+    public List<Transaction> get(@NonNull Date start,@NonNull Date end) {
         List<Transaction> items = dbService.list(Transaction.class);
         if (CollectionUtils.isEmpty(items)) {
             error(logger, "unable to retrieve Transaction list from db");

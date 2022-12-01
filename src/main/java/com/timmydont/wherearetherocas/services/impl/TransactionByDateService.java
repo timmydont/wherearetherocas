@@ -13,7 +13,7 @@ public class TransactionByDateService extends AbstractModelService<TransactionBy
     private final Logger logger = Logger.getLogger(getClass());
 
     public TransactionByDateService(DBService dbService) {
-        super(dbService);
+        super(dbService, TransactionByDate.class);
     }
 
     @Override

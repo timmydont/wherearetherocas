@@ -13,7 +13,7 @@ public class TransactionByItemService extends AbstractModelService<TransactionBy
     private final Logger logger = Logger.getLogger(getClass());
 
     public TransactionByItemService(DBService dbService) {
-        super(dbService);
+        super(dbService, TransactionByItem.class);
     }
 
     @Override

@@ -9,9 +9,7 @@ import java.util.List;
 
 public class BalanceService extends AbstractModelService<Balance> {
 
-    public BalanceService(DBService dbService) {
-        super(dbService);
-    }
+    public BalanceService(DBService dbService) { super(dbService, Balance.class); }
 
     @Override
     public List<Balance> get(Date start, Date end) {

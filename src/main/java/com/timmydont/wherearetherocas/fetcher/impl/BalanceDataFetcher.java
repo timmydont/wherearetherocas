@@ -1,4 +1,4 @@
-package com.timmydont.wherearetherocas.fetcher;
+package com.timmydont.wherearetherocas.fetcher.impl;
 
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.models.*;
@@ -63,8 +63,8 @@ public class BalanceDataFetcher {
                 BalanceByPeriod balance = balanceMap.containsKey(asCalendar) ?
                         balanceMap.get(asCalendar) :
                         BalanceByPeriod.builder()
-                                .end(period.getEnd(item.getDate()))
-                                .start(period.getStart(item.getDate()))
+                                .end(period.getEnd(item.getDate()).toString())
+                                .start(period.getStart(item.getDate()).toString())
                                 .build();
                 balance.add(item.getAmount());
                 balanceMap.put(asCalendar, balance);

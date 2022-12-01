@@ -37,16 +37,16 @@ public class Balance implements Model, Comparable<Balance> {
     /**
      * Full argument constructor, used by lombok builder
      *
-     * @param id
-     * @param income
-     * @param outcome
-     * @param current
-     * @param start
-     * @param end
-     * @param period
+     * @param id      the balance unique id
+     * @param income  the income amount
+     * @param outcome the outcome amount
+     * @param current the current amount
+     * @param start   the balance start date
+     * @param end     the balance end date
+     * @param period  the balance period
      */
     public Balance(String id, float income, float outcome, float current, Date end, Date start, Period period) {
-        this.id=id;
+        this.id = id;
         this.end = end;
         this.start = start;
         this.period = period;
@@ -63,6 +63,11 @@ public class Balance implements Model, Comparable<Balance> {
     }
 
     @JsonIgnore
+    public float earnings() {
+        return outcome - income;
+    }
+
+    @JsonIgnore
     @Override
     public boolean isValid() {
         return start != null && end != null;
@@ -71,6 +76,8 @@ public class Balance implements Model, Comparable<Balance> {
     @JsonIgnore
     @Override
     public int compareTo(Balance o) {
-        return start.compareTo(o.getStart()) + end.compareTo(o.getEnd()) + period.compareTo(o.getPeriod());
+        return start.compareTo(o.getStart())
+                + end.compareTo(o.getEnd())
+                + period.compareTo(o.getPeriod());
     }
 }

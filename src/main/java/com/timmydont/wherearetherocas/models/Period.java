@@ -25,36 +25,35 @@ public enum Period {
         return DateUtils.getAsPeriod(date, this);
     }
 
-    public String getEnd(Date date) {
+    public Date getEnd(Date date) {
         switch (this) {
             case Week:
                 LocalDate end = DateUtils.convertToLocalDate(date);
                 while (end.getDayOfWeek() != DayOfWeek.SUNDAY) {
                     end = end.plusDays(1);
                 }
-                return end.toString();
+                return DateUtils.toDate(end);
             case Month:
                 LocalDate when = DateUtils.convertToLocalDate(date);
                 LocalDate start = when.withDayOfMonth(
                         when.getMonth().length(when.isLeapYear()));
-                return start.toString();
+                return DateUtils.toDate(start);
             default:
                 return null;
         }
     }
 
-    public String getStart(Date date) {
+    public Date getStart(Date date) {
         switch (this) {
             case Week:
                 LocalDate start = DateUtils.convertToLocalDate(date);
                 while (start.getDayOfWeek() != DayOfWeek.SUNDAY) {
                     start = start.minusDays(1);
                 }
-                return start.toString();
+                return DateUtils.toDate(start);
             case Month:
-                return DateUtils.convertToLocalDate(date)
-                        .withDayOfMonth(1)
-                        .toString();
+                return DateUtils.toDate(DateUtils.convertToLocalDate(date)
+                        .withDayOfMonth(1));
             default:
                 return null;
         }

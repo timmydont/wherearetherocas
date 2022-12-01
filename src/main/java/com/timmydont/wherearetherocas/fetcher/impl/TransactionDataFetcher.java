@@ -1,8 +1,10 @@
-package com.timmydont.wherearetherocas.fetcher;
+package com.timmydont.wherearetherocas.fetcher.impl;
 
+import com.timmydont.wherearetherocas.fetcher.AbstractModelDataFetcher;
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
+import com.timmydont.wherearetherocas.services.ModelService;
 import graphql.schema.DataFetcher;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -17,34 +19,42 @@ import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 import static com.timmydont.wherearetherocas.utils.DateUtils.inRange;
 import static com.timmydont.wherearetherocas.utils.DateUtils.toDate;
 
-public class TransactionDataFetcher {
+public class TransactionDataFetcher extends AbstractModelDataFetcher<Transaction> {
 
     private final Logger logger = Logger.getLogger(getClass());
 
     private final DBService dbService;
 
-    public TransactionDataFetcher(DBService dbService) {
+    private final ModelService<Transaction> transactionService;
+
+    public TransactionDataFetcher(DBService dbService, ModelService<Transaction> transactionService) {
+        super(transactionService);
         this.dbService = dbService;
+        this.transactionService = transactionService;
     }
 
     /**
-     * @return
+     * Return a list of all transactions that match a given text
+     *
+     * @return a list of transactions
      */
-    public DataFetcher<List<Transaction>> fetchAll() {
-        return dataFetchingEnvironment -> dbService.list(Transaction.class);
-    }
-
-    /**
-     * @return
-     */
-    public DataFetcher<List<TransactionByItem>> fetchByItems() {
+    public DataFetcher<List<Transaction>> fetchByText() {
         return dataFetchingEnvironment -> {
-            List<TransactionByItem> items = dbService.list(TransactionByItem.class);
-            if (CollectionUtils.isEmpty(items)) {
-                error(logger, "unable to retrieve transactions by items.");
+            // get item
+            String text = dataFetchingEnvironment.getArgument("text");
+            if (StringUtils.isBlank(text)) {
+                error(logger, "invalid parameter, text: %s", text);
                 return null;
             }
-            return items;
+            // get all transactions
+            List<Transaction> items = transactionService.all();
+            if (CollectionUtils.isEmpty(items)) {
+                error(logger, "no transactions where retrieved, is there no data? or an error, check logs");
+                return null;
+            }
+            return items.stream()
+                    .filter(item -> item.getItem().equalsIgnoreCase(text))
+                    .collect(Collectors.toList());
         };
     }
 
@@ -72,60 +82,12 @@ public class TransactionDataFetcher {
     /**
      * @return
      */
-    public DataFetcher<List<Transaction>> fetchByText() {
-        return dataFetchingEnvironment -> {
-            // get item
-            String text = dataFetchingEnvironment.getArgument("text");
-            if (StringUtils.isBlank(text)) {
-                error(logger, "invalid parameter, text: %s", text);
-                return null;
-            }
-            // get all transactions
-            List<Transaction> items = dbService.list(Transaction.class);
-            if (items == null) {
-                error(logger, "unable to retrieve all transactions");
-                return null;
-            }
-            return items.stream()
-                    .filter(item -> item.getItem().equalsIgnoreCase(text))
-                    .collect(Collectors.toList());
-        };
-    }
-
-    /**
-     * @return
-     */
-    public DataFetcher<List<Transaction>> fetchByPeriod() {
-        return dfe -> {
-            // get the start and end dates (the period)
-            Date end = toDate(dfe.getArgument("end"));
-            Date start = toDate(dfe.getArgument("start"));
-            if (!ObjectUtils.allNotNull(start, end)) {
-                error(logger, "invalid parameters, start: %s, end: %s", dfe.getArgument("start"), dfe.getArgument("end"));
-                return null;
-            }
-            // get all transactions
-            List<Transaction> items = dbService.list(Transaction.class);
-            if (CollectionUtils.isEmpty(items)) {
-                error(logger, "unable to retrieve transactions by items.");
-                return null;
-            }
-            // filter transactions that are not in date range
-            return items.stream()
-                    .filter(item -> inRange(item.getDate(), start, end))
-                    .collect(Collectors.toList());
-        };
-    }
-
-    /**
-     * @return
-     */
     public DataFetcher<List<Transaction>> fetchByPeriodByItem() {
         return dfe -> {
             // get item start and end date from request
             String item = dfe.getArgument("item");
-            Date end = toDate(dfe.getArgument("end"));
-            Date start = toDate(dfe.getArgument("start"));
+            Date end = toDate((String) dfe.getArgument("end"));
+            Date start = toDate((String) dfe.getArgument("start"));
             if (!ObjectUtils.allNotNull(item, start, end)) {
                 error(logger, "invalid parameters, item: %s, start: %s, end: %s", item, dfe.getArgument("start"), dfe.getArgument("end"));
                 return null;
@@ -150,8 +112,8 @@ public class TransactionDataFetcher {
     public DataFetcher<List<TransactionByItem>> fetchByPeriodByItems() {
         return dfe -> {
             // get start and end date from request
-            Date end = toDate(dfe.getArgument("end"));
-            Date start = toDate(dfe.getArgument("start"));
+            Date end = toDate((String) dfe.getArgument("end"));
+            Date start = toDate((String) dfe.getArgument("start"));
             if (!ObjectUtils.allNotNull(start, end)) {
                 error(logger, "invalid parameters, start: %s, end: %s", dfe.getArgument("start"), dfe.getArgument("end"));
                 return null;

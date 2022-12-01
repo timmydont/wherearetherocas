@@ -10,4 +10,10 @@ public interface ModelService<T extends Model> {
     boolean save(List<T> items);
 
     List<T> get(Date start, Date end);
+
+    /**
+     *
+     * @return
+     */
+    List<T> all();
 }

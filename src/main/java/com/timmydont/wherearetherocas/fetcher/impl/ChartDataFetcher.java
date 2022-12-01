@@ -1,4 +1,4 @@
-package com.timmydont.wherearetherocas.fetcher;
+package com.timmydont.wherearetherocas.fetcher.impl;
 
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.models.Period;
@@ -55,7 +55,7 @@ public class ChartDataFetcher {
                 for (Transaction t : item.getTransactions()) {
                     int asCalendar = period.getAsCalendar(t.getDate());
                     if (!periods.containsKey(asCalendar)) {
-                        periods.put(asCalendar, period.getStart(t.getDate()));
+                        periods.put(asCalendar, period.getStart(t.getDate()).toString());
                     }
                     ChartDataSet dataSet = dataSetMap.containsKey(item.getItem()) ?
                             dataSetMap.get(item.getItem()) :
@@ -98,7 +98,7 @@ public class ChartDataFetcher {
                     ChartPieDataSet dataSet = dataSets.containsKey(asCalendar) ?
                             dataSets.get(asCalendar) :
                             ChartPieDataSet.builder()
-                                    .label(period.getStart(t.getDate()))
+                                    .label(period.getStart(t.getDate()).toString())
                                     .backgroundColor(colors)
                                     .data(lateta(items.size()))
                                     .build();

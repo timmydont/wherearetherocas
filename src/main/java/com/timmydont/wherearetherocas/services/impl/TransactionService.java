@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.info;
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 import static com.timmydont.wherearetherocas.utils.DateUtils.inRange;
 

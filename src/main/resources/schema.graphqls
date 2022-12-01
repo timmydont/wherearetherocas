@@ -15,13 +15,14 @@ type Transaction {
     item: String
     amount: Float
     references: [String]
-    description: String!
+    description: String
 }
 
 type TransactionByItem {
     id: String!
     item: String
     amount: Float
+    transactions: [Transaction]
 }
 
 type BalanceByItem {
@@ -69,14 +70,17 @@ type PieChart {
 type Query {
     transactions: [Transaction]
     transactionsByText(text: String): [Transaction]
-    transactionsByItem(item: String): [Transaction]
     transactionsByPeriod(start: String, end: String): [Transaction]
-    transactionsByPeriodByItem(start: String, end: String, item: String): [Transaction]
+
+    transactionsByItem(item: String): TransactionByItem
+    transactionsByItemByPeriod(start: String, end: String, item: String): TransactionByItem
     transactionsByItems: [TransactionByItem]
-    transactionsByPeriodByItems(start: String, end: String): [TransactionByItem]
+    transactionsByItemsByPeriod(start: String, end: String): [TransactionByItem]
+
     balanceByItem(item: String): BalanceByItem
     balanceByText(text: String): BalanceByItem
     balanceByPeriod(period: Int): [BalanceByPeriod]
+
     chartLineByPeriod: LineChart
     chartBarByPeriodByItem: LineChart
     chartPieByWeekByItem: PieChart

@@ -23,14 +23,8 @@ public class TransactionDataFetcher extends AbstractModelDataFetcher<Transaction
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    private final DBService dbService;
-
-    private final ModelService<Transaction> transactionService;
-
-    public TransactionDataFetcher(DBService dbService, ModelService<Transaction> transactionService) {
+    public TransactionDataFetcher(ModelService<Transaction> transactionService) {
         super(transactionService);
-        this.dbService = dbService;
-        this.transactionService = transactionService;
     }
 
     /**
@@ -40,14 +34,11 @@ public class TransactionDataFetcher extends AbstractModelDataFetcher<Transaction
      */
     public DataFetcher<List<Transaction>> fetchByText() {
         return dataFetchingEnvironment -> {
-            // get item
-            String text = dataFetchingEnvironment.getArgument("text");
-            if (StringUtils.isBlank(text)) {
-                error(logger, "invalid parameter, text: %s", text);
-                return null;
-            }
+            String text = getArgument(dataFetchingEnvironment, "text", String.class);
+            // check if text argument is valid
+            if (StringUtils.isBlank(text)) return null;
             // get all transactions
-            List<Transaction> items = transactionService.all();
+            List<Transaction> items = modelService.all();
             if (CollectionUtils.isEmpty(items)) {
                 error(logger, "no transactions where retrieved, is there no data? or an error, check logs");
                 return null;
@@ -55,83 +46,6 @@ public class TransactionDataFetcher extends AbstractModelDataFetcher<Transaction
             return items.stream()
                     .filter(item -> item.getItem().equalsIgnoreCase(text))
                     .collect(Collectors.toList());
-        };
-    }
-
-    /**
-     * @return
-     */
-    public DataFetcher<List<Transaction>> fetchByItem() {
-        return dataFetchingEnvironment -> {
-            // get item
-            String item = dataFetchingEnvironment.getArgument("item");
-            if (StringUtils.isBlank(item)) {
-                error(logger, "invalid parameter, item: %s", item);
-                return null;
-            }
-            // get transactions by specific item
-            TransactionByItem transactionByItem = dbService.find(item, TransactionByItem.class);
-            if (transactionByItem == null) {
-                error(logger, "unable to retrieve transaction by item %s", item);
-                return null;
-            }
-            return transactionByItem.getTransactions();
-        };
-    }
-
-    /**
-     * @return
-     */
-    public DataFetcher<List<Transaction>> fetchByPeriodByItem() {
-        return dfe -> {
-            // get item start and end date from request
-            String item = dfe.getArgument("item");
-            Date end = toDate((String) dfe.getArgument("end"));
-            Date start = toDate((String) dfe.getArgument("start"));
-            if (!ObjectUtils.allNotNull(item, start, end)) {
-                error(logger, "invalid parameters, item: %s, start: %s, end: %s", item, dfe.getArgument("start"), dfe.getArgument("end"));
-                return null;
-            }
-            // get a specific transaction by item
-            TransactionByItem transactionByItem = dbService.find(item, TransactionByItem.class);
-            if (transactionByItem == null) {
-                error(logger, "unable to retrieve transaction by item %s", item);
-                return null;
-            }
-            // filter transactions that are not in date range
-            return transactionByItem.getTransactions()
-                    .stream()
-                    .filter(transaction -> inRange(transaction.getDate(), start, end))
-                    .collect(Collectors.toList());
-        };
-    }
-
-    /**
-     * @return
-     */
-    public DataFetcher<List<TransactionByItem>> fetchByPeriodByItems() {
-        return dfe -> {
-            // get start and end date from request
-            Date end = toDate((String) dfe.getArgument("end"));
-            Date start = toDate((String) dfe.getArgument("start"));
-            if (!ObjectUtils.allNotNull(start, end)) {
-                error(logger, "invalid parameters, start: %s, end: %s", dfe.getArgument("start"), dfe.getArgument("end"));
-                return null;
-            }
-            // get all transactions by item
-            List<TransactionByItem> items = dbService.list(TransactionByItem.class);
-            if (CollectionUtils.isEmpty(items)) {
-                error(logger, "unable to retrieve transactions by period by items.");
-                return null;
-            }
-            // remove transactions that are not in rage
-            items.forEach(item -> {
-                item.removeAll(item.getTransactions()
-                        .stream()
-                        .filter(t -> !inRange(t.getDate(), start, end))
-                        .collect(Collectors.toList()));
-            });
-            return items;
         };
     }
 }

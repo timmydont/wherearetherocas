@@ -7,6 +7,7 @@ import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
 import io.jsondb.JsonDBTemplate;
+import lombok.NonNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
@@ -67,6 +68,15 @@ public class JsonDBServiceImpl implements DBService {
             error(logger, "unable to find an item of class %s with id %s, returning null", clazz.getName(), id);
         }
         return item;
+    }
+
+    @Override
+    public <T extends Model> List<T> find(@NonNull String property, @NonNull Object value, Class<T> clazz) {
+        long now = System.currentTimeMillis();
+        String jxQuery = String.format("/.[%s='%s']", property, value);
+        List<T> items = jsonDB.find(jxQuery, clazz);
+        debug(logger, "find property %s with value %s took %s milliseconds", property, value, System.currentTimeMillis() - now);
+        return items;
     }
 
     @Override

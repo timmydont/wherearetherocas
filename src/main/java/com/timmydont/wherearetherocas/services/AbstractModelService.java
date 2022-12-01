@@ -2,12 +2,15 @@ package com.timmydont.wherearetherocas.services;
 
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.lib.model.Model;
+import com.timmydont.wherearetherocas.models.Transaction;
+import lombok.NonNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
 import java.util.List;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
+import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.info;
 
 public abstract class AbstractModelService<T extends Model> implements ModelService<T> {
 
@@ -27,6 +30,16 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
     }
 
     @Override
+    public List<T> get(@NonNull String property, @NonNull Object value) {
+        List<T> items = dbService.find(property, value, clazz);
+        if (CollectionUtils.isEmpty(items)) {
+            info(logger, "unable to find items in db, with property: '%s', value: '%s'", property, value);
+            return null;
+        }
+        return items;
+    }
+
+    @Override
     public boolean save(List<T> items) {
         if (CollectionUtils.isEmpty(items)) {
             error(logger, "attempting to save an empty list of items.");
@@ -36,7 +49,7 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
             dbService.add(items);
             return true;
         } catch (Exception e) {
-            error(logger, "unable to store %s items in db, check previous errors.", items.size());
+            error(logger, "unable to store '%s' items in db, check previous errors.", items.size());
             return false;
         }
     }

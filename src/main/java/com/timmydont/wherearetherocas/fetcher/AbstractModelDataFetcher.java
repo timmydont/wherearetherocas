@@ -3,8 +3,10 @@ package com.timmydont.wherearetherocas.fetcher;
 import com.timmydont.wherearetherocas.lib.model.Model;
 import com.timmydont.wherearetherocas.services.ModelService;
 import graphql.schema.DataFetcher;
+import graphql.schema.DataFetchingEnvironment;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -38,19 +40,11 @@ public abstract class AbstractModelDataFetcher<T extends Model> implements Model
 
     @Override
     public DataFetcher<List<T>> fetchByPeriod() {
-        return dfe -> {
+        return dataFetchingEnvironment -> {
             // get the start and end dates (the period)
-            Date end = toDate(Optional.ofNullable(dfe.getArgument("end"))
-                    .map(i -> i.toString())
-                    .orElse(null));
-            Date start = toDate(Optional.ofNullable(dfe.getArgument("start"))
-                    .map(i -> i.toString())
-                    .orElse(null));
-            if (!ObjectUtils.allNotNull(start, end)) {
-                error(logger, "invalid parameters, start: '%s', end: '%s'",
-                        dfe.getArgument("start"), dfe.getArgument("end"));
-                return null;
-            }
+            Date end = getArgument(dataFetchingEnvironment, "end", Date.class);
+            Date start = getArgument(dataFetchingEnvironment, "start", Date.class);
+            if (!ObjectUtils.allNotNull(start, end)) return null;
             // get all items of a given period of time
             List<T> items = modelService.get(start, end);
             if (CollectionUtils.isEmpty(items)) {
@@ -63,6 +57,28 @@ public abstract class AbstractModelDataFetcher<T extends Model> implements Model
 
     @Override
     public DataFetcher<T> fetchById() {
-        return null;
+        return dataFetchingEnvironment -> {
+            String id = getArgument(dataFetchingEnvironment, "id", String.class);
+            // check if request argument is valid
+            if(StringUtils.isBlank(id)) return null;
+            // get item by id
+            T item = modelService.first("id", id);
+            if(item == null) {
+                error(logger, "unable to find item with id '%s'", id);
+                return null;
+            }
+            return item;
+        };
+    }
+
+    protected <E extends Object> E getArgument(DataFetchingEnvironment environment, String name, Class<E> clazz) {
+        Object argument = environment.getArgument(name);
+        if(argument == null) {
+            error(logger, "request has no argument with name '%s'", name);
+            return null;
+        }
+        // in case clazz provided is Date, attempto to create a Date from the argument
+        if(clazz.equals(Date.class)) return (E) toDate(argument.toString());
+        return (E) argument;
     }
 }

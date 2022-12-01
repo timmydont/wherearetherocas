@@ -8,6 +8,10 @@ public class LoggerUtils {
 		logger.debug(String.format(message, items));
 	}
 
+	public static void info(Logger logger, String message, Object... items) {
+		logger.info(String.format(message, items));
+	}
+
 	public static void warn(Logger logger, String message, Object... items) {
 		logger.warn(String.format(message, items));
 	}

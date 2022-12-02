@@ -25,17 +25,23 @@ type TransactionByItem {
     transactions: [Transaction]
 }
 
-type BalanceByItem {
-    item: String
+type Balance {
     income: Float
     outcome: Float
-}
-
-type BalanceByPeriod {
+    current: Float
     end: String
     start: String
+    period: String
+}
+
+type BalanceFiltered {
+    item: String
+    end: String
+    start: String
+    count: Int
     income: Float
     outcome: Float
+    average: Float
 }
 
 type ChartDataSet {
@@ -77,14 +83,15 @@ type Query {
     transactionsByItems: [TransactionByItem]
     transactionsByItemsByPeriod(start: String, end: String): [TransactionByItem]
 
-    balanceByItem(item: String): BalanceByItem
-    balanceByText(text: String): BalanceByItem
-    balanceByPeriod(period: Int): [BalanceByPeriod]
+    balances: [Balance]
+    balancesByPeriod(start: String, end: String): [Balance]
+    balanceByText(text: String): BalanceFiltered
+    balanceByItem(item: String): BalanceFiltered
 
     chartLineByPeriod: LineChart
-    chartBarByPeriodByItem: LineChart
     chartPieByWeekByItem: PieChart
     chartBarByWeekByItem: LineChart
+    chartBarByPeriodByItem: LineChart
 }
 
 # Define mutations provided

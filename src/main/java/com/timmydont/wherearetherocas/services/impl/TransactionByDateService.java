@@ -1,7 +1,6 @@
 package com.timmydont.wherearetherocas.services.impl;
 
 import com.timmydont.wherearetherocas.lib.db.DBService;
-import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.services.AbstractModelService;
 import com.timmydont.wherearetherocas.utils.DateUtils;
@@ -9,7 +8,6 @@ import lombok.NonNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +32,7 @@ public class TransactionByDateService extends AbstractModelService<TransactionBy
         List<TransactionByDate> remove = items.stream()
                 .filter(i -> !DateUtils.inRange(i.getDate(), start, end))
                 .collect(Collectors.toList());
-        if(items.removeAll(remove)) {
+        if (items.removeAll(remove)) {
             error(logger, "something failed while removing filtered transaction by date.");
         }
         return items;

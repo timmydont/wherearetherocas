@@ -5,17 +5,14 @@ import com.timmydont.wherearetherocas.models.TransactionByItem;
 import com.timmydont.wherearetherocas.services.AbstractModelService;
 import lombok.NonNull;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 import static com.timmydont.wherearetherocas.utils.DateUtils.inRange;
-import static com.timmydont.wherearetherocas.utils.DateUtils.toDate;
 
 public class TransactionByItemService extends AbstractModelService<TransactionByItem> {
 

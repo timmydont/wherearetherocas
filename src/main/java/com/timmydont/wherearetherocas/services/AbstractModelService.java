@@ -2,7 +2,6 @@ package com.timmydont.wherearetherocas.services;
 
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.lib.model.Model;
-import com.timmydont.wherearetherocas.models.Transaction;
 import lombok.NonNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -23,6 +22,9 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
         this.clazz = clazz;
         this.dbService = dbService;
     }
+
+    @Override
+    public T withId(@NonNull String id) { return dbService.find(id, clazz); }
 
     @Override
     public List<T> all() {

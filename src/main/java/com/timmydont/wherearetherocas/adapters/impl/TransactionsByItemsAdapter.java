@@ -6,10 +6,7 @@ import com.timmydont.wherearetherocas.models.TransactionByItem;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.debug;
 
@@ -39,7 +36,7 @@ public class TransactionsByItemsAdapter implements TransactionsAdapter<Transacti
             }
             if (!added) {
                 TransactionByItem item = TransactionByItem.builder()
-                        .id(transaction.getId())
+                        .id(UUID.randomUUID().toString())
                         .item(transaction.getItem())
                         .build();
                 item.add(transaction);

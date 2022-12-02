@@ -26,7 +26,6 @@ public class Balance implements Model, Comparable<Balance> {
 
     private Date end;
     private Date start;
-    @JsonIgnore
     private Period period;
 
     /**

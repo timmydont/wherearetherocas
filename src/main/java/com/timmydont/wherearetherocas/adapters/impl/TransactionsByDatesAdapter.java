@@ -21,7 +21,7 @@ public class TransactionsByDatesAdapter implements TransactionsAdapter<Transacti
             TransactionByDate tbd = transactionsByDates.get(instant);
             if (tbd == null) {
                 tbd = TransactionByDate.builder()
-                        .id(transaction.getId())
+                        .id(UUID.randomUUID().toString())
                         .date(transaction.getDate())
                         .income(0f)
                         .outcome(0f)

@@ -60,27 +60,27 @@ public class JsonDBServiceImpl implements DBService {
     }
 
     @Override
-    public <T extends Model> T find(String id, Class<T> clazz) {
+    public <T extends Model> T find(@NonNull String id, @NonNull Class<T> clazz) {
         long now = System.currentTimeMillis();
         T item = jsonDB.findById(id, clazz);
         debug(logger, "find with id %s took %s milliseconds", id, System.currentTimeMillis() - now);
         if (item == null) {
-            error(logger, "unable to find an item of class %s with id %s, returning null", clazz.getName(), id);
+            error(logger, "unable to find an item of class '%s' with id '%s', returning null", clazz.getName(), id);
         }
         return item;
     }
 
     @Override
-    public <T extends Model> List<T> find(@NonNull String property, @NonNull Object value, Class<T> clazz) {
+    public <T extends Model> List<T> find(@NonNull String property, @NonNull Object value, @NonNull Class<T> clazz) {
         long now = System.currentTimeMillis();
         String jxQuery = String.format("/.[%s='%s']", property, value);
         List<T> items = jsonDB.find(jxQuery, clazz);
-        debug(logger, "find property %s with value %s took %s milliseconds", property, value, System.currentTimeMillis() - now);
+        debug(logger, "find property '%s' with value '%s' took '%s' milliseconds", property, value, System.currentTimeMillis() - now);
         return items;
     }
 
     @Override
-    public <T extends Model> List<T> list(Class<T> clazz) {
+    public <T extends Model> List<T> list(@NonNull Class<T> clazz) {
         long now = System.currentTimeMillis();
         List<T> list = jsonDB.findAll(clazz);
         debug(logger, "list %s took %s milliseconds", clazz.getName(), System.currentTimeMillis() - now);

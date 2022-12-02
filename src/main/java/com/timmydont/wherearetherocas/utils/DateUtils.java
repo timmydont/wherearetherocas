@@ -1,6 +1,7 @@
 package com.timmydont.wherearetherocas.utils;
 
 import com.timmydont.wherearetherocas.models.Period;
+import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -50,6 +51,14 @@ public class DateUtils {
             error(logger, e, "unable to parse the date '%s' to format '%s'", date, format.toPattern());
         }
         return null;
+    }
+
+    public static Date min(Date min,@NonNull Date date) {
+        return min != null && min.before(date) ? min : date;
+    }
+
+    public static Date max(Date max,@NonNull Date date) {
+        return max != null && max.after(date) ? max : date;
     }
 
     public static boolean isSameDay(Date date1, Date date2) {

@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 import static com.timmydont.wherearetherocas.utils.DateUtils.toDate;
@@ -60,10 +59,10 @@ public abstract class AbstractModelDataFetcher<T extends Model> implements Model
         return dataFetchingEnvironment -> {
             String id = getArgument(dataFetchingEnvironment, "id", String.class);
             // check if request argument is valid
-            if(StringUtils.isBlank(id)) return null;
+            if (StringUtils.isBlank(id)) return null;
             // get item by id
             T item = modelService.first("id", id);
-            if(item == null) {
+            if (item == null) {
                 error(logger, "unable to find item with id '%s'", id);
                 return null;
             }
@@ -71,14 +70,23 @@ public abstract class AbstractModelDataFetcher<T extends Model> implements Model
         };
     }
 
+    /**
+     * Get a given argument from the data fetching environment, and try to cast it to a given class
+     *
+     * @param environment the data fetching environment
+     * @param name        the property name
+     * @param clazz       the class of the value
+     * @param <E>         the type of the value
+     * @return the value of the argument if exists
+     */
     protected <E extends Object> E getArgument(DataFetchingEnvironment environment, String name, Class<E> clazz) {
         Object argument = environment.getArgument(name);
-        if(argument == null) {
+        if (argument == null) {
             error(logger, "request has no argument with name '%s'", name);
             return null;
         }
-        // in case clazz provided is Date, attempto to create a Date from the argument
-        if(clazz.equals(Date.class)) return (E) toDate(argument.toString());
+        // in case clazz provided is Date, attempt to create a Date from the argument
+        if (clazz.equals(Date.class)) return (E) toDate(argument.toString());
         return (E) argument;
     }
 }

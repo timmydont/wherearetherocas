@@ -5,7 +5,6 @@ import lombok.NonNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
-import javax.imageio.spi.ServiceRegistry;
 import java.util.Date;
 import java.util.List;
 
@@ -17,11 +16,13 @@ public interface ModelService<T extends Model> {
 
     boolean save(List<T> items);
 
-    List<T> get(@NonNull Date start,@NonNull Date end);
+    List<T> get(@NonNull Date start, @NonNull Date end);
 
     List<T> get(@NonNull String property, @NonNull Object value);
 
     List<T> all();
+
+    T withId(@NonNull String id);
 
     default T first(@NonNull String property, @NonNull Object value) {
         List<T> items = get(property, value);

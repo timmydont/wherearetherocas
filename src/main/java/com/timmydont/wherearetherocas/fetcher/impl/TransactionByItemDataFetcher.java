@@ -1,7 +1,7 @@
 package com.timmydont.wherearetherocas.fetcher.impl;
 
 import com.timmydont.wherearetherocas.fetcher.AbstractModelDataFetcher;
-import com.timmydont.wherearetherocas.models.Transaction;
+import com.timmydont.wherearetherocas.models.BalanceFiltered;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
 import com.timmydont.wherearetherocas.services.ModelService;
 import graphql.schema.DataFetcher;
@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 import static com.timmydont.wherearetherocas.utils.DateUtils.inRange;
-import static com.timmydont.wherearetherocas.utils.DateUtils.toDate;
 
 public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<TransactionByItem> {
 
@@ -32,7 +31,7 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             // check if request argument is valid
             if (StringUtils.isBlank(item)) return null;
             // get transactions by specific item
-            TransactionByItem byItem = modelService.first("item", item);
+            TransactionByItem byItem = modelService.withId(item);
             if (byItem == null) {
                 error(logger, "unable to retrieve transaction by item '%s'", item);
                 return null;
@@ -49,9 +48,9 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             String item = getArgument(dataFetchingEnvironment, "item", String.class);
             if (!ObjectUtils.allNotNull(item, start, end)) return null;
             // get a specific transaction by item
-            TransactionByItem transactionByItem = modelService.first("item", item);
+            TransactionByItem transactionByItem = modelService.withId(item);
             if (transactionByItem == null) {
-                error(logger, "unable to retrieve transaction by item %s", item);
+                error(logger, "unable to retrieve transaction by item '%s'", item);
                 return null;
             }
             // filter transactions that are not in date range
@@ -75,7 +74,7 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
                 error(logger, "unable to retrieve transactions by items from db.");
                 return null;
             }
-            // remove transactions that are not in rage
+            // remove transactions that are not in range
             items.forEach(item -> {
                 item.removeAll(item.getTransactions()
                         .stream()
@@ -83,6 +82,27 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
                         .collect(Collectors.toList()));
             });
             return items;
+        };
+    }
+
+    public DataFetcher<BalanceFiltered> fetchBalanceByItem() {
+        return dataFetchingEnvironment -> {
+            String item = getArgument(dataFetchingEnvironment, "item", String.class);
+            // check if item argument is valid
+            if (!ObjectUtils.allNotNull(item)) return null;
+            // get transaction by item
+            TransactionByItem byItem = modelService.withId(item);
+            if (byItem == null) {
+                error(logger, "unable to retrieve transaction by item '%s'", item);
+                return null;
+            }
+            // create balance filtered and populate with data
+            BalanceFiltered balance = BalanceFiltered.builder()
+                    .item(item)
+                    .build();
+            byItem.getTransactions()
+                    .forEach(i -> balance.add(i.getAmount(), i.getDate()));
+            return balance;
         };
     }
 }

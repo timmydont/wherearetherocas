@@ -50,16 +50,16 @@ type ChartDataSet {
     backgroundColor: String
 }
 
+type Chart {
+    title: String
+    labels: [String]
+    datasets: [ChartDataSet]
+}
+
 type ChartPieDataSet {
     data: [Float]
     label: String
     backgroundColor: [String]
-}
-
-type LineChart {
-    title: String
-    labels: [String]
-    datasets: [ChartDataSet]
 }
 
 type PieChart {
@@ -88,10 +88,11 @@ type Query {
     balanceByText(text: String): BalanceFiltered
     balanceByItem(item: String): BalanceFiltered
 
-    chartLineByPeriod: LineChart
-    chartPieByWeekByItem: PieChart
-    chartBarByWeekByItem: LineChart
-    chartBarByPeriodByItem: LineChart
+    chartBalance: Chart
+    chartExpensesByPeriodByItem: PieChart
+
+    chartBarByWeekByItem: Chart
+    chartBarByPeriodByItem: Chart
 }
 
 # Define mutations provided

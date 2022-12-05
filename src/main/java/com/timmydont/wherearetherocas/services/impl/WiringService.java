@@ -3,17 +3,15 @@ package com.timmydont.wherearetherocas.services.impl;
 import com.timmydont.wherearetherocas.config.ExcelConfig;
 import com.timmydont.wherearetherocas.factory.ModelServiceFactory;
 import com.timmydont.wherearetherocas.factory.impl.ModelServiceFactoryImpl;
-import com.timmydont.wherearetherocas.fetcher.impl.BalanceDataFetcher;
-import com.timmydont.wherearetherocas.fetcher.impl.ChartDataFetcher;
+import com.timmydont.wherearetherocas.fetcher.impl.*;
 import com.timmydont.wherearetherocas.fetcher.ExcelLoadDataFetcher;
-import com.timmydont.wherearetherocas.fetcher.impl.TransactionByItemDataFetcher;
-import com.timmydont.wherearetherocas.fetcher.impl.TransactionDataFetcher;
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.lib.db.impl.JsonDBServiceImpl;
 import com.timmydont.wherearetherocas.lib.graphql.model.RequestType;
 import com.timmydont.wherearetherocas.lib.graphql.service.GraphqlWiringService;
 import com.timmydont.wherearetherocas.models.Balance;
 import com.timmydont.wherearetherocas.models.Transaction;
+import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
 import graphql.schema.idl.RuntimeWiring;
 
@@ -32,6 +30,7 @@ public class WiringService implements GraphqlWiringService {
     private final ExcelLoadDataFetcher loadDataFetcher;
     private final TransactionDataFetcher transactionDataFetcher;
     private final TransactionByItemDataFetcher transactionByItemDataFetcher;
+    private final TransactionByDateDataFetcher transactionByDateDataFetcher;
 
     private final ModelServiceFactory serviceFactory;
 
@@ -51,6 +50,7 @@ public class WiringService implements GraphqlWiringService {
         balanceDataFetcher = new BalanceDataFetcher(serviceFactory.getService(Balance.class));
         transactionDataFetcher = new TransactionDataFetcher(serviceFactory.getService(Transaction.class));
         transactionByItemDataFetcher = new TransactionByItemDataFetcher(serviceFactory.getService(TransactionByItem.class));
+        transactionByDateDataFetcher = new TransactionByDateDataFetcher(serviceFactory.getService(TransactionByDate.class));
     }
 
     @Override
@@ -74,9 +74,11 @@ public class WiringService implements GraphqlWiringService {
                         .dataFetcher("balanceByText", transactionDataFetcher.fetchBalanceByText())
                         .dataFetcher("balanceByItem", transactionByItemDataFetcher.fetchBalanceByItem())
                         // chart queries
-                        .dataFetcher("chartLineByPeriod", chartDataFetcher.fetchChartLine())
+                        .dataFetcher("chartBalance", transactionByDateDataFetcher.fetchBalanceChart())
+                        .dataFetcher("chartExpensesByPeriodByItem", transactionByItemDataFetcher.fetchPieChart())
+
+
                         .dataFetcher("chartBarByPeriodByItem", chartDataFetcher.fetchChartDayItems())
-                        .dataFetcher("chartPieByWeekByItem", chartDataFetcher.fetchPieChart())
                         .dataFetcher("chartBarByWeekByItem", chartDataFetcher.fetchAnotherOne()))
                 .build();
     }

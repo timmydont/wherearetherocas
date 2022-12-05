@@ -53,6 +53,10 @@ public class DateUtils {
         return null;
     }
 
+    public static String toString(@NonNull Date date) {
+        return format.format(date);
+    }
+
     public static Date min(Date min,@NonNull Date date) {
         return min != null && min.before(date) ? min : date;
     }

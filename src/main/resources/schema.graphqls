@@ -44,6 +44,14 @@ type BalanceFiltered {
     average: Float
 }
 
+type BalanceSummary {
+    min: Float
+    max: Float
+    sum: Float
+    median: Float
+    average: Float
+}
+
 type ChartDataSet {
     data: [Float]
     label: String
@@ -87,8 +95,10 @@ type Query {
     balancesByPeriod(start: String, end: String): [Balance]
     balanceByText(text: String): BalanceFiltered
     balanceByItem(item: String): BalanceFiltered
+    balanceSummary: BalanceSummary
 
     chartBalance: Chart
+    chartBarBalance: Chart
     chartExpensesByPeriodByItem: PieChart
 
     chartBarByWeekByItem: Chart

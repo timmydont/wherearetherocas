@@ -63,7 +63,7 @@ public class Balance implements Model, Comparable<Balance> {
 
     @JsonIgnore
     public float earnings() {
-        return outcome - income;
+        return outcome + income;
     }
 
     @JsonIgnore

@@ -45,8 +45,8 @@ public class ChartDataFetcher {
             Date start = transactions.get(0).getDate();
             Date end = transactions.get(transactions.size() - 1).getDate();
 
-            int asCalendarStart = period.getAsCalendar(start);
             int asCalendarEnd = period.getAsCalendar(end);
+            int asCalendarStart = period.getAsCalendar(start);
 
             int magic = asCalendarEnd - asCalendarStart; // chequear
 
@@ -65,7 +65,7 @@ public class ChartDataFetcher {
                                         .backgroundColor(randomColor())
                                         .data(lateta(magic + 1))
                                         .build();
-                        dataSet.add(asCalendar - magic, Math.abs(t.getAmount()));
+                        dataSet.add(asCalendar - asCalendarStart, Math.abs(t.getAmount()));
                         dataSetMap.put(item.getItem(), dataSet);
                     } catch (Exception e){
                         e.printStackTrace();

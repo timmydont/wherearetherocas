@@ -117,6 +117,84 @@ $.ajax(settings5).done(function (response) {
           }});
     });
 
+    var settings25 = {
+      "url": "http://localhost:9999/graphqls",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        query: "query {\r\n    chartBarBalance {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor            \r\n            data\r\n        }\r\n    }\r\n}",
+        variables: {}
+      })
+    };
+
+    $.ajax(settings25).done(function (response) {
+      var ctx25 = document.getElementById("tetachart").getContext('2d');
+                var myChart25 = new Chart(ctx25, {
+                  type: 'bar',
+                  data: {
+                    labels: response.data.chartBarBalance.labels,
+                    datasets: response.data.chartBarBalance.datasets,
+                  },
+options: {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: response.data.chartBarBalance.title
+      }
+    }
+  },
+          });
+
+
+          var ctx26 = document.getElementById("culochart").getContext('2d');
+                    var myChart26 = new Chart(ctx26, {
+                      type: 'line',
+                      data: {
+                        labels: response.data.chartBarBalance.labels,
+                        datasets: [
+                        {
+                          label: response.data.chartBarBalance.datasets[2].label,
+                          borderColor: response.data.chartBarBalance.datasets[2].backgroundColor,
+                          backgroundColor: transparent(response.data.chartBarBalance.datasets[2].backgroundColor, 0.5),
+                          fill: true,
+                          tension: 0.4,
+                          data: response.data.chartBarBalance.datasets[2].data,
+                          pointRadius: 0,
+                          pointHitRadius: 5,
+                        }, {
+                           label: response.data.chartBarBalance.datasets[1].label,
+                           borderColor: response.data.chartBarBalance.datasets[1].backgroundColor,
+                           backgroundColor: transparent(response.data.chartBarBalance.datasets[1].backgroundColor, 0.5),
+                           fill: true,
+                           tension: 0.4,
+                           data: response.data.chartBarBalance.datasets[1].data,
+                          pointRadius: 0,
+                          pointHitRadius: 5,
+                         }, {
+                         label: response.data.chartBarBalance.datasets[0].label,
+                         borderColor: response.data.chartBarBalance.datasets[0].backgroundColor,
+                         backgroundColor: transparent(response.data.chartBarBalance.datasets[0].backgroundColor, 0.5),
+                         fill: true,
+                         tension: 0.4,
+                         data: response.data.chartBarBalance.datasets[0].data,
+                          pointRadius: 0,
+                          pointHitRadius: 5,
+                       }],
+                      },
+                    options: {
+                        plugins: {
+                          title: {
+                            display: true,
+                            text: response.data.chartBarBalance.title
+                          },
+                        },
+                        responsive: true
+                    }});
+});
 
     var settings = {
       "url": "http://localhost:9999/graphqls",

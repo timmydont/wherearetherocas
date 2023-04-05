@@ -51,7 +51,7 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
             dbService.add(items);
             return true;
         } catch (Exception e) {
-            error(logger, "unable to store '%s' items in db, check previous errors.", items.size());
+            error(logger, "unable to store '%s' items in db, check previous errors.", e, items.size());
             return false;
         }
     }

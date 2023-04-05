@@ -74,6 +74,6 @@ public class DateUtils {
     }
 
     public static boolean inRange(Date date, Date start, Date end) {
-        return date.after(start) && date.before(end);
+        return date.compareTo(start) >= 0 && date.compareTo(end) <= 0;
     }
 }

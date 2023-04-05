@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import java.util.Date;
 import java.util.List;
 
-import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
+import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.info;
 
 public interface ModelService<T extends Model> {
 
@@ -27,7 +27,7 @@ public interface ModelService<T extends Model> {
     default T first(@NonNull String property, @NonNull Object value) {
         List<T> items = get(property, value);
         if (CollectionUtils.isEmpty(items)) {
-            error(logger, "unable to get items from DB for property '%s', value '%s'", property, value);
+            info(logger, "unable to get items from DB for property '%s', value '%s'", property, value);
             return null;
         }
         return items.get(0);

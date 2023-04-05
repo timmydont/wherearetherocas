@@ -5,6 +5,46 @@
 
 <script>
 
+
+var settings29 = {
+  "url": "http://localhost:9999/graphqls",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    query: "query {\r\n    balancesByPeriod(start: \"01/11/2022\", end: \"31/11/2022\") {\r\n        period\r\n        start        \r\n        end\r\n        income\r\n        outcome\r\n        current\r\n    }\r\n}",
+    variables: {}
+  })
+};
+
+$.ajax(settings29).done(function (response) {
+  $(".cmp_current-balance").text(response.data.balancesByPeriod[0].current);
+  $(".cmp_current-earnings").text(response.data.balancesByPeriod[0].income);
+  $(".cmp_current-expenses").text(response.data.balancesByPeriod[0].outcome);
+});
+
+
+var settings30 = {
+  "url": "http://localhost:9999/graphqls",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    query: "query {\r\n    balanceSummary {\r\n        min\r\n        max\r\n        sum\r\n        median\r\n        average\r\n    }\r\n}",
+    variables: {}
+  })
+};
+
+$.ajax(settings30).done(function (response) {
+  $(".cmp_total_earnings").text(response.data.balanceSummary.sum + " EUR");
+  $(".cmp_median-balance").text(response.data.balanceSummary.median + " EUR");
+  $(".cmp_average-balance").text(response.data.balanceSummary.average + " EUR");
+});
+
 function transparent(color, alpha) {
     var teta = color.split(', ');
     teta[teta.length - 1] = alpha + ')'

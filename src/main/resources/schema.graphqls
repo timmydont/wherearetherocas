@@ -44,12 +44,18 @@ type BalanceFiltered {
     average: Float
 }
 
-type BalanceSummary {
+type Statistics {
     min: Float
     max: Float
     sum: Float
     median: Float
     average: Float
+}
+
+type BalanceSummary {
+    balance: Statistics
+    income: Statistics
+    outcome: Statistics
 }
 
 type ChartDataSet {
@@ -80,6 +86,12 @@ type PieChart {
 # Input definitions
 #
 
+input Account {
+    name: String
+    owner: String
+    currency: String
+}
+
 # Define queries provided
 type Query {
     transactions: [Transaction]
@@ -108,4 +120,5 @@ type Query {
 # Define mutations provided
 type Mutation {
     load (input: String): Boolean
+    create(input: Account): Boolean # returns account ID
 }

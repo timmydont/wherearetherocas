@@ -7,9 +7,7 @@ import lombok.Data;
 @Builder
 public class BalanceSummary {
 
-    private float min;
-    private float max;
-    private float sum;
-    private float median;
-    private float average;
+    private Statistics balance;
+    private Statistics income;
+    private Statistics outcome;
 }

@@ -7,14 +7,11 @@ import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
 import com.timmydont.wherearetherocas.models.chart.Chart;
 import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
-import com.timmydont.wherearetherocas.models.chart.ChartPie;
-import com.timmydont.wherearetherocas.models.chart.ChartPieDataSet;
 import graphql.schema.DataFetcher;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 import org.apache.log4j.Logger;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -67,7 +64,7 @@ public class ChartDataFetcher {
                                         .build();
                         dataSet.add(asCalendar - asCalendarStart, Math.abs(t.getAmount()));
                         dataSetMap.put(item.getItem(), dataSet);
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

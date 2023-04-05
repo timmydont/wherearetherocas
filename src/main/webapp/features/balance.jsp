@@ -57,11 +57,11 @@
       <div class="card-body">
       <div class="row">
         <div class="col">
-            <h5 class="card-title">Current Balance</h5>
+            <h5 class="card-title">Total earnings</h5>
             <p class="card-text">by day 10/09/2023</p>
         </div>
         <div class="col">
-            <p class="cmp_current-balance fw-bold fs-1">50694 EUR</p>
+            <p class="cmp_total_earnings fw-bold fs-1">50694 EUR</p>
         </div>
       </div>
       </div>
@@ -72,12 +72,12 @@
       <div class="card-body">
       <div class="row">
         <div class="col">
-            <h5 class="card-title">Last earnings</h5>
+            <h5 class="card-title">Median balance</h5>
             <p class="card-text">by day 10/09/2023</p>
         </div>
         <div class="col">
             <i class="fa-regular fa-up"></i>
-            <p class="cmp_current-earnings fw-bold fs-1">1000 EUR</p>
+            <p class="cmp_median-balance fw-bold fs-1">1000</p>
         </div>
       </div>
       </div>
@@ -88,11 +88,11 @@
       <div class="card-body">
       <div class="row">
         <div class="col">
-            <h5 class="card-title">Last expenses</h5>
+            <h5 class="card-title">Average balance</h5>
             <p class="card-text">by day 10/09/2023</p>
         </div>
         <div class="col">
-            <p class="cmp_current-expenses fw-bold fs-1">50694 EUR</p>
+            <p class="cmp_average-balance fw-bold fs-1">50694 EUR</p>
         </div>
       </div>
       </div>

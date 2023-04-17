@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class ChartLine {
+public class Chart {
 
     private String title;
     private List<String> labels;

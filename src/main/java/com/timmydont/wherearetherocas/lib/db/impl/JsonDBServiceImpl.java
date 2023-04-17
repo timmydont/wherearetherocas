@@ -2,10 +2,9 @@ package com.timmydont.wherearetherocas.lib.db.impl;
 
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.lib.model.Model;
-import com.timmydont.wherearetherocas.models.Transaction;
-import com.timmydont.wherearetherocas.models.TransactionByDate;
-import com.timmydont.wherearetherocas.models.TransactionByItem;
+import com.timmydont.wherearetherocas.models.*;
 import io.jsondb.JsonDBTemplate;
+import lombok.NonNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
@@ -29,7 +28,7 @@ public class JsonDBServiceImpl implements DBService {
     public JsonDBServiceImpl() {
         jsonDB = new JsonDBTemplate(DB_DISK_LOCATION, DB_MODEL_PACKAGE);
         // initialize database
-        Class<?>[] classes = {Transaction.class, TransactionByItem.class, TransactionByDate.class};
+        Class<?>[] classes = {Transaction.class, TransactionByItem.class, TransactionByDate.class, Balance.class, Account.class};
         for (Class<?> clazz : classes) {
             if (!jsonDB.collectionExists(clazz)) jsonDB.createCollection(clazz);
         }
@@ -58,18 +57,27 @@ public class JsonDBServiceImpl implements DBService {
     }
 
     @Override
-    public <T extends Model> T find(String id, Class<T> clazz) {
+    public <T extends Model> T find(@NonNull String id, @NonNull Class<T> clazz) {
         long now = System.currentTimeMillis();
         T item = jsonDB.findById(id, clazz);
         debug(logger, "find with id %s took %s milliseconds", id, System.currentTimeMillis() - now);
         if (item == null) {
-            error(logger, "unable to find an item of class %s with id %s, returning null", clazz.getName(), id);
+            error(logger, "unable to find an item of class '%s' with id '%s', returning null", clazz.getName(), id);
         }
         return item;
     }
 
     @Override
-    public <T extends Model> List<T> list(Class<T> clazz) {
+    public <T extends Model> List<T> find(@NonNull String property, @NonNull Object value, @NonNull Class<T> clazz) {
+        long now = System.currentTimeMillis();
+        String jxQuery = String.format("/.[%s='%s']", property, value);
+        List<T> items = jsonDB.find(jxQuery, clazz);
+        debug(logger, "find property '%s' with value '%s' took '%s' milliseconds", property, value, System.currentTimeMillis() - now);
+        return items;
+    }
+
+    @Override
+    public <T extends Model> List<T> list(@NonNull Class<T> clazz) {
         long now = System.currentTimeMillis();
         List<T> list = jsonDB.findAll(clazz);
         debug(logger, "list %s took %s milliseconds", clazz.getName(), System.currentTimeMillis() - now);

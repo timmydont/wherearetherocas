@@ -1,15 +1,16 @@
 package com.timmydont.wherearetherocas.services.impl;
 
 import com.timmydont.wherearetherocas.config.ExcelConfig;
-import com.timmydont.wherearetherocas.fetcher.BalanceDataFetcher;
-import com.timmydont.wherearetherocas.fetcher.ChartDataFetcher;
+import com.timmydont.wherearetherocas.factory.ModelServiceFactory;
+import com.timmydont.wherearetherocas.factory.impl.ModelServiceFactoryImpl;
+import com.timmydont.wherearetherocas.fetcher.AccountDataFetcher;
+import com.timmydont.wherearetherocas.fetcher.impl.*;
 import com.timmydont.wherearetherocas.fetcher.ExcelLoadDataFetcher;
-import com.timmydont.wherearetherocas.fetcher.TransactionDataFetcher;
 import com.timmydont.wherearetherocas.lib.db.DBService;
 import com.timmydont.wherearetherocas.lib.db.impl.JsonDBServiceImpl;
 import com.timmydont.wherearetherocas.lib.graphql.model.RequestType;
 import com.timmydont.wherearetherocas.lib.graphql.service.GraphqlWiringService;
-import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
+import com.timmydont.wherearetherocas.models.*;
 import graphql.schema.idl.RuntimeWiring;
 
 import java.text.SimpleDateFormat;
@@ -23,9 +24,14 @@ public class WiringService implements GraphqlWiringService {
     private final ExcelConfig config;
 
     private final ChartDataFetcher chartDataFetcher;
+    private final AccountDataFetcher accountDataFetcher;
     private final BalanceDataFetcher balanceDataFetcher;
     private final ExcelLoadDataFetcher loadDataFetcher;
     private final TransactionDataFetcher transactionDataFetcher;
+    private final TransactionByItemDataFetcher transactionByItemDataFetcher;
+    private final TransactionByDateDataFetcher transactionByDateDataFetcher;
+
+    private final ModelServiceFactory serviceFactory;
 
     public WiringService() {
         config = ExcelConfig.builder()
@@ -37,33 +43,46 @@ public class WiringService implements GraphqlWiringService {
                 .descriptionIndex(1)
                 .build();
         dbService = new JsonDBServiceImpl();
-        loadDataFetcher = new ExcelLoadDataFetcher(dbService, config);
+        serviceFactory = new ModelServiceFactoryImpl<>(dbService);
+        loadDataFetcher = new ExcelLoadDataFetcher(serviceFactory, config);
         chartDataFetcher = new ChartDataFetcher(dbService);
-        balanceDataFetcher = new BalanceDataFetcher(dbService);
-        transactionDataFetcher = new TransactionDataFetcher(dbService);
+        accountDataFetcher = new AccountDataFetcher(serviceFactory.getService(Account.class));
+        balanceDataFetcher = new BalanceDataFetcher(serviceFactory.getService(Balance.class));
+        transactionDataFetcher = new TransactionDataFetcher(serviceFactory.getService(Transaction.class));
+        transactionByItemDataFetcher = new TransactionByItemDataFetcher(serviceFactory.getService(TransactionByItem.class));
+        transactionByDateDataFetcher = new TransactionByDateDataFetcher(serviceFactory.getService(TransactionByDate.class));
     }
 
     @Override
     public RuntimeWiring getWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring(RequestType.MUTATION.id)
-                        .dataFetcher("load", loadDataFetcher.load()))
+                        .dataFetcher("load", loadDataFetcher.load())
+                        .dataFetcher("create", accountDataFetcher.create()))
                 .type(newTypeWiring(RequestType.QUERY.id)
-                        // multiple items
+                        // transactions queries
                         .dataFetcher("transactions", transactionDataFetcher.fetchAll())
-                        .dataFetcher("balanceByItem", balanceDataFetcher.fetchBalanceByItem())
-                        .dataFetcher("balanceByText", balanceDataFetcher.fetchBalanceByText())
-                        .dataFetcher("balanceByPeriod", balanceDataFetcher.fetchBalanceByPeriod())
-                        .dataFetcher("chartLineByPeriod", chartDataFetcher.fetchChartLine())
-                        .dataFetcher("chartBarByPeriodByItem", chartDataFetcher.fetchChartDayItems())
-                        .dataFetcher("chartPieByWeekByItem", chartDataFetcher.fetchPieChart())
-                        .dataFetcher("chartBarByWeekByItem", chartDataFetcher.fetchAnotherOne())
                         .dataFetcher("transactionsByText", transactionDataFetcher.fetchByText())
-                        .dataFetcher("transactionsByItem", transactionDataFetcher.fetchByItem())
-                        .dataFetcher("transactionsByItems", transactionDataFetcher.fetchByItems())
                         .dataFetcher("transactionsByPeriod", transactionDataFetcher.fetchByPeriod())
-                        .dataFetcher("transactionsByPeriodByItem", transactionDataFetcher.fetchByPeriodByItem())
-                        .dataFetcher("transactionsByPeriodByItems", transactionDataFetcher.fetchByPeriodByItems()))
+                        // transactions by items queries
+                        .dataFetcher("transactionsByItem", transactionByItemDataFetcher.fetchByItem())
+                        .dataFetcher("transactionsByItems", transactionByItemDataFetcher.fetchAll())
+                        .dataFetcher("transactionsByItemByPeriod", transactionByItemDataFetcher.fetchByItemByPeriod())
+                        .dataFetcher("transactionsByItemsByPeriod", transactionByItemDataFetcher.fetchByItemsByPeriod())
+                        // balance queries
+                        .dataFetcher("balances", balanceDataFetcher.fetchAll())
+                        .dataFetcher("balancesByPeriod", balanceDataFetcher.fetchByPeriod())
+                        .dataFetcher("balanceSummary", balanceDataFetcher.fetchBalanceSummary())
+
+                        .dataFetcher("balanceByText", transactionDataFetcher.fetchBalanceByText())
+                        .dataFetcher("balanceByItem", transactionByItemDataFetcher.fetchBalanceByItem())
+                        // chart queries
+                        .dataFetcher("chartBalance", transactionByDateDataFetcher.fetchBalanceChart())
+                        .dataFetcher("chartBarBalance", balanceDataFetcher.fetchBalanceChart())
+                        .dataFetcher("chartExpensesByPeriodByItem", transactionByItemDataFetcher.fetchPieChart())
+
+                        .dataFetcher("chartBarByPeriodByItem", chartDataFetcher.fetchChartDayItems())
+                        .dataFetcher("chartBarByWeekByItem", chartDataFetcher.fetchAnotherOne()))
                 .build();
     }
 }

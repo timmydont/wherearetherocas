@@ -15,26 +15,47 @@ type Transaction {
     item: String
     amount: Float
     references: [String]
-    description: String!
+    description: String
 }
 
 type TransactionByItem {
     id: String!
     item: String
     amount: Float
+    transactions: [Transaction]
 }
 
-type BalanceByItem {
-    item: String
+type Balance {
     income: Float
     outcome: Float
-}
-
-type BalanceByPeriod {
+    current: Float
     end: String
     start: String
+    period: String
+}
+
+type BalanceFiltered {
+    item: String
+    end: String
+    start: String
+    count: Int
     income: Float
     outcome: Float
+    average: Float
+}
+
+type Statistics {
+    min: Float
+    max: Float
+    sum: Float
+    median: Float
+    average: Float
+}
+
+type BalanceSummary {
+    balance: Statistics
+    income: Statistics
+    outcome: Statistics
 }
 
 type ChartDataSet {
@@ -43,16 +64,16 @@ type ChartDataSet {
     backgroundColor: String
 }
 
+type Chart {
+    title: String
+    labels: [String]
+    datasets: [ChartDataSet]
+}
+
 type ChartPieDataSet {
     data: [Float]
     label: String
     backgroundColor: [String]
-}
-
-type LineChart {
-    title: String
-    labels: [String]
-    datasets: [ChartDataSet]
 }
 
 type PieChart {
@@ -65,25 +86,39 @@ type PieChart {
 # Input definitions
 #
 
+input Account {
+    name: String
+    owner: String
+    currency: String
+}
+
 # Define queries provided
 type Query {
     transactions: [Transaction]
     transactionsByText(text: String): [Transaction]
-    transactionsByItem(item: String): [Transaction]
-    transactionsByItems: [TransactionByItem]
     transactionsByPeriod(start: String, end: String): [Transaction]
-    transactionsByPeriodByItem(start: String, end: String, item: String): [Transaction]
-    transactionsByPeriodByItems(start: String, end: String): [TransactionByItem]
-    balanceByItem(item: String): BalanceByItem
-    balanceByText(text: String): BalanceByItem
-    balanceByPeriod(period: Int): [BalanceByPeriod]
-    chartLineByPeriod: LineChart
-    chartBarByPeriodByItem: LineChart
-    chartPieByWeekByItem: PieChart
-    chartBarByWeekByItem: LineChart
+
+    transactionsByItem(item: String): TransactionByItem
+    transactionsByItemByPeriod(start: String, end: String, item: String): TransactionByItem
+    transactionsByItems: [TransactionByItem]
+    transactionsByItemsByPeriod(start: String, end: String): [TransactionByItem]
+
+    balances: [Balance]
+    balancesByPeriod(start: String, end: String): [Balance]
+    balanceByText(text: String): BalanceFiltered
+    balanceByItem(item: String): BalanceFiltered
+    balanceSummary: BalanceSummary
+
+    chartBalance: Chart
+    chartBarBalance: Chart
+    chartExpensesByPeriodByItem: PieChart
+
+    chartBarByWeekByItem: Chart
+    chartBarByPeriodByItem: Chart
 }
 
 # Define mutations provided
 type Mutation {
     load (input: String): Boolean
+    create(input: Account): Boolean # returns account ID
 }

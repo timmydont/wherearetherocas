@@ -23,9 +23,9 @@ public class TransactionByDate implements Model, Comparable<TransactionByDate> {
     @Id
     private String id;
     private Date date;
-    private Float income;
-    private Float outcome;
-    private Float balance;
+    private float income;
+    private float outcome;
+    private float balance;
     private List<Transaction> transactions;
 
     /**
@@ -42,7 +42,7 @@ public class TransactionByDate implements Model, Comparable<TransactionByDate> {
      * @param outcome
      * @param transactions
      */
-    public TransactionByDate(String id, Date date, Float income, Float outcome, Float balance, List<Transaction> transactions) {
+    public TransactionByDate(String id, Date date, float income, float outcome, float balance, List<Transaction> transactions) {
         this.id = id;
         this.date = date;
         this.income = income;

@@ -8,7 +8,7 @@
 
     <jsp:include page="header.jsp" />
 
-    <div class="container-fluid">
+    <div class="container">
 
       <jsp:include page="board.jsp" />
 

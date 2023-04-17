@@ -23,6 +23,7 @@ public class TransactionsByDatesAdapter implements TransactionsAdapter<Transacti
                 tbd = TransactionByDate.builder()
                         .id(UUID.randomUUID().toString())
                         .date(transaction.getDate())
+                        .account(transaction.getAccount())
                         .income(0f)
                         .outcome(0f)
                         .balance(balance)

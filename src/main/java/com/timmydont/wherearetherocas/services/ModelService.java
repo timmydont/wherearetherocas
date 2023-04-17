@@ -16,18 +16,25 @@ public interface ModelService<T extends Model> {
 
     boolean save(List<T> items);
 
-    List<T> get(@NonNull Date start, @NonNull Date end);
+    List<T> get(String account, @NonNull Date start, @NonNull Date end);
 
-    List<T> get(@NonNull String property, @NonNull Object value);
+    List<T> get(String account, @NonNull String property, @NonNull Object value);
 
-    List<T> all();
+    List<T> all(String account);
 
-    T withId(@NonNull String id);
+    /**
+     *
+     * @param account
+     * @param id
+     * @return
+     */
+    T withId(String account, @NonNull String id);
 
-    default T first(@NonNull String property, @NonNull Object value) {
-        List<T> items = get(property, value);
+    default T first(String account, @NonNull String property, @NonNull Object value) {
+        List<T> items = get(account, property, value);
         if (CollectionUtils.isEmpty(items)) {
-            info(logger, "unable to get items from DB for property '%s', value '%s'", property, value);
+            info(logger, "unable to get items from DB for account '%s', property '%s', value '%s'",
+                    account, property, value);
             return null;
         }
         return items.get(0);

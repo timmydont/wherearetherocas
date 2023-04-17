@@ -25,10 +25,9 @@ public class JsonDBServiceImpl implements DBService {
 
     private final JsonDBTemplate jsonDB;
 
-    public JsonDBServiceImpl() {
+    public JsonDBServiceImpl(Class<?>[] classes) {
         jsonDB = new JsonDBTemplate(DB_DISK_LOCATION, DB_MODEL_PACKAGE);
         // initialize database
-        Class<?>[] classes = {Transaction.class, TransactionByItem.class, TransactionByDate.class, Balance.class, Account.class};
         for (Class<?> clazz : classes) {
             if (!jsonDB.collectionExists(clazz)) jsonDB.createCollection(clazz);
         }

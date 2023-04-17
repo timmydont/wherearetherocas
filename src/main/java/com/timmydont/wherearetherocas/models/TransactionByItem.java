@@ -21,6 +21,8 @@ public class TransactionByItem implements Model {
 
     @Id
     private String id;
+
+    private String account;
     private String item;
     private Float amount;
     private List<Transaction> transactions;
@@ -34,14 +36,16 @@ public class TransactionByItem implements Model {
      * Full argument constructor, used by lombok builder
      *
      * @param id
+     * @param account
      * @param item
      * @param amount
      * @param transactions
      */
-    public TransactionByItem(String id, String item, Float amount, List<Transaction> transactions) {
+    public TransactionByItem(String id, String account, String item, Float amount, List<Transaction> transactions) {
         this.id = id;
         this.item = item;
         this.amount = amount;
+        this.account = account;
         this.transactions = transactions;
     }
 

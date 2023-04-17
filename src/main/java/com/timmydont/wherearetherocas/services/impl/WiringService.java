@@ -42,7 +42,7 @@ public class WiringService implements GraphqlWiringService {
                 .amountIndex(3)
                 .descriptionIndex(1)
                 .build();
-        dbService = new JsonDBServiceImpl();
+        dbService = new JsonDBServiceImpl(new Class[] {Transaction.class, TransactionByItem.class, TransactionByDate.class, Balance.class, Account.class});
         serviceFactory = new ModelServiceFactoryImpl<>(dbService);
         loadDataFetcher = new ExcelLoadDataFetcher(serviceFactory, config);
         chartDataFetcher = new ChartDataFetcher(dbService);

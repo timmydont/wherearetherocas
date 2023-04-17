@@ -38,6 +38,7 @@ public class TransactionsByItemsAdapter implements TransactionsAdapter<Transacti
                 TransactionByItem item = TransactionByItem.builder()
                         .id(UUID.randomUUID().toString())
                         .item(transaction.getItem())
+                        .account(transaction.getAccount())
                         .build();
                 item.add(transaction);
                 transactionsByItems.put(transaction.getItem().toLowerCase(), item);

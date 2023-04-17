@@ -22,6 +22,8 @@ public class TransactionByDate implements Model, Comparable<TransactionByDate> {
 
     @Id
     private String id;
+
+    private String account;
     private Date date;
     private float income;
     private float outcome;
@@ -37,12 +39,13 @@ public class TransactionByDate implements Model, Comparable<TransactionByDate> {
      * Full argument constructor, used by lombok builder
      *
      * @param id
+     * @param account
      * @param date
      * @param income
      * @param outcome
      * @param transactions
      */
-    public TransactionByDate(String id, Date date, float income, float outcome, float balance, List<Transaction> transactions) {
+    public TransactionByDate(String id, String account, Date date, float income, float outcome, float balance, List<Transaction> transactions) {
         this.id = id;
         this.date = date;
         this.income = income;

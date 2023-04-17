@@ -25,6 +25,7 @@ public class BalancesAdapter implements TransactionsAdapter<Balance> {
                     balanceMap.get(asCalendar) :
                     Balance.builder()
                             .id(UUID.randomUUID().toString())
+                            .account(i.getAccount())
                             .income(0f)
                             .outcome(0f)
                             .current(current)

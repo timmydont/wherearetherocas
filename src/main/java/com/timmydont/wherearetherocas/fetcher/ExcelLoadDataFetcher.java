@@ -8,10 +8,7 @@ import com.timmydont.wherearetherocas.adapters.impl.TransactionsByDatesAdapter;
 import com.timmydont.wherearetherocas.adapters.impl.TransactionsByItemsAdapter;
 import com.timmydont.wherearetherocas.config.ExcelConfig;
 import com.timmydont.wherearetherocas.factory.ModelServiceFactory;
-import com.timmydont.wherearetherocas.models.Balance;
-import com.timmydont.wherearetherocas.models.Transaction;
-import com.timmydont.wherearetherocas.models.TransactionByDate;
-import com.timmydont.wherearetherocas.models.TransactionByItem;
+import com.timmydont.wherearetherocas.models.*;
 import graphql.schema.DataFetcher;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -25,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
@@ -54,20 +52,26 @@ public class ExcelLoadDataFetcher {
 
     public DataFetcher<Boolean> load() {
         return dataFetchingEnvironment -> {
+            // check that account exists, and retrieve it
+            Account account = serviceFactory.getService(Account.class).withId(dataFetchingEnvironment.getArgument("account"));
+            if(Objects.isNull(account)) {
+                error(logger, "invalid account provided '%s'", dataFetchingEnvironment.getArgument("account"));
+                return false;
+            }
             // get input from request
             String input = dataFetchingEnvironment.getArgument("input");
             if (StringUtils.isBlank(input)) {
-                error(logger, "invalid argument in load data");
+                error(logger, "invalid document provided, impossible to load data to account '%s'", account.getId());
                 return false;
             }
             // create workbook and get sheet
             Sheet sheet = getSheet(input);
             if (sheet == null) {
-                error(logger, "unable to get sheet from file %s, sheet %s", input, config.getSheetIndex());
+                error(logger, "unable to get sheet from file '%s', sheet '%s'", input, config.getSheetIndex());
                 return false;
             }
             // get list of transactions from sheet
-            List<Transaction> transactions = getTransactions(sheet);
+            List<Transaction> transactions = getTransactions(sheet, account.getId());
             try {
                 serviceFactory.getService(Transaction.class).save(transactions);
                 // get list of balances from transactions, and save
@@ -94,7 +98,7 @@ public class ExcelLoadDataFetcher {
         return null;
     }
 
-    private List<Transaction> getTransactions(Sheet sheet) {
+    private List<Transaction> getTransactions(Sheet sheet, String account) {
         // get first and last transaction row
         int fr = config.getStartRow();
         int lr = sheet.getLastRowNum();
@@ -104,9 +108,10 @@ public class ExcelLoadDataFetcher {
             Transaction transaction = transactionAdapter.adapt(sheet.getRow(i));
             if (transaction == null) {
                 error(logger, "unable to adapt row %s to transaction", i);
-                return;
+            } else {
+                transaction.setAccount(account);
+                transactions.add(transaction);
             }
-            transactions.add(transaction);
         });
         // sort transactions by date
         Collections.sort(transactions);

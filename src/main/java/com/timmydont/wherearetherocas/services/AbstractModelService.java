@@ -24,15 +24,15 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
     }
 
     @Override
-    public T withId(@NonNull String id) { return dbService.find(id, clazz); }
+    public T withId(String account, @NonNull String id) { return dbService.find(id, clazz); }
 
     @Override
-    public List<T> all() {
+    public List<T> all(String account) {
         return dbService.list(clazz);
     }
 
     @Override
-    public List<T> get(@NonNull String property, @NonNull Object value) {
+    public List<T> get(String account, @NonNull String property, @NonNull Object value) {
         List<T> items = dbService.find(property, value, clazz);
         if (CollectionUtils.isEmpty(items)) {
             info(logger, "unable to find items in db, with property: '%s', value: '%s'", property, value);

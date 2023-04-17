@@ -21,6 +21,8 @@ public class Transaction implements Model, Comparable<Transaction> {
 
     @Id
     private String id;
+
+    private String account;
     private String item;
 
     private Date date;
@@ -37,16 +39,18 @@ public class Transaction implements Model, Comparable<Transaction> {
      * Full argument constructor, used by lombok builder
      *
      * @param id
+     * @param account
      * @param item
      * @param date
      * @param amount
      * @param references
      */
-    public Transaction(String id, String item, Date date, float amount, String[] references) {
+    public Transaction(String id, String account, String item, Date date, float amount, String[] references) {
         this.id = id;
         this.item = item;
         this.date = date;
         this.amount = amount;
+        this.account = account;
         this.references = references;
     }
 

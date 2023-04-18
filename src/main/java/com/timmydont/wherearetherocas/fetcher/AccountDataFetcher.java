@@ -39,8 +39,9 @@ public class AccountDataFetcher {
                 error(logger, "attempting to create an account that already exists '%s'", account.getName());
                 return false;
             }
-            // create account
+            // set account id
             account.setId(UUID.randomUUID().toString());
+            // save account
             return modelService.save(Arrays.asList(account));
         };
     }

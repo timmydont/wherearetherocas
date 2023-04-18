@@ -32,7 +32,7 @@ public class BalanceService extends AbstractModelService<Balance> {
         List<Balance> toRemove = items.stream()
                 .filter(i -> !DateUtils.inRange(i.getStart(), start, end) || !DateUtils.inRange(i.getEnd(), start, end))
                 .collect(Collectors.toList());
-        if(!items.removeAll(toRemove)) {
+        if (!items.removeAll(toRemove)) {
             error(logger, "unable to remove filtered balances");
         }
         return items;

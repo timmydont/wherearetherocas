@@ -53,7 +53,8 @@ public class ExcelLoadDataFetcher {
     public DataFetcher<Boolean> load() {
         return dataFetchingEnvironment -> {
             // check that account exists, and retrieve it
-            Account account = serviceFactory.getService(Account.class).withId(dataFetchingEnvironment.getArgument("account"));
+            Account account = serviceFactory.getService(Account.class)
+                    .withId(dataFetchingEnvironment.getArgument("account"));
             if(Objects.isNull(account)) {
                 error(logger, "invalid account provided '%s'", dataFetchingEnvironment.getArgument("account"));
                 return false;

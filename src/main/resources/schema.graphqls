@@ -94,14 +94,14 @@ input Account {
 
 # Define queries provided
 type Query {
-    transactions: [Transaction]
-    transactionsByText(text: String): [Transaction]
-    transactionsByPeriod(start: String, end: String): [Transaction]
+    transactions(account: String): [Transaction]
+    transactionsByText(account: String, text: String): [Transaction]
+    transactionsByPeriod(account: String, start: String, end: String): [Transaction]
 
-    transactionsByItem(item: String): TransactionByItem
-    transactionsByItemByPeriod(start: String, end: String, item: String): TransactionByItem
-    transactionsByItems: [TransactionByItem]
-    transactionsByItemsByPeriod(start: String, end: String): [TransactionByItem]
+    transactionsByItem(account: String, item: String): TransactionByItem
+    transactionsByItemByPeriod(account: String, start: String, end: String, item: String): TransactionByItem
+    transactionsByItems(account: String): [TransactionByItem]
+    transactionsByItemsByPeriod(account: String, start: String, end: String): [TransactionByItem]
 
     balances: [Balance]
     balancesByPeriod(start: String, end: String): [Balance]
@@ -119,6 +119,6 @@ type Query {
 
 # Define mutations provided
 type Mutation {
-    load (input: String): Boolean
-    create(input: Account): Boolean # returns account ID
+    load (account: String, input: String): Boolean
+    create(input: Account): Boolean
 }

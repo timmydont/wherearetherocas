@@ -28,7 +28,7 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
 
     public DataFetcher<Chart> fetchBalanceChart() {
         return dataFetchingEnvironment -> {
-            List<Balance> items = modelService.all();
+            List<Balance> items = modelService.all("");
             if (CollectionUtils.isEmpty(items)) {
                 error(logger, "unable to retrieve balances from db.");
                 return null;
@@ -63,7 +63,7 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
 
     public DataFetcher<BalanceSummary> fetchBalanceSummary() {
         return dataFetchingEnvironment -> {
-            List<Balance> items = modelService.all();
+            List<Balance> items = modelService.all("");
             if (CollectionUtils.isEmpty(items)) {
                 error(logger, "unable to retrieve balances from db.");
                 return null;

@@ -35,7 +35,7 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             // check if request argument is valid
             if (StringUtils.isBlank(item)) return null;
             // get transactions by specific item
-            TransactionByItem byItem = modelService.withId(item);
+            TransactionByItem byItem = modelService.withId(item);//TODO BROKEN
             if (byItem == null) {
                 error(logger, "unable to retrieve transaction by item '%s'", item);
                 return null;
@@ -52,7 +52,7 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             String item = getArgument(dataFetchingEnvironment, "item", String.class);
             if (!ObjectUtils.allNotNull(item, start, end)) return null;
             // get a specific transaction by item
-            TransactionByItem transactionByItem = modelService.withId(item);
+            TransactionByItem transactionByItem = modelService.withId(item); //TODO BROKEN
             if (transactionByItem == null) {
                 error(logger, "unable to retrieve transaction by item '%s'", item);
                 return null;
@@ -73,7 +73,7 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             Date start = getArgument(dataFetchingEnvironment, "start", Date.class);
             if (!ObjectUtils.allNotNull(start, end)) return null;
             // get all transactions by item
-            List<TransactionByItem> items = modelService.all();
+            List<TransactionByItem> items = modelService.all("");//TODO BROKEN
             if (CollectionUtils.isEmpty(items)) {
                 error(logger, "unable to retrieve transactions by items from db.");
                 return null;
@@ -95,7 +95,7 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             // check if item argument is valid
             if (!ObjectUtils.allNotNull(item)) return null;
             // get transaction by item
-            TransactionByItem byItem = modelService.withId(item);
+            TransactionByItem byItem = modelService.withId(item);//TODO BROKEN
             if (byItem == null) {
                 error(logger, "unable to retrieve transaction by item '%s'", item);
                 return null;
@@ -122,7 +122,7 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             List<String> colors = new ArrayList<>();
             Map<Integer, ChartPieDataSet> dataSets = new HashMap<>();
             //
-            List<TransactionByItem> items = modelService.all();
+            List<TransactionByItem> items = modelService.all("");//TODO BROKEN
             items.forEach(e -> colors.add(randomColor()));
             int i = 0;
             for (TransactionByItem item : items) {

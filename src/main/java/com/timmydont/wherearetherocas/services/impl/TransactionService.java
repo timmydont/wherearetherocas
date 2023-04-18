@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.info;
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 import static com.timmydont.wherearetherocas.utils.DateUtils.inRange;
 
@@ -19,10 +18,12 @@ public class TransactionService extends AbstractModelService<Transaction> {
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    public TransactionService(DBService dbService) { super(dbService, Transaction.class); }
+    public TransactionService(DBService dbService) {
+        super(dbService, Transaction.class);
+    }
 
     @Override
-    public List<Transaction> get(@NonNull Date start,@NonNull Date end) {
+    public List<Transaction> get(@NonNull Date start, @NonNull Date end) {
         List<Transaction> items = dbService.list(Transaction.class);
         if (CollectionUtils.isEmpty(items)) {
             error(logger, "unable to retrieve Transaction list from db");

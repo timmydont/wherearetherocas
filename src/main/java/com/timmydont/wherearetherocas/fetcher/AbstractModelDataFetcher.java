@@ -28,9 +28,10 @@ public abstract class AbstractModelDataFetcher<T extends Model> implements Model
     @Override
     public DataFetcher<List<T>> fetchAll() {
         return dataFetchingEnvironment -> {
-            List<T> items = modelService.all();
+            String account = getArgument(dataFetchingEnvironment, "account", String.class);
+            List<T> items = modelService.all(account);
             if (CollectionUtils.isEmpty(items)) {
-                error(logger, "unable to retrieve items from db.");
+                error(logger, "unable to retrieve items from db, for account '%s'.", account);
                 return null;
             }
             return items;
@@ -43,11 +44,12 @@ public abstract class AbstractModelDataFetcher<T extends Model> implements Model
             // get the start and end dates (the period)
             Date end = getArgument(dataFetchingEnvironment, "end", Date.class);
             Date start = getArgument(dataFetchingEnvironment, "start", Date.class);
-            if (!ObjectUtils.allNotNull(start, end)) return null;
+            String account = getArgument(dataFetchingEnvironment, "account", String.class);
+            if (!ObjectUtils.allNotNull(start, end, account)) return null;
             // get all items of a given period of time
-            List<T> items = modelService.get(start, end);
+            List<T> items = modelService.get(account, start, end);
             if (CollectionUtils.isEmpty(items)) {
-                error(logger, "there are no items between dates, start: '%s', end: '%s'", start, end);
+                error(logger, "there are no items between dates, start: '%s', end: '%s', for account '%s'", start, end, account);
                 return null;
             }
             return items;

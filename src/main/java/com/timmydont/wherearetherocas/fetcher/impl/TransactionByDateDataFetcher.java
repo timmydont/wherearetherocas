@@ -38,7 +38,7 @@ public class TransactionByDateDataFetcher extends AbstractModelDataFetcher<Trans
                     .backgroundColor("rgba(63, 136, 197, 1)")
                     .build();
             // populate data sets from transactions by dates
-            modelService.all().forEach(item -> {
+            modelService.all("").forEach(item -> {//TODO BROKEN
                 labels.add(DateUtils.toString(item.getDate()));
                 income.add(item.getIncome());
                 outcome.add(item.getOutcome());

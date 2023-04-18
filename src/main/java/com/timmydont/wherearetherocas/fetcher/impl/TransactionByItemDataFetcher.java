@@ -35,7 +35,7 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             // check if request argument is valid
             if (StringUtils.isBlank(item)) return null;
             // get transactions by specific item
-            TransactionByItem byItem = modelService.withId(item);//TODO BROKEN
+            TransactionByItem byItem = modelService.withId(item);
             if (byItem == null) {
                 error(logger, "unable to retrieve transaction by item '%s'", item);
                 return null;
@@ -52,7 +52,7 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             String item = getArgument(dataFetchingEnvironment, "item", String.class);
             if (!ObjectUtils.allNotNull(item, start, end)) return null;
             // get a specific transaction by item
-            TransactionByItem transactionByItem = modelService.withId(item); //TODO BROKEN
+            TransactionByItem transactionByItem = modelService.withId(item);
             if (transactionByItem == null) {
                 error(logger, "unable to retrieve transaction by item '%s'", item);
                 return null;
@@ -71,9 +71,10 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             // get item start and end date from request
             Date end = getArgument(dataFetchingEnvironment, "end", Date.class);
             Date start = getArgument(dataFetchingEnvironment, "start", Date.class);
-            if (!ObjectUtils.allNotNull(start, end)) return null;
+            String account = getArgument(dataFetchingEnvironment, "account", String.class);
+            if (!ObjectUtils.allNotNull(start, end, account)) return null;
             // get all transactions by item
-            List<TransactionByItem> items = modelService.all("");//TODO BROKEN
+            List<TransactionByItem> items = modelService.all(account);
             if (CollectionUtils.isEmpty(items)) {
                 error(logger, "unable to retrieve transactions by items from db.");
                 return null;

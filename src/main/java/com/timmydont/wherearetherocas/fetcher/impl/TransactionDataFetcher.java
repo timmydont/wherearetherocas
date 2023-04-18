@@ -25,7 +25,7 @@ public class TransactionDataFetcher extends AbstractModelDataFetcher<Transaction
     }
 
     /**
-     * Return a list of all transactions that match a given text
+     * Return a list of all transactions that match a given text, for a specific account
      *
      * @return a list of transactions
      */
@@ -48,7 +48,7 @@ public class TransactionDataFetcher extends AbstractModelDataFetcher<Transaction
     }
 
     /**
-     * Return a balance of all transactions that match a given text
+     * Return a balance of all transactions that match a given text, for a specific account
      *
      * @return a filtered balance
      */

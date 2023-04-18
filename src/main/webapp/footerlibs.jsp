@@ -2,6 +2,42 @@
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
+<script>
+    var transactionsSettingsA = {
+      "url": "http://localhost:9999/graphqls",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        query: "query {\r\n    transactions(account: \"43de61f1-97f5-4aa4-b47b-218eec064cfa\") {\r\n        id\r\n        item\r\n        date\r\n        amount\r\n    }\r\n}",
+        variables: {}
+      })
+    };
+
+    $.ajax(transactionsSettingsA).done(function (response) {
+      console.log(response);
+    });
+
+    var transactionsSettingsB = {
+      "url": "http://localhost:9999/graphqls",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        query: "query {\r\n    transactions(account: \"92ef08f8-1a61-4de3-bd73-9cfe33838400\") {\r\n        id\r\n        item\r\n        date\r\n        amount\r\n    }\r\n}",
+        variables: {}
+      })
+    };
+
+    $.ajax(transactionsSettingsB).done(function (response) {
+      console.log(response);
+    });
+</script>
+
 
 <script>
 

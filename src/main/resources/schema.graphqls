@@ -92,22 +92,34 @@ input Account {
     currency: String
 }
 
+enum PeriodType {
+    DAY,
+    WEEK,
+    MONTH
+}
+
 # Define queries provided
 type Query {
-    transactions(account: String): [Transaction]
-    transactionsByText(account: String, text: String): [Transaction]
-    transactionsByPeriod(account: String, start: String, end: String): [Transaction]
 
-    transactionsByItem(account: String, item: String): TransactionByItem
-    transactionsByItemByPeriod(account: String, start: String, end: String, item: String): TransactionByItem
+    ## this are data queries
+    accounts: [String]
+
+    transactions(account: String): [Transaction]                                                    # retrieve transactions
+    transactionsByText(account: String, text: String): [Transaction]                                # retrieve transactions that contains a given text (no case-sensitive)
+    transactionsByPeriod(account: String, start: String, end: String): [Transaction]                # retrieve transactions made in a period of time
+    transactionsByItem(item: String): TransactionByItem
     transactionsByItems(account: String): [TransactionByItem]
+    transactionsByItemByPeriod(start: String, end: String, item: String): TransactionByItem
     transactionsByItemsByPeriod(account: String, start: String, end: String): [TransactionByItem]
 
-    balances: [Balance]
-    balancesByPeriod(start: String, end: String): [Balance]
-    balanceByText(text: String): BalanceFiltered
+    balances(account: String): [Balance]
+    balancesByPeriod(account: String, start: String, end: String): [Balance]
+    balanceByText(account: String, text: String): BalanceFiltered
     balanceByItem(item: String): BalanceFiltered
     balanceSummary: BalanceSummary
+
+    ## this are chart queries
+    accountBalanceChart(account: String, period: PeriodType): Chart                                 # retrieve a bar chart of account balance for each period of time, a period of time can be Day, Week, Month
 
     chartBalance: Chart
     chartBarBalance: Chart

@@ -49,6 +49,7 @@ public class TransactionByDate implements Model, Comparable<TransactionByDate> {
         this.id = id;
         this.date = date;
         this.income = income;
+        this.account = account;
         this.outcome = outcome;
         this.balance = balance;
         this.transactions = transactions;

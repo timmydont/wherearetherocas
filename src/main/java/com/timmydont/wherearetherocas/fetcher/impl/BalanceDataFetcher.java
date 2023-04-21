@@ -11,7 +11,6 @@ import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
 import com.timmydont.wherearetherocas.services.ModelService;
 import com.timmydont.wherearetherocas.utils.DateUtils;
 import graphql.schema.DataFetcher;
-import graphql.schema.DataFetchingEnvironment;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
@@ -32,7 +31,9 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
     }
 
     /**
-     * @return
+     * Retrieve a chart of income/outcome/earnings/savings for a given account and period of time.
+     *
+     * @return the chart
      */
     public synchronized DataFetcher<Chart> fetchAccountBalanceChart() {
         return dataFetchingEnvironment -> {
@@ -46,6 +47,7 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
                 error(logger, "unable to retrieve balances from db with properties '%s'", properties);
                 return null;
             }
+            List<String> ids = Collections.synchronizedList(new ArrayList<>());
             List<String> labels = Collections.synchronizedList(new ArrayList<>());
             // create chart datasets
             ChartDataSet income = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Income);
@@ -53,33 +55,22 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
             ChartDataSet savings = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Savings);
             ChartDataSet earnings = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Earnings);
             // populate chart datasets
-            for(Balance item : items) {
+            for (Balance item : items) {
+                ids.add(item.getId());
                 labels.add(DateUtils.toString(item.getStart()));
                 income.add(item.getIncome());
-                outcome.add(Math.abs(item.getOutcome()));
+                outcome.add(item.getOutcome());
                 savings.add(item.getSavings());
                 earnings.add(item.earnings());
             }
             // create and return chart
             return Chart.builder()
+                    .ids(ids)
                     .title("Balance Chart")
                     .labels(labels)
                     .datasets(Arrays.asList(income, outcome, earnings, savings))
                     .build();
         };
-    }
-
-    protected Map<String, Object> getArgumentsMap(DataFetchingEnvironment environment, ImmutablePair<String, Class>... properties) {
-        Map<String, Object> argumentsMap = new HashMap<>();
-        for (ImmutablePair<String, Class> property : properties) {
-            Object value = getArgument(environment, property.getKey(), property.getValue());
-            if (Objects.isNull(value)) {
-                error(logger, "unable to get an argument of name '%s'", property);
-            } else {
-                argumentsMap.put(property.getKey(), value);
-            }
-        }
-        return argumentsMap;
     }
 
     public DataFetcher<Chart> fetchBalanceChart() {

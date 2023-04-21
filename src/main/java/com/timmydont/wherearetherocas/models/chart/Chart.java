@@ -10,6 +10,7 @@ import java.util.List;
 public class Chart {
 
     private String title;
+    private List<String> ids;
     private List<String> labels;
     private List<ChartDataSet> datasets;
 }

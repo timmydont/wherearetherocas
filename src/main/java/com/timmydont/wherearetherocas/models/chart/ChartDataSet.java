@@ -12,6 +12,7 @@ import java.util.List;
 @Builder
 public class ChartDataSet implements Serializable {
 
+    private String id;
     private String label;
     private String backgroundColor;
     private List<Float> data;

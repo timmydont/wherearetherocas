@@ -8,10 +8,10 @@ import graphql.schema.DataFetchingEnvironment;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 import static com.timmydont.wherearetherocas.utils.DateUtils.toDate;
@@ -93,5 +93,25 @@ public abstract class AbstractModelDataFetcher<T extends Model> implements Model
         // in case clazz provided is Period, attempt to get a valid Period from the argument
         if (clazz.equals(Period.class)) return (E) Period.valueOf(argument.toString());
         return (E) argument;
+    }
+
+    /**
+     * Get a map of arguments from the data fetching environment, and try to cast it to a given classes
+     *
+     * @param environment the graphql environment
+     * @param properties  the properties map
+     * @return a map of arguments
+     */
+    protected Map<String, Object> getArgumentsMap(DataFetchingEnvironment environment, ImmutablePair<String, Class>... properties) {
+        Map<String, Object> argumentsMap = new HashMap<>();
+        for (ImmutablePair<String, Class> property : properties) {
+            Object value = getArgument(environment, property.getKey(), property.getValue());
+            if (Objects.isNull(value)) {
+                error(logger, "unable to get an argument of name '%s'", property);
+            } else {
+                argumentsMap.put(property.getKey(), value);
+            }
+        }
+        return argumentsMap;
     }
 }

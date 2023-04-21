@@ -4,7 +4,9 @@
 
 <script>
 
-    function populateChart(account, period, chartelement) {
+    var watrCharts = [];
+
+    function populateTable(item, tableelement) {
         var settings = {
           "url": "http://localhost:9999/graphqls",
           "method": "POST",
@@ -13,34 +15,71 @@
             "Content-Type": "application/json"
           },
           "data": JSON.stringify({
-            query: "query {\r\n    accountBalanceChart(account: " + account + ", period: " + period + ") {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
+            query: 'query {\r\n    balanceById(id: \"' + item + '\") {\r\n        income\r\n        outcome\r\n        start\r\n        end\r\n        period\r\n        transactions {\r\n            item\r\n            amount\r\n        }\r\n    }\r\n}',
             variables: {}
           })
         };
 
         $.ajax(settings).done(function (response) {
+          $(".a-table-income").text(response.data.balanceById.income);
+          $(".a-table-outcome").text(response.data.balanceById.outcome);
+          $("#" + tableelement + " tr").remove();
+          const table = document.getElementById(tableelement);
+          response.data.balanceById.transactions.forEach(item => {
+              let row = table.insertRow();
+              let date = row.insertCell(0);
+              date.innerHTML = item.item;
+              let name = row.insertCell(1);
+              name.innerHTML = item.amount;
+          })
+        });
+    };
+
+    function chartClick(e, accountBalanceChart, accountBalanceTable) {
+        const points = e.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)
+        if(points && points.length > 0) {
+            populateTable(accountBalanceChart.ids[points[0].index], accountBalanceTable);
+        }
+    };
+
+    function populateChart(account, period, index, chartelement, tableelement) {
+        var settings = {
+          "url": "http://localhost:9999/graphqls",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            query: "query {\r\n    accountBalanceChart(account: " + account + ", period: " + period + ") {\r\n        ids        \r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
+            variables: {}
+          })
+        };
+
+        $.ajax(settings).done(function (response) {
+            if(watrCharts[index]) watrCharts[index].destroy();
             var ctx = document.getElementById(chartelement).getContext('2d');
-            var chart = new Chart(ctx, {
+            watrCharts[index] = new Chart(ctx, {
                 type: 'line',
                 data: {
                   labels: response.data.accountBalanceChart.labels,
                   datasets: [
                   {
-                    label: response.data.accountBalanceChart.datasets[1].label,
-                    borderColor: response.data.accountBalanceChart.datasets[1].backgroundColor,
-                    backgroundColor: transparent(response.data.accountBalanceChart.datasets[1].backgroundColor, 0.5),
+                    label: response.data.accountBalanceChart.datasets[0].label,
+                    borderColor: response.data.accountBalanceChart.datasets[0].backgroundColor,
+                    backgroundColor: transparent(response.data.accountBalanceChart.datasets[0].backgroundColor, 0.5),
                     fill: true,
                     tension: 0.4,
-                    data: response.data.accountBalanceChart.datasets[1].data,
+                    data: response.data.accountBalanceChart.datasets[0].data,
                     pointRadius: 0,
                     pointHitRadius: 5,
                   }, {
-                     label: response.data.accountBalanceChart.datasets[0].label,
-                     borderColor: response.data.accountBalanceChart.datasets[0].backgroundColor,
-                     backgroundColor: transparent(response.data.accountBalanceChart.datasets[0].backgroundColor, 0.5),
+                     label: response.data.accountBalanceChart.datasets[1].label,
+                     borderColor: response.data.accountBalanceChart.datasets[1].backgroundColor,
+                     backgroundColor: transparent(response.data.accountBalanceChart.datasets[1].backgroundColor, 0.5),
                      fill: true,
                      tension: 0.4,
-                     data: response.data.accountBalanceChart.datasets[0].data,
+                     data: response.data.accountBalanceChart.datasets[1].data,
                     pointRadius: 0,
                     pointHitRadius: 5,
                    }, {
@@ -64,6 +103,7 @@
                   }],
                 },
               options: {
+                  onClick: (e) => { chartClick(e, response.data.accountBalanceChart, tableelement); },
                   plugins: {
                     title: {
                       display: true,
@@ -81,15 +121,14 @@
         return teta.join(', ');
     };
 
-    const myDropdown = document.getElementById('myDropdown')
-    myDropdown.addEventListener('show.bs.dropdown', event => {
-        populateChart("\"43de61f1-97f5-4aa4-b47b-218eec064cfa\"", "Month","transactions-account-a");
-        populateChart("\"92ef08f8-1a61-4de3-bd73-9cfe33838400\"", "Month","transactions-account-b");
-    })
+    $('#myDropdown li').on('click', function(){
+        populateChart("\"c68f58bd-f17e-4878-afc6-afcf36ad99f1\"", $(this).text(), 0, "transactions-account-a", "account-a-table");
+        populateChart("\"92ef08f8-1a61-4de3-bd73-9cfe33838400\"", $(this).text(), 1, "transactions-account-b", "account-b-table");
+    });
 
-    populateChart("\"43de61f1-97f5-4aa4-b47b-218eec064cfa\"", "Week","transactions-account-a");
+    populateChart("\"c68f58bd-f17e-4878-afc6-afcf36ad99f1\"", "Week", 0, "transactions-account-a", "account-a-table");
 
-    populateChart("\"92ef08f8-1a61-4de3-bd73-9cfe33838400\"", "Week","transactions-account-b");
+    populateChart("\"92ef08f8-1a61-4de3-bd73-9cfe33838400\"", "Week", 1, "transactions-account-b", "account-b-table");
 </script>
 
 <!--

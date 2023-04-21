@@ -28,10 +28,12 @@ type TransactionByItem {
 type Balance {
     income: Float
     outcome: Float
-    current: Float
+    savings: Float
+    account: String
     end: String
     start: String
     period: String
+    transactions: [Transaction]
 }
 
 type BalanceFiltered {
@@ -65,6 +67,7 @@ type ChartDataSet {
 }
 
 type Chart {
+    ids: [String]
     title: String
     labels: [String]
     datasets: [ChartDataSet]
@@ -114,6 +117,7 @@ type Query {
 
     balances(account: String): [Balance]
     balancesByPeriod(account: String, start: String, end: String): [Balance]
+    balanceById(id: String): Balance                                                                # retrieve a balance by it's id
     balanceByText(account: String, text: String): BalanceFiltered
     balanceByItem(item: String): BalanceFiltered
     balanceSummary: BalanceSummary

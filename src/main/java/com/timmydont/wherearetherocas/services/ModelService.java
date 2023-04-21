@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.info;
 
@@ -27,6 +28,8 @@ public interface ModelService<T extends Model> {
     List<T> all();
 
     List<T> all(@NonNull String account);
+
+    List<T> all(@NonNull Map<String,Object> properties);
 
     T withId(@NonNull String id);
 

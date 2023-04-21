@@ -8,8 +8,11 @@ import io.jsondb.annotation.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,15 +23,17 @@ public class Balance implements Model, Comparable<Balance> {
 
     @Id
     private String id;
-
     private String account;
+
     private float income;
     private float outcome;
-    private float current;
+    private float savings;
 
     private Date end;
     private Date start;
     private Period period;
+
+    private List<Transaction> transactions;
 
     /**
      * Required for JsonDB storage
@@ -38,31 +43,34 @@ public class Balance implements Model, Comparable<Balance> {
     /**
      * Full argument constructor, used by lombok builder
      *
-     * @param id      the balance unique id
-     * @param account the account id
-     * @param income  the income amount
-     * @param outcome the outcome amount
-     * @param current the current amount
-     * @param start   the balance start date
-     * @param end     the balance end date
-     * @param period  the balance period
+     * @param id           the balance unique id
+     * @param account      the account id
+     * @param income       the income amount
+     * @param outcome      the outcome amount
+     * @param savings      the savings amount
+     * @param start        the balance start date
+     * @param end          the balance end date
+     * @param period       the balance period
+     * @param transactions the transactions
      */
-    public Balance(String id, String account, float income, float outcome, float current, Date end, Date start, Period period) {
+    public Balance(String id, String account, float income, float outcome, float savings, Date end, Date start, Period period, List<Transaction> transactions) {
         this.id = id;
         this.end = end;
         this.start = start;
         this.period = period;
         this.income = income;
         this.outcome = outcome;
-        this.current = current;
+        this.savings = savings;
         this.account = account;
+        this.transactions = transactions;
     }
 
-    @JsonIgnore
-    public void add(float amount) {
-        if (amount >= 0) income += amount;
-        else outcome += amount;
-        current += amount;
+    public void add(Transaction transaction) {
+        if (CollectionUtils.isEmpty(transactions)) transactions = new ArrayList<>();
+        if (transaction.getAmount() < 0) outcome += transaction.getAmount();
+        else income += transaction.getAmount();
+        savings += transaction.getAmount();
+        transactions.add(transaction);
     }
 
     @JsonIgnore
@@ -82,5 +90,19 @@ public class Balance implements Model, Comparable<Balance> {
         return start.compareTo(o.getStart())
                 + end.compareTo(o.getEnd())
                 + period.compareTo(o.getPeriod());
+    }
+
+    @Override
+    public String toString() {
+        return "Balance{" +
+                "id='" + id + '\'' +
+                ", account='" + account + '\'' +
+                ", income=" + income +
+                ", outcome=" + outcome +
+                ", savings=" + savings +
+                ", end=" + end +
+                ", start=" + start +
+                ", period=" + period +
+                '}';
     }
 }

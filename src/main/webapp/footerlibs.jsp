@@ -3,42 +3,96 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 <script>
-    var transactionsSettingsA = {
-      "url": "http://localhost:9999/graphqls",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        query: "query {\r\n    transactions(account: \"43de61f1-97f5-4aa4-b47b-218eec064cfa\") {\r\n        id\r\n        item\r\n        date\r\n        amount\r\n    }\r\n}",
-        variables: {}
-      })
+
+    function populateChart(account, period, chartelement) {
+        var settings = {
+          "url": "http://localhost:9999/graphqls",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            query: "query {\r\n    accountBalanceChart(account: " + account + ", period: " + period + ") {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
+            variables: {}
+          })
+        };
+
+        $.ajax(settings).done(function (response) {
+            var ctx = document.getElementById(chartelement).getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                  labels: response.data.accountBalanceChart.labels,
+                  datasets: [
+                  {
+                    label: response.data.accountBalanceChart.datasets[1].label,
+                    borderColor: response.data.accountBalanceChart.datasets[1].backgroundColor,
+                    backgroundColor: transparent(response.data.accountBalanceChart.datasets[1].backgroundColor, 0.5),
+                    fill: true,
+                    tension: 0.4,
+                    data: response.data.accountBalanceChart.datasets[1].data,
+                    pointRadius: 0,
+                    pointHitRadius: 5,
+                  }, {
+                     label: response.data.accountBalanceChart.datasets[0].label,
+                     borderColor: response.data.accountBalanceChart.datasets[0].backgroundColor,
+                     backgroundColor: transparent(response.data.accountBalanceChart.datasets[0].backgroundColor, 0.5),
+                     fill: true,
+                     tension: 0.4,
+                     data: response.data.accountBalanceChart.datasets[0].data,
+                    pointRadius: 0,
+                    pointHitRadius: 5,
+                   }, {
+                   label: response.data.accountBalanceChart.datasets[2].label,
+                   borderColor: response.data.accountBalanceChart.datasets[2].backgroundColor,
+                   backgroundColor: transparent(response.data.accountBalanceChart.datasets[2].backgroundColor, 0.5),
+                   fill: true,
+                   tension: 0.4,
+                   data: response.data.accountBalanceChart.datasets[2].data,
+                    pointRadius: 0,
+                    pointHitRadius: 5,
+                 }, {
+                    label: response.data.accountBalanceChart.datasets[3].label,
+                    borderColor: response.data.accountBalanceChart.datasets[3].backgroundColor,
+                    backgroundColor: transparent(response.data.accountBalanceChart.datasets[3].backgroundColor, 0.5),
+                    fill: true,
+                    tension: 0.4,
+                    data: response.data.accountBalanceChart.datasets[3].data,
+                     pointRadius: 0,
+                     pointHitRadius: 5,
+                  }],
+                },
+              options: {
+                  plugins: {
+                    title: {
+                      display: true,
+                      text: response.data.accountBalanceChart.title
+                    },
+                  },
+                  responsive: true
+              }});
+        });
+    }
+
+    function transparent(color, alpha) {
+        var teta = color.split(', ');
+        teta[teta.length - 1] = alpha + ')'
+        return teta.join(', ');
     };
 
-    $.ajax(transactionsSettingsA).done(function (response) {
-      console.log(response);
-    });
+    const myDropdown = document.getElementById('myDropdown')
+    myDropdown.addEventListener('show.bs.dropdown', event => {
+        populateChart("\"43de61f1-97f5-4aa4-b47b-218eec064cfa\"", "Month","transactions-account-a");
+        populateChart("\"92ef08f8-1a61-4de3-bd73-9cfe33838400\"", "Month","transactions-account-b");
+    })
 
-    var transactionsSettingsB = {
-      "url": "http://localhost:9999/graphqls",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        query: "query {\r\n    transactions(account: \"92ef08f8-1a61-4de3-bd73-9cfe33838400\") {\r\n        id\r\n        item\r\n        date\r\n        amount\r\n    }\r\n}",
-        variables: {}
-      })
-    };
+    populateChart("\"43de61f1-97f5-4aa4-b47b-218eec064cfa\"", "Week","transactions-account-a");
 
-    $.ajax(transactionsSettingsB).done(function (response) {
-      console.log(response);
-    });
+    populateChart("\"92ef08f8-1a61-4de3-bd73-9cfe33838400\"", "Week","transactions-account-b");
 </script>
 
-
+<!--
 <script>
 
 
@@ -80,12 +134,6 @@ $.ajax(settings30).done(function (response) {
   $(".cmp_median-balance").text(response.data.balanceSummary.median + " EUR");
   $(".cmp_average-balance").text(response.data.balanceSummary.average + " EUR");
 });
-
-function transparent(color, alpha) {
-    var teta = color.split(', ');
-    teta[teta.length - 1] = alpha + ')'
-    return teta.join(', ');
-};
 
 var settings5 = {
   "url": "http://localhost:9999/graphqls",
@@ -366,3 +414,5 @@ options: {
           }});
     });
 </script>
+
+-->

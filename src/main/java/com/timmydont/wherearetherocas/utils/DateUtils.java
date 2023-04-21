@@ -53,7 +53,7 @@ public class DateUtils {
         return null;
     }
 
-    public static String toString(@NonNull Date date) {
+    public static synchronized String toString(@NonNull Date date) {
         return format.format(date);
     }
 

@@ -92,10 +92,10 @@ input Account {
     currency: String
 }
 
-enum PeriodType {
-    DAY,
-    WEEK,
-    MONTH
+enum Period {
+    Day,
+    Week,
+    Month
 }
 
 # Define queries provided
@@ -119,7 +119,7 @@ type Query {
     balanceSummary: BalanceSummary
 
     ## this are chart queries
-    accountBalanceChart(account: String, period: PeriodType): Chart                                 # retrieve a bar chart of account balance for each period of time, a period of time can be Day, Week, Month
+    accountBalanceChart(account: String, period: Period): Chart                                 # retrieve a bar chart of account balance for each period of time, a period of time can be Day, Week, Month
 
     chartBalance: Chart
     chartBarBalance: Chart

@@ -6,8 +6,10 @@ import lombok.NonNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
@@ -38,6 +40,11 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
     @Override
     public List<T> all(String account) {
         return filter(account, all());
+    }
+
+    @Override
+    public List<T> all(Map<String, Object> properties) {
+        return filter(properties, all());
     }
 
     @Override
@@ -80,6 +87,28 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
      * @return
      */
     protected List<T> filter(String account, List<T> items) {
-        return items.stream().filter(item -> item.contains("account", account)).collect(Collectors.toList());
+        return items.stream()
+                .filter(item -> item.contains("account", account))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @param properties
+     * @param items
+     * @return
+     */
+    protected List<T> filter(Map<String, Object> properties, List<T> items) {
+/*        List<T> filtered = new ArrayList<>();
+        items.forEach(item -> {
+            boolean filter = properties.keySet().stream().anyMatch(key -> !item.contains(key, properties.get(key)));
+            if (!filter) filtered.add(item);
+        });
+        return filtered;*/
+        return items.stream()
+                .filter(item -> properties.keySet()
+                        .stream()
+                        .allMatch(key -> item.contains(key, properties.get(key))))
+                .collect(Collectors.toList());
     }
 }

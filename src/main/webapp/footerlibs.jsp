@@ -4,6 +4,43 @@
 
 <script>
 
+    function populateSummary(account, period) {
+        var settings = {
+          "url": "http://localhost:9999/graphqls",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            query: "query {\r\n    balanceSummary(account: " + account + ", period: " + period + ") {\r\n        balance {\r\n            min\r\n            max\r\n            sum\r\n            median\r\n            average\r\n        }\r\n        income {\r\n            min\r\n            max\r\n            sum\r\n            median\r\n            average\r\n        }\r\n        outcome {\r\n            min\r\n            max\r\n            sum\r\n            median\r\n            average\r\n        }\r\n    }\r\n}",
+            variables: {}
+          })
+        };
+
+        $.ajax(settings).done(function (response) {
+          $(".a-total-income").text(response.data.balanceSummary.income.sum);
+          $(".a-total-outcome").text(response.data.balanceSummary.outcome.sum);
+          $(".a-total-savings").text(response.data.balanceSummary.balance.sum);
+          $(".a-total-income-min").text(response.data.balanceSummary.income.min);
+          $(".a-total-outcome-min").text(response.data.balanceSummary.outcome.min);
+          $(".a-total-savings-min").text(response.data.balanceSummary.balance.min);
+          $(".a-total-income-max").text(response.data.balanceSummary.income.max);
+          $(".a-total-outcome-max").text(response.data.balanceSummary.outcome.max);
+          $(".a-total-savings-max").text(response.data.balanceSummary.balance.max);
+          $(".a-total-income-median").text(response.data.balanceSummary.income.median);
+          $(".a-total-outcome-median").text(response.data.balanceSummary.outcome.median);
+          $(".a-total-savings-median").text(response.data.balanceSummary.balance.median);
+          $(".a-total-income-average").text(response.data.balanceSummary.income.average);
+          $(".a-total-outcome-average").text(response.data.balanceSummary.outcome.average);
+          $(".a-total-savings-average").text(response.data.balanceSummary.balance.average);
+        });
+    };
+
+</script>
+
+<script>
+
     var watrCharts = [];
 
     function populateTable(item, tableelement) {
@@ -15,7 +52,7 @@
             "Content-Type": "application/json"
           },
           "data": JSON.stringify({
-            query: 'query {\r\n    balanceById(id: \"' + item + '\") {\r\n        income\r\n        outcome\r\n        start\r\n        end\r\n        period\r\n        transactions {\r\n            item\r\n            amount\r\n        }\r\n    }\r\n}',
+            query: 'query {\r\n    balanceById(id: \"' + item + '\") {\r\n        income\r\n        outcome\r\n        start\r\n        end\r\n        period\r\n        transactions {\r\n            item\r\n            date\r\n            amount\r\n        }\r\n    }\r\n}',
             variables: {}
           })
         };
@@ -27,10 +64,12 @@
           const table = document.getElementById(tableelement);
           response.data.balanceById.transactions.forEach(item => {
               let row = table.insertRow();
-              let date = row.insertCell(0);
-              date.innerHTML = item.item;
-              let name = row.insertCell(1);
-              name.innerHTML = item.amount;
+              let itemtext = row.insertCell(0);
+              itemtext.innerHTML = item.item;
+              let date = row.insertCell(1);
+              date.innerHTML = item.date;
+              let amount = row.insertCell(2);
+              amount.innerHTML = item.amount;
           })
         });
     };
@@ -122,13 +161,13 @@
     };
 
     $('#myDropdown li').on('click', function(){
+        populateSummary("\"c68f58bd-f17e-4878-afc6-afcf36ad99f1\"", $(this).text());
         populateChart("\"c68f58bd-f17e-4878-afc6-afcf36ad99f1\"", $(this).text(), 0, "transactions-account-a", "account-a-table");
-        populateChart("\"92ef08f8-1a61-4de3-bd73-9cfe33838400\"", $(this).text(), 1, "transactions-account-b", "account-b-table");
     });
 
+    populateSummary("\"c68f58bd-f17e-4878-afc6-afcf36ad99f1\"", "Week");
     populateChart("\"c68f58bd-f17e-4878-afc6-afcf36ad99f1\"", "Week", 0, "transactions-account-a", "account-a-table");
 
-    populateChart("\"92ef08f8-1a61-4de3-bd73-9cfe33838400\"", "Week", 1, "transactions-account-b", "account-b-table");
 </script>
 
 <!--

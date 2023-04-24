@@ -27,7 +27,6 @@ public class Balance implements Model, Comparable<Balance> {
 
     private float income;
     private float outcome;
-    private float savings;
 
     private Date end;
     private Date start;
@@ -38,7 +37,8 @@ public class Balance implements Model, Comparable<Balance> {
     /**
      * Required for JsonDB storage
      */
-    public Balance() { }
+    public Balance() {
+    }
 
     /**
      * Full argument constructor, used by lombok builder
@@ -47,20 +47,18 @@ public class Balance implements Model, Comparable<Balance> {
      * @param account      the account id
      * @param income       the income amount
      * @param outcome      the outcome amount
-     * @param savings      the savings amount
      * @param start        the balance start date
      * @param end          the balance end date
      * @param period       the balance period
      * @param transactions the transactions
      */
-    public Balance(String id, String account, float income, float outcome, float savings, Date end, Date start, Period period, List<Transaction> transactions) {
+    public Balance(String id, String account, float income, float outcome, Date end, Date start, Period period, List<Transaction> transactions) {
         this.id = id;
         this.end = end;
         this.start = start;
         this.period = period;
         this.income = income;
         this.outcome = outcome;
-        this.savings = savings;
         this.account = account;
         this.transactions = transactions;
     }
@@ -69,7 +67,6 @@ public class Balance implements Model, Comparable<Balance> {
         if (CollectionUtils.isEmpty(transactions)) transactions = new ArrayList<>();
         if (transaction.getAmount() < 0) outcome += transaction.getAmount();
         else income += transaction.getAmount();
-        savings += transaction.getAmount();
         transactions.add(transaction);
     }
 
@@ -99,7 +96,6 @@ public class Balance implements Model, Comparable<Balance> {
                 ", account='" + account + '\'' +
                 ", income=" + income +
                 ", outcome=" + outcome +
-                ", savings=" + savings +
                 ", end=" + end +
                 ", start=" + start +
                 ", period=" + period +

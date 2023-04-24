@@ -50,17 +50,19 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
             List<String> ids = Collections.synchronizedList(new ArrayList<>());
             List<String> labels = Collections.synchronizedList(new ArrayList<>());
             // create chart datasets
-            ChartDataSet income = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Income);
-            ChartDataSet outcome = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Outcome);
+            ChartDataSet incomes = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Income);
             ChartDataSet savings = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Savings);
+            ChartDataSet outcomes = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Outcome);
             ChartDataSet earnings = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Earnings);
             // populate chart datasets
+            float rocas = 0f;
             for (Balance item : items) {
                 ids.add(item.getId());
                 labels.add(DateUtils.toString(item.getStart()));
-                income.add(item.getIncome());
-                outcome.add(item.getOutcome());
-                savings.add(item.getSavings());
+                rocas += item.earnings();
+                incomes.add(item.getIncome());
+                savings.add(rocas);
+                outcomes.add(item.getOutcome());
                 earnings.add(item.earnings());
             }
             // create and return chart
@@ -68,7 +70,47 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
                     .ids(ids)
                     .title("Balance Chart")
                     .labels(labels)
-                    .datasets(Arrays.asList(income, outcome, earnings, savings))
+                    .datasets(Arrays.asList(incomes, outcomes, earnings, savings))
+                    .build();
+        };
+    }
+
+    /**
+     * Retrieve a balance summary for a specific account
+     *
+     * @return a balance summary
+     */
+    public DataFetcher<BalanceSummary> fetchBalanceSummary() {
+        return dataFetchingEnvironment -> {
+            // create the properties map to query for balances data
+            Map<String, Object> properties = getArgumentsMap(dataFetchingEnvironment,
+                    new ImmutablePair("period", Period.class),
+                    new ImmutablePair("account", String.class));
+            // query for balances data
+            List<Balance> items = modelService.all(properties);
+            if (CollectionUtils.isEmpty(items)) {
+                error(logger, "unable to retrieve balances from db with properties '%s'", properties);
+                return null;
+            }
+            //
+            Float[] balance = new Float[items.size()];
+            Float[] incomes = new Float[items.size()];
+            Float[] outcomes = new Float[items.size()];
+            for (int i = 0; i < items.size(); i++) {
+                balance[i] = items.get(i).earnings();
+                incomes[i] = items.get(i).getIncome();
+                outcomes[i] = items.get(i).getOutcome();
+            }
+            return BalanceSummary.builder()
+                    .balance(Statistics.builder()
+                            .build()
+                            .populate(balance))
+                    .income(Statistics.builder()
+                            .build()
+                            .populate(incomes))
+                    .outcome(Statistics.builder()
+                            .build()
+                            .populate(outcomes))
                     .build();
         };
     }
@@ -104,37 +146,6 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
                     .title("Balance Chart")
                     .labels(labels)
                     .datasets(Arrays.asList(income, outcome, savings))
-                    .build();
-        };
-    }
-
-    public DataFetcher<BalanceSummary> fetchBalanceSummary() {
-        return dataFetchingEnvironment -> {
-            List<Balance> items = modelService.all("");
-            if (CollectionUtils.isEmpty(items)) {
-                error(logger, "unable to retrieve balances from db.");
-                return null;
-            }
-            //
-            Float[] values = new Float[items.size()];
-            Float[] incomes = new Float[items.size()];
-            Float[] outcomes = new Float[items.size()];
-            for (int i = 0; i < items.size(); i++) {
-                float value = items.get(i).earnings();
-                values[i] = value;
-                incomes[i] = items.get(i).getIncome();
-                outcomes[i] = items.get(i).getOutcome();
-            }
-            return BalanceSummary.builder()
-                    .balance(Statistics.builder()
-                            .build()
-                            .populate(values))
-                    .income(Statistics.builder()
-                            .build()
-                            .populate(incomes))
-                    .outcome(Statistics.builder()
-                            .build()
-                            .populate(outcomes))
                     .build();
         };
     }

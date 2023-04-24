@@ -115,15 +115,15 @@ type Query {
     transactionsByItemByPeriod(start: String, end: String, item: String): TransactionByItem
     transactionsByItemsByPeriod(account: String, start: String, end: String): [TransactionByItem]
 
-    balances(account: String): [Balance]
+    balances(account: String): [Balance]                                                            # retrieve balances
     balancesByPeriod(account: String, start: String, end: String): [Balance]
     balanceById(id: String): Balance                                                                # retrieve a balance by it's id
     balanceByText(account: String, text: String): BalanceFiltered
     balanceByItem(item: String): BalanceFiltered
-    balanceSummary: BalanceSummary
+    balanceSummary(account: String, period: Period): BalanceSummary                                 # retrieve a balance summary of the account
 
     ## this are chart queries
-    accountBalanceChart(account: String, period: Period): Chart                                 # retrieve a bar chart of account balance for each period of time, a period of time can be Day, Week, Month
+    accountBalanceChart(account: String, period: Period): Chart                                     # retrieve a bar chart of account balance for each period of time, a period of time can be Day, Week, Month
 
     chartBalance: Chart
     chartBarBalance: Chart

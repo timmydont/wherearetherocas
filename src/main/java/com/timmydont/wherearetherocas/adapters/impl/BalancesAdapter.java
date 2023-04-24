@@ -18,7 +18,6 @@ public class BalancesAdapter implements TransactionsAdapter<Balance> {
 
     public List<Balance> adapt(List<Transaction> transactions, Period period) {
         Map<Integer, Balance> balanceMap = new HashMap<>();
-        float savings = 0f;
         for (Transaction i : transactions) {
             int asCalendar = period.getAsCalendar(i.getDate());
             Balance balance = balanceMap.containsKey(asCalendar) ?
@@ -28,12 +27,10 @@ public class BalancesAdapter implements TransactionsAdapter<Balance> {
                             .account(i.getAccount())
                             .income(0f)
                             .outcome(0f)
-                            .savings(savings)
                             .period(period)
                             .end(period.getEnd(i.getDate()))
                             .start(period.getStart(i.getDate()))
                             .build();
-            savings += i.getAmount();
             balance.add(i);
             balanceMap.put(asCalendar, balance);
         }

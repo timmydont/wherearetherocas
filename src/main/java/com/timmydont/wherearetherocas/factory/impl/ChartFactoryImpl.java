@@ -20,19 +20,19 @@ public class ChartFactoryImpl implements ChartFactory {
         chartDataSetMap = new HashMap<>();
         chartDataSetMap.put(ChartDataSetType.Income, ChartDataSet.builder()
                 .label("Income")
-                .backgroundColor("rgba(19, 111, 99, 1)")
+                .backgroundColor("rgba(81, 152, 114, 1)")
                 .build());
         chartDataSetMap.put(ChartDataSetType.Outcome, ChartDataSet.builder()
                 .label("Outcome")
-                .backgroundColor("rgba(208, 0, 0, 1)")
+                .backgroundColor("rgba(236, 78, 32, 1)")
                 .build());
         chartDataSetMap.put(ChartDataSetType.Earnings, ChartDataSet.builder()
                 .label("Earnings")
-                .backgroundColor("rgba(125, 251, 0, 1)")
+                .backgroundColor("rgba(255, 208, 70, 1)")
                 .build());
         chartDataSetMap.put(ChartDataSetType.Savings, ChartDataSet.builder()
                 .label("Savings")
-                .backgroundColor("rgba(208, 208, 0, 1)")
+                .backgroundColor("rgba(9, 64, 116, 1)")
                 .build());
     }
 

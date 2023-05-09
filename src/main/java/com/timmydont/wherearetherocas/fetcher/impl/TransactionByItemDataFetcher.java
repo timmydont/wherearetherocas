@@ -141,7 +141,7 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
             }
             // create single dataset chart and populate
             Map<String, Float> asMap = byItem.asMap();
-            Chart chart = chartFactory.createSingleDataSetChart("item");
+            Chart chart = chartFactory.createSingleDataSetChart(byItem.getItem());
             asMap.keySet().forEach(key -> {
                 chart.addSingleDataSet(key, asMap.get(key));
             });

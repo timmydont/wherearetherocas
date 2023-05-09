@@ -41,6 +41,8 @@
 
 <canvas id="byitems-account-a-item"></canvas>
 
+<canvas id="byitems-account-a-text"></canvas>
+
 <div class="row">
     <div class="col-6">
         <div class="byitems-account-a-table-grouped" style="margin-top: 10px;">

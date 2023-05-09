@@ -41,8 +41,41 @@
         });
     };
 
+    var textChart;
+
     function populateByTextChart(account, text) {
-        alert(account + ' - ' + text);
+        var settings = {
+          "url": "http://localhost:9999/graphqls",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            query: 'query {\r\n    accountByTextChart(account: \"c68f58bd-f17e-4878-afc6-afcf36ad99f1\", text: \"' + text + '\") {\r\n        title\r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}',
+            variables: {}
+          })
+        };
+
+        $.ajax(settings).done(function (response) {
+            if(textChart) textChart.destroy();
+            var ctx = document.getElementById("byitems-account-a-text").getContext('2d');
+            textChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: response.data.accountByTextChart.labels,
+                    datasets: response.data.accountByTextChart.datasets,
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: response.data.accountByTextChart.title
+                        },
+                    },
+                responsive: true
+            }});
+        });
     };
 
     function populateByItemTable(itemid, tableelement) {

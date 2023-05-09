@@ -4,10 +4,10 @@ import com.timmydont.wherearetherocas.factory.ChartFactory;
 import com.timmydont.wherearetherocas.fetcher.AbstractModelDataFetcher;
 import com.timmydont.wherearetherocas.models.Balance;
 import com.timmydont.wherearetherocas.models.BalanceSummary;
-import com.timmydont.wherearetherocas.models.enums.Period;
 import com.timmydont.wherearetherocas.models.Statistics;
 import com.timmydont.wherearetherocas.models.chart.Chart;
 import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import com.timmydont.wherearetherocas.services.ModelService;
 import com.timmydont.wherearetherocas.utils.DateUtils;
 import graphql.schema.DataFetcher;
@@ -24,11 +24,8 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    private final ChartFactory chartFactory;
-
     public BalanceDataFetcher(ModelService<Balance> modelService, ChartFactory chartFactory) {
-        super(modelService);
-        this.chartFactory = chartFactory;
+        super(modelService, chartFactory);
     }
 
     /**

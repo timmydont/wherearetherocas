@@ -52,8 +52,8 @@ public class WiringService implements GraphqlWiringService {
         chartDataFetcher = new ChartDataFetcher(dbService);
         accountDataFetcher = new AccountDataFetcher(serviceFactory.getService(Account.class));
         balanceDataFetcher = new BalanceDataFetcher(serviceFactory.getService(Balance.class), chartFactory);
-        transactionDataFetcher = new TransactionDataFetcher(serviceFactory.getService(Transaction.class));
-        transactionByItemDataFetcher = new TransactionByItemDataFetcher(serviceFactory.getService(TransactionByItem.class));
+        transactionDataFetcher = new TransactionDataFetcher(serviceFactory.getService(Transaction.class), chartFactory);
+        transactionByItemDataFetcher = new TransactionByItemDataFetcher(serviceFactory.getService(TransactionByItem.class), chartFactory);
     }
 
     @Override

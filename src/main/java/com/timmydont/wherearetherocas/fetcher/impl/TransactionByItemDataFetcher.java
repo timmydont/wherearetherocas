@@ -1,11 +1,11 @@
 package com.timmydont.wherearetherocas.fetcher.impl;
 
+import com.timmydont.wherearetherocas.factory.ChartFactory;
 import com.timmydont.wherearetherocas.fetcher.AbstractModelDataFetcher;
 import com.timmydont.wherearetherocas.models.Statistics;
 import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
 import com.timmydont.wherearetherocas.models.chart.Chart;
-import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
 import com.timmydont.wherearetherocas.models.chart.ChartPie;
 import com.timmydont.wherearetherocas.models.chart.ChartPieDataSet;
 import com.timmydont.wherearetherocas.models.enums.DataType;
@@ -14,8 +14,6 @@ import com.timmydont.wherearetherocas.services.ModelService;
 import com.timmydont.wherearetherocas.utils.DataStructureUtils;
 import graphql.schema.DataFetcher;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -28,18 +26,18 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    public TransactionByItemDataFetcher(ModelService<TransactionByItem> modelService) {
-        super(modelService);
+    public TransactionByItemDataFetcher(ModelService<TransactionByItem> modelService, ChartFactory chartFactory) {
+        super(modelService, chartFactory);
     }
 
     /**
-     * @return
+     * Return a transaction by item object from a given item
+     *
+     * @return a transaction by item
      */
     public DataFetcher<TransactionByItem> fetchByItem() {
         return dataFetchingEnvironment -> {
             String item = getArgument(dataFetchingEnvironment, "item", String.class);
-            // check if request argument is valid
-            if (StringUtils.isBlank(item)) return null;
             // get transactions by specific item
             TransactionByItem byItem = modelService.withId(item);
             if (byItem == null) {
@@ -51,7 +49,9 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
     }
 
     /**
-     * @return
+     * Return a transaction by item object for a given item for a period of time
+     *
+     * @return a transaction by item
      */
     public DataFetcher<TransactionByItem> fetchByItemByPeriod() {
         return dataFetchingEnvironment -> {
@@ -75,7 +75,9 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
     }
 
     /**
-     * @return
+     * Return a transaction by items list for a given period of time
+     *
+     * @return a transaction by items list
      */
     public DataFetcher<List<TransactionByItem>> fetchByItemsByPeriod() {
         return dataFetchingEnvironment -> {
@@ -101,47 +103,14 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
     }
 
     /**
-     * @return
-     */
-    public DataFetcher<Chart> fetchByItemChart() {
-        return dataFetchingEnvironment -> {
-            // get item from request
-            String item = getArgument(dataFetchingEnvironment, "item", String.class);
-            if (!ObjectUtils.allNotNull(item)) return null;
-            // get transactions by item for the item passed as argument
-            TransactionByItem byItem = modelService.withId(item);
-            if (Objects.isNull(byItem)) {
-                error(logger, "unable to retrieve transactions by items from db for item '%s'.", item);
-                return null;
-            }
-            // create chart dataset
-            ChartDataSet dataSet = ChartDataSet.builder()
-                    .label("By Item " + item)
-                    .backgroundColor("rgba(1, 2, 114, 1)")
-                    .build();
-            List<String> labels = new ArrayList<>();
-            Map<String, Float> asMap = byItem.asMap();
-            asMap.keySet().forEach(key -> {
-                labels.add(key);
-                dataSet.add(asMap.get(key));
-            });
-            // create chart
-            return Chart.builder()
-                    .title("By Item " + item)
-                    .labels(labels)
-                    .datasets(Arrays.asList(dataSet))
-                    .build();
-        };
-    }
-
-    /**
-     * @return
+     * Retrieve statistic balance information for a given item
+     *
+     * @return a statistics balance
      */
     public DataFetcher<Statistics> fetchBalanceByItem() {
         return dataFetchingEnvironment -> {
             // get item from request
             String item = getArgument(dataFetchingEnvironment, "item", String.class);
-            if (!ObjectUtils.allNotNull(item)) return null;
             // get transactions by item for the item passed as argument
             TransactionByItem byItem = modelService.withId(item);
             if (Objects.isNull(byItem)) {
@@ -156,43 +125,56 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
     }
 
     /**
-     * @return
+     * Retrieve a chart of transactions for a given item
+     *
+     * @return a chart
+     */
+    public DataFetcher<Chart> fetchByItemChart() {
+        return dataFetchingEnvironment -> {
+            // get item from request
+            String item = getArgument(dataFetchingEnvironment, "item", String.class);
+            // get transactions by item for the item passed as argument
+            TransactionByItem byItem = modelService.withId(item);
+            if (Objects.isNull(byItem)) {
+                error(logger, "unable to retrieve transactions by items from db for item '%s'.", item);
+                return null;
+            }
+            // create single dataset chart and populate
+            Map<String, Float> asMap = byItem.asMap();
+            Chart chart = chartFactory.createSingleDataSetChart("item");
+            asMap.keySet().forEach(key -> {
+                chart.addSingleDataSet(key, asMap.get(key));
+            });
+            return chart;
+        };
+    }
+
+    /**
+     * Retrieve a chart of transactions by items for a given data type and account
+     *
+     * @return a chart
      */
     public DataFetcher<Chart> fetchAccountByItemsChart() {
         return dataFetchingEnvironment -> {
             // get account and data type from request
             DataType type = getArgument(dataFetchingEnvironment, "type", DataType.class);
             String account = getArgument(dataFetchingEnvironment, "account", String.class);
-            if (!ObjectUtils.allNotNull(account)) return null;
             // get all transactions by items
             List<TransactionByItem> items = modelService.all(account);
             if (CollectionUtils.isEmpty(items)) {
                 error(logger, "unable to retrieve transactions by items from db for account '%s'.", account);
                 return null;
             }
-            //
+            // sort the transactions by items
             Collections.sort(items);
-            //
-            List<String> ids = new ArrayList<>();
-            List<String> labels = new ArrayList<>();
-            // create chart datasets
-            ChartDataSet dataSet = ChartDataSet.builder()
-                    .label("By Items")
-                    .backgroundColor("rgba(81, 152, 114, 1)")
-                    .build();
+            // create single dataset chart and populate
+            Chart chart = chartFactory.createSingleDataSetChart("By Items");
             for (TransactionByItem item : items) {
                 if (!type.equals(DataType.All) && !item.getType().equals(type)) continue;
-                ids.add(item.getId());
-                labels.add(item.getItem());
-                dataSet.add(item.getAmount());
+                // add data to chart
+                chart.addSingleDataSet(item.getId(), item.getItem(), item.getAmount());
             }
-            //
-            return Chart.builder()
-                    .ids(ids)
-                    .title("By Items Chart")
-                    .labels(labels)
-                    .datasets(Arrays.asList(dataSet))
-                    .build();
+            return chart;
         };
     }
 

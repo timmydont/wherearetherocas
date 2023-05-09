@@ -74,20 +74,20 @@ public class WiringService implements GraphqlWiringService {
                         .dataFetcher("transactionsByItemsByPeriod", transactionByItemDataFetcher.fetchByItemsByPeriod())
                         // balance queries
                         .dataFetcher("balances", balanceDataFetcher.fetchAll())
-                        .dataFetcher("balancesByPeriod", balanceDataFetcher.fetchByPeriod())
-
                         .dataFetcher("balanceById", balanceDataFetcher.fetchById())
+                        .dataFetcher("balancesByPeriod", balanceDataFetcher.fetchByPeriod())
+                        .dataFetcher("balanceByItem", transactionByItemDataFetcher.fetchBalanceByItem())
                         .dataFetcher("balanceSummary", balanceDataFetcher.fetchBalanceSummary())
+
+                        .dataFetcher("accountByTextChart", transactionDataFetcher.fetchByTextChart())
+                        .dataFetcher("accountByItemChart", transactionByItemDataFetcher.fetchByItemChart())
+                        .dataFetcher("accountByItemsChart", transactionByItemDataFetcher.fetchAccountByItemsChart())
                         .dataFetcher("accountBalanceChart", balanceDataFetcher.fetchAccountBalanceChart())
 
                         .dataFetcher("balanceByText", transactionDataFetcher.fetchBalanceByText())
-                        .dataFetcher("balanceByItem", transactionByItemDataFetcher.fetchBalanceByItem())
                         // chart queries
-                        .dataFetcher("chartBalance", balanceDataFetcher.fetchBalanceChart())
-                        .dataFetcher("chartBarBalance", balanceDataFetcher.fetchBalanceChart())
                         .dataFetcher("chartExpensesByPeriodByItem", transactionByItemDataFetcher.fetchPieChart())
 
-                        //.dataFetcher("chartBarByPeriodByItem", chartDataFetcher.fetchChartDayItems())
                         .dataFetcher("chartBarByWeekByItem", chartDataFetcher.fetchAnotherOne()))
                 .build();
     }

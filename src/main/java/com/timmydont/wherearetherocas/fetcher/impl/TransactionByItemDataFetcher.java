@@ -1,12 +1,15 @@
 package com.timmydont.wherearetherocas.fetcher.impl;
 
 import com.timmydont.wherearetherocas.fetcher.AbstractModelDataFetcher;
-import com.timmydont.wherearetherocas.models.BalanceFiltered;
-import com.timmydont.wherearetherocas.models.Period;
+import com.timmydont.wherearetherocas.models.Statistics;
 import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
+import com.timmydont.wherearetherocas.models.chart.Chart;
+import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
 import com.timmydont.wherearetherocas.models.chart.ChartPie;
 import com.timmydont.wherearetherocas.models.chart.ChartPieDataSet;
+import com.timmydont.wherearetherocas.models.enums.DataType;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import com.timmydont.wherearetherocas.services.ModelService;
 import com.timmydont.wherearetherocas.utils.DataStructureUtils;
 import graphql.schema.DataFetcher;
@@ -29,6 +32,9 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
         super(modelService);
     }
 
+    /**
+     * @return
+     */
     public DataFetcher<TransactionByItem> fetchByItem() {
         return dataFetchingEnvironment -> {
             String item = getArgument(dataFetchingEnvironment, "item", String.class);
@@ -44,13 +50,15 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
         };
     }
 
+    /**
+     * @return
+     */
     public DataFetcher<TransactionByItem> fetchByItemByPeriod() {
         return dataFetchingEnvironment -> {
             // get item start and end date from request
             Date end = getArgument(dataFetchingEnvironment, "end", Date.class);
             Date start = getArgument(dataFetchingEnvironment, "start", Date.class);
             String item = getArgument(dataFetchingEnvironment, "item", String.class);
-            if (!ObjectUtils.allNotNull(item, start, end)) return null;
             // get a specific transaction by item
             TransactionByItem transactionByItem = modelService.withId(item);
             if (transactionByItem == null) {
@@ -66,13 +74,15 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
         };
     }
 
+    /**
+     * @return
+     */
     public DataFetcher<List<TransactionByItem>> fetchByItemsByPeriod() {
         return dataFetchingEnvironment -> {
             // get item start and end date from request
             Date end = getArgument(dataFetchingEnvironment, "end", Date.class);
             Date start = getArgument(dataFetchingEnvironment, "start", Date.class);
             String account = getArgument(dataFetchingEnvironment, "account", String.class);
-            if (!ObjectUtils.allNotNull(start, end, account)) return null;
             // get all transactions by item
             List<TransactionByItem> items = modelService.all(account);
             if (CollectionUtils.isEmpty(items)) {
@@ -90,24 +100,99 @@ public class TransactionByItemDataFetcher extends AbstractModelDataFetcher<Trans
         };
     }
 
-    public DataFetcher<BalanceFiltered> fetchBalanceByItem() {
+    /**
+     * @return
+     */
+    public DataFetcher<Chart> fetchByItemChart() {
         return dataFetchingEnvironment -> {
+            // get item from request
             String item = getArgument(dataFetchingEnvironment, "item", String.class);
-            // check if item argument is valid
             if (!ObjectUtils.allNotNull(item)) return null;
-            // get transaction by item
-            TransactionByItem byItem = modelService.withId(item);//TODO BROKEN
-            if (byItem == null) {
-                error(logger, "unable to retrieve transaction by item '%s'", item);
+            // get transactions by item for the item passed as argument
+            TransactionByItem byItem = modelService.withId(item);
+            if (Objects.isNull(byItem)) {
+                error(logger, "unable to retrieve transactions by items from db for item '%s'.", item);
                 return null;
             }
-            // create balance filtered and populate with data
-            BalanceFiltered balance = BalanceFiltered.builder()
-                    .item(item)
+            // create chart dataset
+            ChartDataSet dataSet = ChartDataSet.builder()
+                    .label("By Item " + item)
+                    .backgroundColor("rgba(1, 2, 114, 1)")
                     .build();
-            byItem.getTransactions()
-                    .forEach(i -> balance.add(i.getAmount(), i.getDate()));
-            return balance;
+            List<String> labels = new ArrayList<>();
+            Map<String, Float> asMap = byItem.asMap();
+            asMap.keySet().forEach(key -> {
+                labels.add(key);
+                dataSet.add(asMap.get(key));
+            });
+            // create chart
+            return Chart.builder()
+                    .title("By Item " + item)
+                    .labels(labels)
+                    .datasets(Arrays.asList(dataSet))
+                    .build();
+        };
+    }
+
+    /**
+     * @return
+     */
+    public DataFetcher<Statistics> fetchBalanceByItem() {
+        return dataFetchingEnvironment -> {
+            // get item from request
+            String item = getArgument(dataFetchingEnvironment, "item", String.class);
+            if (!ObjectUtils.allNotNull(item)) return null;
+            // get transactions by item for the item passed as argument
+            TransactionByItem byItem = modelService.withId(item);
+            if (Objects.isNull(byItem)) {
+                error(logger, "unable to retrieve transactions by items from db for item '%s'.", item);
+                return null;
+            }
+            // create statistics object and populate with transactions data
+            return Statistics.builder()
+                    .build()
+                    .populate(byItem.asArray());
+        };
+    }
+
+    /**
+     * @return
+     */
+    public DataFetcher<Chart> fetchAccountByItemsChart() {
+        return dataFetchingEnvironment -> {
+            // get account and data type from request
+            DataType type = getArgument(dataFetchingEnvironment, "type", DataType.class);
+            String account = getArgument(dataFetchingEnvironment, "account", String.class);
+            if (!ObjectUtils.allNotNull(account)) return null;
+            // get all transactions by items
+            List<TransactionByItem> items = modelService.all(account);
+            if (CollectionUtils.isEmpty(items)) {
+                error(logger, "unable to retrieve transactions by items from db for account '%s'.", account);
+                return null;
+            }
+            //
+            Collections.sort(items);
+            //
+            List<String> ids = new ArrayList<>();
+            List<String> labels = new ArrayList<>();
+            // create chart datasets
+            ChartDataSet dataSet = ChartDataSet.builder()
+                    .label("By Items")
+                    .backgroundColor("rgba(81, 152, 114, 1)")
+                    .build();
+            for (TransactionByItem item : items) {
+                if (!type.equals(DataType.All) && !item.getType().equals(type)) continue;
+                ids.add(item.getId());
+                labels.add(item.getItem());
+                dataSet.add(item.getAmount());
+            }
+            //
+            return Chart.builder()
+                    .ids(ids)
+                    .title("By Items Chart")
+                    .labels(labels)
+                    .datasets(Arrays.asList(dataSet))
+                    .build();
         };
     }
 

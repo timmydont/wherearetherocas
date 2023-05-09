@@ -1,6 +1,6 @@
 package com.timmydont.wherearetherocas.utils;
 
-import com.timmydont.wherearetherocas.models.Period;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;

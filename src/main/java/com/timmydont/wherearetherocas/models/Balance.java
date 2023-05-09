@@ -3,6 +3,7 @@ package com.timmydont.wherearetherocas.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.timmydont.wherearetherocas.lib.model.Model;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
 import lombok.Builder;

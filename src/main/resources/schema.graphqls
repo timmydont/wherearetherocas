@@ -101,6 +101,12 @@ enum Period {
     Month
 }
 
+enum DataType {
+    Income,
+    Outcome,
+    All
+}
+
 # Define queries provided
 type Query {
 
@@ -119,14 +125,15 @@ type Query {
     balancesByPeriod(account: String, start: String, end: String): [Balance]
     balanceById(id: String): Balance                                                                # retrieve a balance by it's id
     balanceByText(account: String, text: String): BalanceFiltered
-    balanceByItem(item: String): BalanceFiltered
+    balanceByItem(item: String): Statistics                                                         # retrieve a balance for a given item
     balanceSummary(account: String, period: Period): BalanceSummary                                 # retrieve a balance summary of the account
 
     ## this are chart queries
+    accountByItemChart(item: String): Chart                                                         # retrieve a bar chart of transactions of a given item
+    accountByTextChart(account: String, text: String): Chart                                        # retrieve a bar chart of transactions by text
+    accountByItemsChart(account: String, type: DataType): Chart                                     # retrieve a bar chart of account by items for a period of time, a period of time can be Day, Week, Month
     accountBalanceChart(account: String, period: Period): Chart                                     # retrieve a bar chart of account balance for each period of time, a period of time can be Day, Week, Month
 
-    chartBalance: Chart
-    chartBarBalance: Chart
     chartExpensesByPeriodByItem: PieChart
 
     chartBarByWeekByItem: Chart

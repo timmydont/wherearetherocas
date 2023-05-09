@@ -1,13 +1,13 @@
 package com.timmydont.wherearetherocas.fetcher;
 
 import com.timmydont.wherearetherocas.adapters.TransactionAdapter;
-import com.timmydont.wherearetherocas.adapters.TransactionsAdapter;
 import com.timmydont.wherearetherocas.adapters.impl.BalancesAdapter;
 import com.timmydont.wherearetherocas.adapters.impl.ExcelRowTransactionAdapter;
 import com.timmydont.wherearetherocas.adapters.impl.TransactionsByItemsAdapter;
 import com.timmydont.wherearetherocas.config.ExcelConfig;
 import com.timmydont.wherearetherocas.factory.ModelServiceFactory;
 import com.timmydont.wherearetherocas.models.*;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import graphql.schema.DataFetcher;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -35,7 +35,7 @@ public class ExcelLoadDataFetcher {
     // transaction adapters
     private final BalancesAdapter balanceAdapter;
     private final TransactionAdapter<Row> transactionAdapter;
-    private final TransactionsAdapter<TransactionByItem> transactionsByItemsAdapter;
+    private final TransactionsByItemsAdapter transactionsByItemsAdapter;
     // model service factory
     private final ModelServiceFactory serviceFactory;
 
@@ -70,6 +70,7 @@ public class ExcelLoadDataFetcher {
             }
             // get list of transactions from sheet
             List<Transaction> transactions = getTransactions(sheet, account.getId());
+            List<TransactionByItem> transactionByItems = serviceFactory.getService(TransactionByItem.class).all(account.getId());
             try {
                 serviceFactory.getService(Transaction.class).save(transactions);
                 // get list of daily balances from transactions, and save
@@ -79,7 +80,7 @@ public class ExcelLoadDataFetcher {
                 // get list of monthly balances from transactions, and save
                 serviceFactory.getService(Balance.class).save(balanceAdapter.adapt(transactions, Period.Month));
                 // get list of transactions by items from transactions, and save
-                serviceFactory.getService(TransactionByItem.class).save(transactionsByItemsAdapter.adapt(transactions));
+                serviceFactory.getService(TransactionByItem.class).save(transactionsByItemsAdapter.adapt(transactions, transactionByItems));
             } catch (Exception e) {
                 error(logger, e, "failed to load data from sheet");
                 throw new Exception("failed to load data from sheet, check previous log entries");

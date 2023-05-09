@@ -1,7 +1,7 @@
 package com.timmydont.wherearetherocas.fetcher.impl;
 
 import com.timmydont.wherearetherocas.lib.db.DBService;
-import com.timmydont.wherearetherocas.models.Period;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import com.timmydont.wherearetherocas.models.Transaction;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
 import com.timmydont.wherearetherocas.models.chart.Chart;

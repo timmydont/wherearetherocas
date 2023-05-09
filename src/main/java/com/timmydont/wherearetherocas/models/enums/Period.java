@@ -1,4 +1,4 @@
-package com.timmydont.wherearetherocas.models;
+package com.timmydont.wherearetherocas.models.enums;
 
 import com.timmydont.wherearetherocas.utils.DateUtils;
 

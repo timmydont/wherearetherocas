@@ -4,7 +4,7 @@ import com.timmydont.wherearetherocas.factory.ChartFactory;
 import com.timmydont.wherearetherocas.fetcher.AbstractModelDataFetcher;
 import com.timmydont.wherearetherocas.models.Balance;
 import com.timmydont.wherearetherocas.models.BalanceSummary;
-import com.timmydont.wherearetherocas.models.Period;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import com.timmydont.wherearetherocas.models.Statistics;
 import com.timmydont.wherearetherocas.models.chart.Chart;
 import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
@@ -16,6 +16,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 
@@ -92,15 +93,15 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
                 error(logger, "unable to retrieve balances from db with properties '%s'", properties);
                 return null;
             }
-            //
+            // populate data array of each data set
             Float[] balance = new Float[items.size()];
             Float[] incomes = new Float[items.size()];
             Float[] outcomes = new Float[items.size()];
-            for (int i = 0; i < items.size(); i++) {
+            IntStream.range(0, items.size()).forEach(i -> {
                 balance[i] = items.get(i).earnings();
                 incomes[i] = items.get(i).getIncome();
                 outcomes[i] = items.get(i).getOutcome();
-            }
+            });
             return BalanceSummary.builder()
                     .balance(Statistics.builder()
                             .build()
@@ -111,41 +112,6 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
                     .outcome(Statistics.builder()
                             .build()
                             .populate(outcomes))
-                    .build();
-        };
-    }
-
-    public DataFetcher<Chart> fetchBalanceChart() {
-        return dataFetchingEnvironment -> {
-            List<Balance> items = modelService.all("");
-            if (CollectionUtils.isEmpty(items)) {
-                error(logger, "unable to retrieve balances from db.");
-                return null;
-            }
-            List<String> labels = new ArrayList<>();
-            // create chart datasets
-            ChartDataSet income = ChartDataSet.builder()
-                    .label("Income")
-                    .backgroundColor("rgba(19, 111, 99, 1)")
-                    .build();
-            ChartDataSet outcome = ChartDataSet.builder()
-                    .label("Outcome")
-                    .backgroundColor("rgba(208, 0, 0, 1)")
-                    .build();
-            ChartDataSet savings = ChartDataSet.builder()
-                    .label("Savings")
-                    .backgroundColor("rgba(208, 208, 0, 1)")
-                    .build();
-            items.forEach(item -> {
-                labels.add(DateUtils.toString(item.getStart()));
-                income.add(item.getIncome());
-                outcome.add(Math.abs(item.getOutcome()));
-                savings.add(item.earnings());
-            });
-            return Chart.builder()
-                    .title("Balance Chart")
-                    .labels(labels)
-                    .datasets(Arrays.asList(income, outcome, savings))
                     .build();
         };
     }

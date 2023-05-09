@@ -1,7 +1,8 @@
 package com.timmydont.wherearetherocas.fetcher;
 
 import com.timmydont.wherearetherocas.lib.model.Model;
-import com.timmydont.wherearetherocas.models.Period;
+import com.timmydont.wherearetherocas.models.enums.DataType;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import com.timmydont.wherearetherocas.services.ModelService;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -92,6 +93,8 @@ public abstract class AbstractModelDataFetcher<T extends Model> implements Model
         if (clazz.equals(Date.class)) return (E) toDate(argument.toString());
         // in case clazz provided is Period, attempt to get a valid Period from the argument
         if (clazz.equals(Period.class)) return (E) Period.valueOf(argument.toString());
+        // in case clazz provided is DataType, attempt to get a valid DataType from the argument
+        if (clazz.equals(DataType.class)) return (E) DataType.valueOf(argument.toString());
         return (E) argument;
     }
 

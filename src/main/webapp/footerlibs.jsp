@@ -4,6 +4,169 @@
 
 <script>
 
+    var itemChart;
+
+    function populateByItemChart(itemid, chartelement) {
+        var settings = {
+          "url": "http://localhost:9999/graphqls",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            query: 'query {\r\n    accountByItemChart(item: \"' + itemid + '\") {\r\n        title\r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}',
+            variables: {}
+          })
+        };
+
+        $.ajax(settings).done(function (response) {
+            if(itemChart) itemChart.destroy();
+            var ctx = document.getElementById(chartelement).getContext('2d');
+            itemChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: response.data.accountByItemChart.labels,
+                    datasets: response.data.accountByItemChart.datasets,
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: response.data.accountByItemChart.title
+                        },
+                    },
+                responsive: true
+            }});
+        });
+    };
+
+    function populateByTextChart(account, text) {
+        alert(account + ' - ' + text);
+    };
+
+    function populateByItemTable(itemid, tableelement) {
+        var settings = {
+          "url": "http://localhost:9999/graphqls",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            query: 'query {\r\n    transactionsByItem(item: \"' + itemid + '\") {\r\n        id\r\n        item\r\n        amount\r\n        transactions {\r\n            item\r\n            date\r\n            amount\r\n        }\r\n    }\r\n}',
+            variables: {}
+          })
+        };
+
+        $.ajax(settings).done(function (response) {
+            $("#" + tableelement + " tr").remove();
+            const table = document.getElementById(tableelement);
+            const map1 = new Map();
+            response.data.transactionsByItem.transactions.forEach(item => {
+                let row = table.insertRow();
+                let itemtext = row.insertCell(0);
+                itemtext.innerHTML = item.item;
+                let date = row.insertCell(1);
+                date.innerHTML = item.date;
+                let amount = row.insertCell(2);
+                amount.innerHTML = item.amount;
+
+                let popo = item.amount;
+                if(map1.has(item.item)) {
+                    popo += map1.get(item.item);
+                }
+                map1.set(item.item, popo);
+            });
+
+            $("#byitems-account-a-table-grouped tr").remove();
+            const table2 = document.getElementById("byitems-account-a-table-grouped");
+            for (let [key, value] of map1) {
+                let row2 = table2.insertRow();
+                let itemtext2 = row2.insertCell(0);
+                itemtext2.innerHTML = key;
+                let amount2 = row2.insertCell(1);
+                amount2.innerHTML = value;
+                row2.setAttribute('onclick', 'populateByTextChart("' + itemid + '", this.cells[0].innerHTML)');
+            }
+        });
+    };
+
+    function populateByItemSummary(itemid) {
+        var settings = {
+          "url": "http://localhost:9999/graphqls",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            query: 'query {\r\n    balanceByItem(item: \"' + itemid + '\") {\r\n        min\r\n        max\r\n        sum\r\n        median\r\n        average\r\n    }\r\n}',
+            variables: {}
+          })
+        };
+
+        $.ajax(settings).done(function (response) {
+            $(".a-item-total").text(response.data.balanceByItem.sum);
+            $(".a-item-average").text(response.data.balanceByItem.average);
+            $(".a-item-median").text(response.data.balanceByItem.median);
+            $(".a-item-min").text(response.data.balanceByItem.min);
+            $(".a-item-max").text(response.data.balanceByItem.max);
+        });
+    };
+
+    function chartByItemsClick(e, chart, table) {
+        const points = e.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)
+        if(points && points.length > 0) {
+            populateByItemChart(chart.ids[points[0].index], "byitems-account-a-item");
+            populateByItemTable(chart.ids[points[0].index], table);
+            populateByItemSummary(chart.ids[points[0].index]);
+        }
+    };
+
+    function populateByItemsChart(account, type, chartelement, tableelement) {
+        var settings = {
+          "url": "http://localhost:9999/graphqls",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            query: "query {\r\n    accountByItemsChart(account: " + account + ", type: " + type + ") {\r\n        ids\r\n        title\r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
+            variables: {}
+          })
+        };
+
+        $.ajax(settings).done(function (response) {
+            var ctx = document.getElementById(chartelement).getContext('2d');
+            var myChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: response.data.accountByItemsChart.labels,
+                datasets: response.data.accountByItemsChart.datasets,
+              },
+            options: {
+              indexAxis: 'y',
+              legend: {
+                position: 'left',
+              },
+              onClick: (e) => { chartByItemsClick(e, response.data.accountByItemsChart, tableelement); },
+              plugins: {
+                title: {
+                  display: true,
+                  text: response.data.accountByItemsChart.title
+                },
+              },
+              responsive: true
+            }});
+        });
+    }
+    populateByItemsChart("\"c68f58bd-f17e-4878-afc6-afcf36ad99f1\"", "All", "byitems-account-a", "byitems-account-a-table");
+</script>
+
+<script>
+
     function populateSummary(account, period) {
         var settings = {
           "url": "http://localhost:9999/graphqls",
@@ -169,328 +332,3 @@
     populateChart("\"c68f58bd-f17e-4878-afc6-afcf36ad99f1\"", "Week", 0, "transactions-account-a", "account-a-table");
 
 </script>
-
-<!--
-<script>
-
-
-var settings29 = {
-  "url": "http://localhost:9999/graphqls",
-  "method": "POST",
-  "timeout": 0,
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "data": JSON.stringify({
-    query: "query {\r\n    balancesByPeriod(start: \"01/11/2022\", end: \"31/11/2022\") {\r\n        period\r\n        start        \r\n        end\r\n        income\r\n        outcome\r\n        current\r\n    }\r\n}",
-    variables: {}
-  })
-};
-
-$.ajax(settings29).done(function (response) {
-  $(".cmp_current-balance").text(response.data.balancesByPeriod[0].current);
-  $(".cmp_current-earnings").text(response.data.balancesByPeriod[0].income);
-  $(".cmp_current-expenses").text(response.data.balancesByPeriod[0].outcome);
-});
-
-
-var settings30 = {
-  "url": "http://localhost:9999/graphqls",
-  "method": "POST",
-  "timeout": 0,
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "data": JSON.stringify({
-    query: "query {\r\n    balanceSummary {\r\n        min\r\n        max\r\n        sum\r\n        median\r\n        average\r\n    }\r\n}",
-    variables: {}
-  })
-};
-
-$.ajax(settings30).done(function (response) {
-  $(".cmp_total_earnings").text(response.data.balanceSummary.sum + " EUR");
-  $(".cmp_median-balance").text(response.data.balanceSummary.median + " EUR");
-  $(".cmp_average-balance").text(response.data.balanceSummary.average + " EUR");
-});
-
-var settings5 = {
-  "url": "http://localhost:9999/graphqls",
-  "method": "POST",
-  "timeout": 0,
-  "headers": {
-    "Content-Type": "application/json"
-  },
-  "data": JSON.stringify({
-    query: "query {\r\n    chartBarByWeekByItem {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
-    variables: {}
-  })
-};
-
-$.ajax(settings5).done(function (response) {
-            var ctx5 = document.getElementById("masbarchart").getContext('2d');
-            var myChart5 = new Chart(ctx5, {
-              type: 'bar',
-              data: {
-                labels: response.data.chartBarByWeekByItem.labels,
-                datasets: response.data.chartBarByWeekByItem.datasets,
-              },
-            options: {
-              plugins: {
-                title: {
-                  display: true,
-                  text: response.data.chartBarByWeekByItem.title
-                },
-              },
-              responsive: true
-            }});
-});
-
-    var settings4 = {
-      "url": "http://localhost:9999/graphqls",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        query: "query {\r\n    chartExpensesByPeriodByItem {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
-        variables: {}
-      })
-    };
-
-    $.ajax(settings4).done(function (response) {
-        var ctx4 = document.getElementById("piechart").getContext('2d');
-        var myChart4 = new Chart(ctx4, {
-          type: 'pie',
-          data: {
-            labels: response.data.chartExpensesByPeriodByItem.labels,
-            datasets: response.data.chartExpensesByPeriodByItem.datasets,
-          },
-        options: {
-            plugins: {
-              title: {
-                display: true,
-                text: response.data.chartExpensesByPeriodByItem.title
-              },
-            },
-            responsive: true
-        }});
-    });
-
-
-    var settings2 = {
-      "url": "http://localhost:9999/graphqls",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        query: "query {\r\n    chartBarByPeriodByItem {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
-        variables: {}
-      })
-    };
-
-    $.ajax(settings2).done(function (response) {
-          var ctx3 = document.getElementById("barchart").getContext('2d');
-          var myChart3 = new Chart(ctx3, {
-            type: 'bar',
-            data: {
-              labels: response.data.chartBarByPeriodByItem.labels,
-              datasets: response.data.chartBarByPeriodByItem.datasets,
-            },
-          options: {
-              plugins: {
-                title: {
-                  display: true,
-                  text: response.data.chartBarByPeriodByItem.title
-                },
-              },
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                x: {
-                  stacked: true,
-                },
-                y: {
-                  stacked: true
-                }
-              }
-          }});
-    });
-
-    var settings25 = {
-      "url": "http://localhost:9999/graphqls",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        query: "query {\r\n    chartBarBalance {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor            \r\n            data\r\n        }\r\n    }\r\n}",
-        variables: {}
-      })
-    };
-
-    $.ajax(settings25).done(function (response) {
-      var ctx25 = document.getElementById("tetachart").getContext('2d');
-                var myChart25 = new Chart(ctx25, {
-                  type: 'bar',
-                  data: {
-                    labels: response.data.chartBarBalance.labels,
-                    datasets: response.data.chartBarBalance.datasets,
-                  },
-options: {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: response.data.chartBarBalance.title
-      }
-    }
-  },
-          });
-
-
-          var ctx26 = document.getElementById("culochart").getContext('2d');
-                    var myChart26 = new Chart(ctx26, {
-                      type: 'line',
-                      data: {
-                        labels: response.data.chartBarBalance.labels,
-                        datasets: [
-                        {
-                          label: response.data.chartBarBalance.datasets[2].label,
-                          borderColor: response.data.chartBarBalance.datasets[2].backgroundColor,
-                          backgroundColor: transparent(response.data.chartBarBalance.datasets[2].backgroundColor, 0.5),
-                          fill: true,
-                          tension: 0.4,
-                          data: response.data.chartBarBalance.datasets[2].data,
-                          pointRadius: 0,
-                          pointHitRadius: 5,
-                        }, {
-                           label: response.data.chartBarBalance.datasets[1].label,
-                           borderColor: response.data.chartBarBalance.datasets[1].backgroundColor,
-                           backgroundColor: transparent(response.data.chartBarBalance.datasets[1].backgroundColor, 0.5),
-                           fill: true,
-                           tension: 0.4,
-                           data: response.data.chartBarBalance.datasets[1].data,
-                          pointRadius: 0,
-                          pointHitRadius: 5,
-                         }, {
-                         label: response.data.chartBarBalance.datasets[0].label,
-                         borderColor: response.data.chartBarBalance.datasets[0].backgroundColor,
-                         backgroundColor: transparent(response.data.chartBarBalance.datasets[0].backgroundColor, 0.5),
-                         fill: true,
-                         tension: 0.4,
-                         data: response.data.chartBarBalance.datasets[0].data,
-                          pointRadius: 0,
-                          pointHitRadius: 5,
-                       }],
-                      },
-                    options: {
-                        plugins: {
-                          title: {
-                            display: true,
-                            text: response.data.chartBarBalance.title
-                          },
-                        },
-                        responsive: true
-                    }});
-});
-
-    var settings = {
-      "url": "http://localhost:9999/graphqls",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        query: "query {\r\n    chartBalance {\r\n        title        \r\n        labels\r\n        datasets {\r\n            label\r\n            backgroundColor\r\n            data\r\n        }\r\n    }\r\n}",
-        variables: {}
-      })
-    };
-
-    $.ajax(settings).done(function (response) {
-      var ctx = document.getElementById("chart").getContext('2d');
-          var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-              labels: response.data.chartBalance.labels,
-              datasets: [{
-                label: response.data.chartBalance.datasets[1].label,
-                backgroundColor: response.data.chartBalance.datasets[1].backgroundColor,
-                data: response.data.chartBalance.datasets[1].data,
-              }, {
-                label: response.data.chartBalance.datasets[2].label,
-                backgroundColor: response.data.chartBalance.datasets[2].backgroundColor,
-                data: response.data.chartBalance.datasets[2].data,
-              }],
-            },
-          options: {
-              plugins: {
-                title: {
-                  display: true,
-                  text: response.data.chartBalance.title
-                },
-              },
-              responsive: true,
-              scales: {
-                x: {
-                  stacked: true,
-                },
-                y: {
-                  stacked: true
-                }
-              }
-          }});
-
-
-         var ctx2 = document.getElementById("linechart").getContext('2d');
-          var myChart2 = new Chart(ctx2, {
-            type: 'line',
-            data: {
-              labels: response.data.chartBalance.labels,
-              datasets: [
-              {
-                label: response.data.chartBalance.datasets[1].label,
-                borderColor: response.data.chartBalance.datasets[1].backgroundColor,
-                backgroundColor: transparent(response.data.chartBalance.datasets[1].backgroundColor, 0.5),
-                fill: true,
-                tension: 0.4,
-                data: response.data.chartBalance.datasets[1].data,
-                pointRadius: 0,
-                pointHitRadius: 5,
-              }, {
-                 label: response.data.chartBalance.datasets[0].label,
-                 borderColor: response.data.chartBalance.datasets[0].backgroundColor,
-                 backgroundColor: transparent(response.data.chartBalance.datasets[0].backgroundColor, 0.5),
-                 fill: true,
-                 tension: 0.4,
-                 data: response.data.chartBalance.datasets[0].data,
-                pointRadius: 0,
-                pointHitRadius: 5,
-               }, {
-               label: response.data.chartBalance.datasets[2].label,
-               borderColor: response.data.chartBalance.datasets[2].backgroundColor,
-               backgroundColor: transparent(response.data.chartBalance.datasets[2].backgroundColor, 0.5),
-               fill: true,
-               tension: 0.4,
-               data: response.data.chartBalance.datasets[2].data,
-                pointRadius: 0,
-                pointHitRadius: 5,
-             }],
-            },
-          options: {
-              plugins: {
-                title: {
-                  display: true,
-                  text: response.data.chartBalance.title
-                },
-              },
-              responsive: true
-          }});
-    });
-</script>
-
--->

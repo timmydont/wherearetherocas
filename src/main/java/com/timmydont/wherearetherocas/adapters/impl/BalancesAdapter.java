@@ -2,10 +2,8 @@ package com.timmydont.wherearetherocas.adapters.impl;
 
 import com.timmydont.wherearetherocas.adapters.TransactionsAdapter;
 import com.timmydont.wherearetherocas.models.Balance;
-import com.timmydont.wherearetherocas.models.Period;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import com.timmydont.wherearetherocas.models.Transaction;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.*;
 

@@ -37,7 +37,8 @@ public class ChartFactoryImpl implements ChartFactory {
                 .build());
         // create the colours array
         colours = Arrays.asList("rgb(5, 41, 158)", "rgb(94, 74, 227)", "rgb(148, 123, 211)", "rgb(240, 167, 160)",
-                "rgb(242, 108, 167)", "rgb(255, 174, 3)", "rgb(230, 127, 13)", "rgb(254, 78, 0)", "rgb(233, 25, 15)");
+                "rgb(242, 108, 167)", "rgb(255, 174, 3)", "rgb(230, 127, 13)", "rgb(254, 78, 0)", "rgb(233, 25, 15)",
+                "rgb(116, 211, 174)", "rgb(103, 141, 88)", "rgb(101, 66, 54)");
     }
 
     @Override

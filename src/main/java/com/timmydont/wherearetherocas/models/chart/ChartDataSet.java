@@ -4,13 +4,15 @@ import lombok.Builder;
 import lombok.Data;
 import org.apache.commons.collections.CollectionUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
-public class ChartDataSet {
+public class ChartDataSet implements Serializable {
 
+    private String id;
     private String label;
     private String backgroundColor;
     private List<Float> data;

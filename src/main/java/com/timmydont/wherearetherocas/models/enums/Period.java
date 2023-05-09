@@ -1,4 +1,4 @@
-package com.timmydont.wherearetherocas.models;
+package com.timmydont.wherearetherocas.models.enums;
 
 import com.timmydont.wherearetherocas.utils.DateUtils;
 
@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public enum Period {
-    Week(Calendar.WEEK_OF_YEAR), Month(Calendar.MONTH), Year(Calendar.YEAR);
+    Day(Calendar.DAY_OF_YEAR), Week(Calendar.WEEK_OF_YEAR), Month(Calendar.MONTH), Year(Calendar.YEAR);
 
     Period(int period) {
         this.period = period;
@@ -27,6 +27,8 @@ public enum Period {
 
     public Date getEnd(Date date) {
         switch (this) {
+            case Day:
+                return date;
             case Week:
                 LocalDate end = DateUtils.convertToLocalDate(date);
                 while (end.getDayOfWeek() != DayOfWeek.SUNDAY) {
@@ -45,6 +47,8 @@ public enum Period {
 
     public Date getStart(Date date) {
         switch (this) {
+            case Day:
+                return date;
             case Week:
                 LocalDate start = DateUtils.convertToLocalDate(date);
                 while (start.getDayOfWeek() != DayOfWeek.SUNDAY) {

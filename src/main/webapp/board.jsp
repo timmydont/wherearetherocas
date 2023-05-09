@@ -1,3 +1,8 @@
+<jsp:include page="features/byitems.jsp" />
+
+<jsp:include page="features/transactions.jsp" />
+
+<!--
 <jsp:include page="features/balance.jsp" />
 
 <div class="row">
@@ -19,4 +24,4 @@
     <div class="col">
         <jsp:include page="features/byitemsbyperiod.jsp" />
     </div>
-</div>
+</div>-->

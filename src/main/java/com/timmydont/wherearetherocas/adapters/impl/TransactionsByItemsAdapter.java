@@ -46,4 +46,31 @@ public class TransactionsByItemsAdapter implements TransactionsAdapter<Transacti
         }
         return new ArrayList<>(transactionsByItems.values());
     }
+
+    public List<TransactionByItem> adapt(List<Transaction> transactions, List<TransactionByItem> byItems) {
+        //
+        for(Transaction transaction : transactions) {
+            boolean added = false;
+            //
+            for(TransactionByItem byItem : byItems) {
+                Double distance = jaroWinklerDistance.apply(byItem.getItem().toLowerCase(), transaction.getItem().toLowerCase());
+                debug(logger, "Distance of %s to %s is %,.2f", transaction.getItem(), byItem.getItem(), distance);
+                if (distance < 0.2d) {
+                    byItem.add(transaction);
+                    added = true;
+                    break;
+                }
+            }
+            if(!added) {
+                TransactionByItem item = TransactionByItem.builder()
+                        .id(UUID.randomUUID().toString())
+                        .item(transaction.getItem())
+                        .account(transaction.getAccount())
+                        .build();
+                item.add(transaction);
+                byItems.add(item);
+            }
+        }
+        return byItems;
+    }
 }

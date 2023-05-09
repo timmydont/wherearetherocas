@@ -28,10 +28,12 @@ type TransactionByItem {
 type Balance {
     income: Float
     outcome: Float
-    current: Float
+    savings: Float
+    account: String
     end: String
     start: String
     period: String
+    transactions: [Transaction]
 }
 
 type BalanceFiltered {
@@ -65,6 +67,7 @@ type ChartDataSet {
 }
 
 type Chart {
+    ids: [String]
     title: String
     labels: [String]
     datasets: [ChartDataSet]
@@ -92,25 +95,45 @@ input Account {
     currency: String
 }
 
+enum Period {
+    Day,
+    Week,
+    Month
+}
+
+enum DataType {
+    Income,
+    Outcome,
+    All
+}
+
 # Define queries provided
 type Query {
-    transactions: [Transaction]
-    transactionsByText(text: String): [Transaction]
-    transactionsByPeriod(start: String, end: String): [Transaction]
 
+    ## this are data queries
+    accounts: [String]
+
+    transactions(account: String): [Transaction]                                                    # retrieve transactions
+    transactionsByText(account: String, text: String): [Transaction]                                # retrieve transactions that contains a given text (no case-sensitive)
+    transactionsByPeriod(account: String, start: String, end: String): [Transaction]                # retrieve transactions made in a period of time
     transactionsByItem(item: String): TransactionByItem
+    transactionsByItems(account: String): [TransactionByItem]
     transactionsByItemByPeriod(start: String, end: String, item: String): TransactionByItem
-    transactionsByItems: [TransactionByItem]
-    transactionsByItemsByPeriod(start: String, end: String): [TransactionByItem]
+    transactionsByItemsByPeriod(account: String, start: String, end: String): [TransactionByItem]
 
-    balances: [Balance]
-    balancesByPeriod(start: String, end: String): [Balance]
-    balanceByText(text: String): BalanceFiltered
-    balanceByItem(item: String): BalanceFiltered
-    balanceSummary: BalanceSummary
+    balances(account: String): [Balance]                                                            # retrieve balances
+    balancesByPeriod(account: String, start: String, end: String): [Balance]
+    balanceById(id: String): Balance                                                                # retrieve a balance by it's id
+    balanceByText(account: String, text: String): BalanceFiltered
+    balanceByItem(item: String): Statistics                                                         # retrieve a balance for a given item
+    balanceSummary(account: String, period: Period): BalanceSummary                                 # retrieve a balance summary of the account
 
-    chartBalance: Chart
-    chartBarBalance: Chart
+    ## this are chart queries
+    accountByItemChart(item: String): Chart                                                         # retrieve a bar chart of transactions of a given item
+    accountByTextChart(account: String, text: String): Chart                                        # retrieve a bar chart of transactions by text
+    accountByItemsChart(account: String, type: DataType): Chart                                     # retrieve a bar chart of account by items for a period of time, a period of time can be Day, Week, Month
+    accountBalanceChart(account: String, period: Period): Chart                                     # retrieve a bar chart of account balance for each period of time, a period of time can be Day, Week, Month
+
     chartExpensesByPeriodByItem: PieChart
 
     chartBarByWeekByItem: Chart
@@ -119,6 +142,6 @@ type Query {
 
 # Define mutations provided
 type Mutation {
-    load (input: String): Boolean
-    create(input: Account): Boolean # returns account ID
+    load (account: String, input: String): Boolean
+    create(input: Account): Boolean
 }

@@ -1,5 +1,6 @@
 package com.timmydont.wherearetherocas.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.timmydont.wherearetherocas.lib.model.Model;
@@ -25,6 +26,7 @@ public class Transaction implements Model, Comparable<Transaction> {
     private String account;
     private String item;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date date;
     private float amount;
 

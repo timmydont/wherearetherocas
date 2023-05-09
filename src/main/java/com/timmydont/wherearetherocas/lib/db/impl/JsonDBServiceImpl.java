@@ -11,15 +11,15 @@ import org.apache.log4j.Logger;
 import java.util.Collection;
 import java.util.List;
 
-import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.debug;
-import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
+import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.*;
 
 public class JsonDBServiceImpl implements DBService {
 
     private final Logger logger = Logger.getLogger(getClass());
 
     // location on disk for database files, process should have read-write permissions to this folder.
-    private static final String DB_DISK_LOCATION = "src/main/resources/jsondb";
+    //private static final String DB_DISK_LOCATION = "src/main/resources/jsondb";
+    private static final String DB_DISK_LOCATION = "/D:/workspace/timmydont/wherearetherocas/target/classes/jsondb";
     // java package name where POJO's are present
     private static final String DB_MODEL_PACKAGE = "com.timmydont.wherearetherocas.models";
 

@@ -6,7 +6,11 @@ import lombok.NonNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.info;
@@ -24,21 +28,42 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
     }
 
     @Override
-    public T withId(String account, @NonNull String id) { return dbService.find(id, clazz); }
+    public T withId(@NonNull String id) {
+        return dbService.find(id, clazz);
+    }
 
     @Override
-    public List<T> all(String account) {
+    public List<T> all() {
         return dbService.list(clazz);
     }
 
     @Override
-    public List<T> get(String account, @NonNull String property, @NonNull Object value) {
+    public List<T> all(String account) {
+        return filter(account, all());
+    }
+
+    @Override
+    public List<T> all(Map<String, Object> properties) {
+        return filter(properties, all());
+    }
+
+    @Override
+    public List<T> get(@NonNull String property, @NonNull Object value) {
         List<T> items = dbService.find(property, value, clazz);
         if (CollectionUtils.isEmpty(items)) {
             info(logger, "unable to find items in db, with property: '%s', value: '%s'", property, value);
             return null;
         }
         return items;
+    }
+
+    @Override
+    public List<T> get(String account, @NonNull String property, @NonNull Object value) {
+        return filter(account, get(property, value));
+    }
+
+    public List<T> get(String account, @NonNull Date start, @NonNull Date end) {
+        return filter(account, get(start, end));
     }
 
     @Override
@@ -54,5 +79,36 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
             error(logger, "unable to store '%s' items in db, check previous errors.", e, items.size());
             return false;
         }
+    }
+
+    /**
+     * @param account
+     * @param items
+     * @return
+     */
+    protected List<T> filter(String account, List<T> items) {
+        return items.stream()
+                .filter(item -> item.contains("account", account))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * @param properties
+     * @param items
+     * @return
+     */
+    protected List<T> filter(Map<String, Object> properties, List<T> items) {
+/*        List<T> filtered = new ArrayList<>();
+        items.forEach(item -> {
+            boolean filter = properties.keySet().stream().anyMatch(key -> !item.contains(key, properties.get(key)));
+            if (!filter) filtered.add(item);
+        });
+        return filtered;*/
+        return items.stream()
+                .filter(item -> properties.keySet()
+                        .stream()
+                        .allMatch(key -> item.contains(key, properties.get(key))))
+                .collect(Collectors.toList());
     }
 }

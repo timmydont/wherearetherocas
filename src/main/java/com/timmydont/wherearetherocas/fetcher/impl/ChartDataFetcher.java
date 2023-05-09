@@ -1,9 +1,8 @@
 package com.timmydont.wherearetherocas.fetcher.impl;
 
 import com.timmydont.wherearetherocas.lib.db.DBService;
-import com.timmydont.wherearetherocas.models.Period;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import com.timmydont.wherearetherocas.models.Transaction;
-import com.timmydont.wherearetherocas.models.TransactionByDate;
 import com.timmydont.wherearetherocas.models.TransactionByItem;
 import com.timmydont.wherearetherocas.models.chart.Chart;
 import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
@@ -81,7 +80,7 @@ public class ChartDataFetcher {
         return IntStream.range(0, size).mapToObj(i -> 0f).collect(Collectors.toList());
     }
 
-    public DataFetcher<Chart> fetchChartDayItems() {
+    /*public DataFetcher<Chart> fetchChartDayItems() {
         return dataFetchingEnvironment -> {
             List<TransactionByDate> dates = dbService.list(TransactionByDate.class);
             List<TransactionByItem> items = dbService.list(TransactionByItem.class);
@@ -115,7 +114,7 @@ public class ChartDataFetcher {
                     .datasets(new ArrayList<>(dataSetMap.values()))
                     .build();
         };
-    }
+    }*/
 
     private static Random rand = new Random();
 

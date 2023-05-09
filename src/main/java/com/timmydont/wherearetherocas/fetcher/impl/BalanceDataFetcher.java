@@ -1,20 +1,22 @@
 package com.timmydont.wherearetherocas.fetcher.impl;
 
+import com.timmydont.wherearetherocas.factory.ChartFactory;
 import com.timmydont.wherearetherocas.fetcher.AbstractModelDataFetcher;
 import com.timmydont.wherearetherocas.models.Balance;
 import com.timmydont.wherearetherocas.models.BalanceSummary;
 import com.timmydont.wherearetherocas.models.Statistics;
 import com.timmydont.wherearetherocas.models.chart.Chart;
 import com.timmydont.wherearetherocas.models.chart.ChartDataSet;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import com.timmydont.wherearetherocas.services.ModelService;
 import com.timmydont.wherearetherocas.utils.DateUtils;
 import graphql.schema.DataFetcher;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.IntStream;
 
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 
@@ -22,66 +24,85 @@ public class BalanceDataFetcher extends AbstractModelDataFetcher<Balance> {
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    public BalanceDataFetcher(ModelService<Balance> modelService) {
-        super(modelService);
+    public BalanceDataFetcher(ModelService<Balance> modelService, ChartFactory chartFactory) {
+        super(modelService, chartFactory);
     }
 
-    public DataFetcher<Chart> fetchBalanceChart() {
+    /**
+     * Retrieve a chart of income/outcome/earnings/savings for a given account and period of time.
+     *
+     * @return the chart
+     */
+    public synchronized DataFetcher<Chart> fetchAccountBalanceChart() {
         return dataFetchingEnvironment -> {
-            List<Balance> items = modelService.all();
+            // create the properties map to query for balances data
+            Map<String, Object> properties = getArgumentsMap(dataFetchingEnvironment,
+                    new ImmutablePair("period", Period.class),
+                    new ImmutablePair("account", String.class));
+            // query for balances data
+            List<Balance> items = modelService.all(properties);
             if (CollectionUtils.isEmpty(items)) {
-                error(logger, "unable to retrieve balances from db.");
+                error(logger, "unable to retrieve balances from db with properties '%s'", properties);
                 return null;
             }
-            List<String> labels = new ArrayList<>();
+            List<String> ids = Collections.synchronizedList(new ArrayList<>());
+            List<String> labels = Collections.synchronizedList(new ArrayList<>());
             // create chart datasets
-            ChartDataSet income = ChartDataSet.builder()
-                    .label("Income")
-                    .backgroundColor("rgba(19, 111, 99, 1)")
-                    .build();
-            ChartDataSet outcome = ChartDataSet.builder()
-                    .label("Outcome")
-                    .backgroundColor("rgba(208, 0, 0, 1)")
-                    .build();
-            ChartDataSet savings = ChartDataSet.builder()
-                    .label("Savings")
-                    .backgroundColor("rgba(208, 208, 0, 1)")
-                    .build();
-            items.forEach(item -> {
+            ChartDataSet incomes = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Income);
+            ChartDataSet savings = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Savings);
+            ChartDataSet outcomes = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Outcome);
+            ChartDataSet earnings = chartFactory.getDataSet(ChartFactory.ChartDataSetType.Earnings);
+            // populate chart datasets
+            float rocas = 0f;
+            for (Balance item : items) {
+                ids.add(item.getId());
                 labels.add(DateUtils.toString(item.getStart()));
-                income.add(item.getIncome());
-                outcome.add(Math.abs(item.getOutcome()));
-                savings.add(item.earnings());
-            });
+                rocas += item.earnings();
+                incomes.add(item.getIncome());
+                savings.add(rocas);
+                outcomes.add(item.getOutcome());
+                earnings.add(item.earnings());
+            }
+            // create and return chart
             return Chart.builder()
+                    .ids(ids)
                     .title("Balance Chart")
                     .labels(labels)
-                    .datasets(Arrays.asList(income, outcome, savings))
+                    .datasets(Arrays.asList(incomes, outcomes, earnings, savings))
                     .build();
         };
     }
 
+    /**
+     * Retrieve a balance summary for a specific account
+     *
+     * @return a balance summary
+     */
     public DataFetcher<BalanceSummary> fetchBalanceSummary() {
         return dataFetchingEnvironment -> {
-            List<Balance> items = modelService.all();
+            // create the properties map to query for balances data
+            Map<String, Object> properties = getArgumentsMap(dataFetchingEnvironment,
+                    new ImmutablePair("period", Period.class),
+                    new ImmutablePair("account", String.class));
+            // query for balances data
+            List<Balance> items = modelService.all(properties);
             if (CollectionUtils.isEmpty(items)) {
-                error(logger, "unable to retrieve balances from db.");
+                error(logger, "unable to retrieve balances from db with properties '%s'", properties);
                 return null;
             }
-            //
-            Float[] values = new Float[items.size()];
+            // populate data array of each data set
+            Float[] balance = new Float[items.size()];
             Float[] incomes = new Float[items.size()];
             Float[] outcomes = new Float[items.size()];
-            for (int i = 0; i < items.size(); i++) {
-                float value = items.get(i).earnings();
-                values[i] = value;
+            IntStream.range(0, items.size()).forEach(i -> {
+                balance[i] = items.get(i).earnings();
                 incomes[i] = items.get(i).getIncome();
                 outcomes[i] = items.get(i).getOutcome();
-            }
+            });
             return BalanceSummary.builder()
                     .balance(Statistics.builder()
                             .build()
-                            .populate(values))
+                            .populate(balance))
                     .income(Statistics.builder()
                             .build()
                             .populate(incomes))

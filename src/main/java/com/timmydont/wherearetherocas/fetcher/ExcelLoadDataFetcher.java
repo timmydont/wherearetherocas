@@ -1,14 +1,13 @@
 package com.timmydont.wherearetherocas.fetcher;
 
 import com.timmydont.wherearetherocas.adapters.TransactionAdapter;
-import com.timmydont.wherearetherocas.adapters.TransactionsAdapter;
 import com.timmydont.wherearetherocas.adapters.impl.BalancesAdapter;
 import com.timmydont.wherearetherocas.adapters.impl.ExcelRowTransactionAdapter;
-import com.timmydont.wherearetherocas.adapters.impl.TransactionsByDatesAdapter;
 import com.timmydont.wherearetherocas.adapters.impl.TransactionsByItemsAdapter;
 import com.timmydont.wherearetherocas.config.ExcelConfig;
 import com.timmydont.wherearetherocas.factory.ModelServiceFactory;
 import com.timmydont.wherearetherocas.models.*;
+import com.timmydont.wherearetherocas.models.enums.Period;
 import graphql.schema.DataFetcher;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -34,10 +33,9 @@ public class ExcelLoadDataFetcher {
     private final ExcelConfig config;
 
     // transaction adapters
+    private final BalancesAdapter balanceAdapter;
     private final TransactionAdapter<Row> transactionAdapter;
-    private final TransactionsAdapter<Balance> balanceAdapter;
-    private final TransactionsAdapter<TransactionByItem> transactionsByItemsAdapter;
-    private final TransactionsAdapter<TransactionByDate> transactionsByDatesAdapter;
+    private final TransactionsByItemsAdapter transactionsByItemsAdapter;
     // model service factory
     private final ModelServiceFactory serviceFactory;
 
@@ -47,14 +45,14 @@ public class ExcelLoadDataFetcher {
         this.balanceAdapter = new BalancesAdapter();
         this.transactionAdapter = new ExcelRowTransactionAdapter(config);
         this.transactionsByItemsAdapter = new TransactionsByItemsAdapter();
-        this.transactionsByDatesAdapter = new TransactionsByDatesAdapter();
     }
 
     public DataFetcher<Boolean> load() {
         return dataFetchingEnvironment -> {
             // check that account exists, and retrieve it
-            Account account = serviceFactory.getService(Account.class).withId(dataFetchingEnvironment.getArgument("account"));
-            if(Objects.isNull(account)) {
+            Account account = serviceFactory.getService(Account.class)
+                    .withId(dataFetchingEnvironment.getArgument("account"));
+            if (Objects.isNull(account)) {
                 error(logger, "invalid account provided '%s'", dataFetchingEnvironment.getArgument("account"));
                 return false;
             }
@@ -72,14 +70,17 @@ public class ExcelLoadDataFetcher {
             }
             // get list of transactions from sheet
             List<Transaction> transactions = getTransactions(sheet, account.getId());
+            List<TransactionByItem> transactionByItems = serviceFactory.getService(TransactionByItem.class).all(account.getId());
             try {
                 serviceFactory.getService(Transaction.class).save(transactions);
-                // get list of balances from transactions, and save
-                serviceFactory.getService(Balance.class).save(balanceAdapter.adapt(transactions));
+                // get list of daily balances from transactions, and save
+                serviceFactory.getService(Balance.class).save(balanceAdapter.adapt(transactions, Period.Day));
+                // get list of weekly balances from transactions, and save
+                serviceFactory.getService(Balance.class).save(balanceAdapter.adapt(transactions, Period.Week));
+                // get list of monthly balances from transactions, and save
+                serviceFactory.getService(Balance.class).save(balanceAdapter.adapt(transactions, Period.Month));
                 // get list of transactions by items from transactions, and save
-                serviceFactory.getService(TransactionByItem.class).save(transactionsByItemsAdapter.adapt(transactions));
-                // get list of transactions by dates from transactions, and save
-                serviceFactory.getService(TransactionByDate.class).save(transactionsByDatesAdapter.adapt(transactions));
+                serviceFactory.getService(TransactionByItem.class).save(transactionsByItemsAdapter.adapt(transactions, transactionByItems));
             } catch (Exception e) {
                 error(logger, e, "failed to load data from sheet");
                 throw new Exception("failed to load data from sheet, check previous log entries");

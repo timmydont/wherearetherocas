@@ -133,7 +133,7 @@
         <version>9.4.36.v20210114</version>
         <configuration>
           <scanIntervalSeconds>30</scanIntervalSeconds>
-          <war>${project.basedir}/target/attraversiamo.war</war>
+          <war>${project.basedir}/target/wherearetherocas.war</war>
         </configuration>
       </plugin>
     </plugins>

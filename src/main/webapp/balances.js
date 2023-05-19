@@ -1,4 +1,4 @@
-var balanceChart;
+var chartMap = new Map();
 
 function transparent(color, alpha) {
     var i = color.split(', ');
@@ -33,14 +33,17 @@ function populateTable(item, tableelement) {
           date.innerHTML = item.date;
           let amount = row.insertCell(2);
           amount.innerHTML = item.amount;
-      })
+      });
+      location.hash = "";
+      location.hash = "#account-balance-table-container";
     });
 };
 
-function chartClick(e, accountBalanceChart, accountBalanceTable) {
-    const points = e.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)
+function chartClick(e, ids, labels, accountBalanceTable) {
+    const points = e.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
     if(points && points.length > 0) {
-        populateTable(accountBalanceChart.ids[points[0].index], accountBalanceTable);
+        $(".date-span").text(labels[points[0].index]);
+        populateTable(ids[points[0].index], accountBalanceTable);
     }
 };
 
@@ -77,6 +80,32 @@ function populateSummary(account, period) {
     });
 };
 
+function updateBalanceBarChart(title, ids, labels, datasets, chartid) {
+    var chart = chartMap.get(chartid);
+    if(chart) chart.destroy();
+
+    var ctx = document.getElementById(chartid).getContext('2d');
+    chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: datasets,
+      },
+      options: {
+        onClick: (e) => { chartClick(e, ids, labels, "account-balance-table"); },
+        responsive: true,
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true
+          }
+        }
+    }});
+    chartMap.set(chartid, chart);
+};
+
 function populateChart(account, period) {
     var settings = {
       "url": "http://localhost:9999/graphqls",
@@ -92,9 +121,20 @@ function populateChart(account, period) {
     };
 
     $.ajax(settings).done(function (response) {
-        if(balanceChart) balanceChart.destroy();
+        var chart = chartMap.get('account-balance-chart');
+        if(chart) chart.destroy();
+
+        updateBalanceBarChart(response.data.accountBalanceChart.title, response.data.accountBalanceChart.ids, response.data.accountBalanceChart.labels,
+        [response.data.accountBalanceChart.datasets[0]],'account-balance-income-chart');
+        updateBalanceBarChart(response.data.accountBalanceChart.title, response.data.accountBalanceChart.ids, response.data.accountBalanceChart.labels,
+        [response.data.accountBalanceChart.datasets[1]],'account-balance-outcome-chart');
+        updateBalanceBarChart(response.data.accountBalanceChart.title, response.data.accountBalanceChart.ids, response.data.accountBalanceChart.labels,
+        [response.data.accountBalanceChart.datasets[2]],'account-balance-earning-chart');
+        updateBalanceBarChart(response.data.accountBalanceChart.title, response.data.accountBalanceChart.ids, response.data.accountBalanceChart.labels,
+        [response.data.accountBalanceChart.datasets[3]],'account-balance-savings-chart');
+
         var ctx = document.getElementById('account-balance-chart').getContext('2d');
-        balanceChart = new Chart(ctx, {
+        chart = new Chart(ctx, {
             type: 'line',
             data: {
               labels: response.data.accountBalanceChart.labels,
@@ -138,7 +178,7 @@ function populateChart(account, period) {
               }],
             },
           options: {
-              onClick: (e) => { chartClick(e, response.data.accountBalanceChart, "account-balance-table"); },
+              onClick: (e) => { chartClick(e, response.data.accountBalanceChart.ids, response.data.accountBalanceChart.labels, "account-balance-table"); },
               plugins: {
                 title: {
                   display: true,
@@ -147,8 +187,15 @@ function populateChart(account, period) {
               },
               responsive: true
           }});
+        chartMap.set('account-balance-chart', chart);
     });
 };
+
+$('#balancePeriodSelect').change(function(){
+    $(".period-span").text(this.options[this.selectedIndex].text);
+    populateChart("c68f58bd-f17e-4878-afc6-afcf36ad99f1", this.options[this.selectedIndex].text);
+    populateSummary("c68f58bd-f17e-4878-afc6-afcf36ad99f1", this.options[this.selectedIndex].text);
+})
 
 populateChart("c68f58bd-f17e-4878-afc6-afcf36ad99f1", "Week");
 populateSummary("c68f58bd-f17e-4878-afc6-afcf36ad99f1", "Week");

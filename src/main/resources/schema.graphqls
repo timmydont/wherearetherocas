@@ -133,6 +133,8 @@ type Query {
     accountByTextChart(account: String, text: String): Chart                                        # retrieve a bar chart of transactions by text
     accountByItemsChart(account: String, type: DataType): Chart                                     # retrieve a bar chart of account by items for a period of time, a period of time can be Day, Week, Month
     accountBalanceChart(account: String, period: Period): Chart                                     # retrieve a bar chart of account balance for each period of time, a period of time can be Day, Week, Month
+    accountBalanceChart2(account: String, period: Period, start: String,
+        end: String, text: String): Chart                                                           # retrieve a bar chart of account balance for each period of time, a period of time can be Day, Week, Month
 
     chartExpensesByPeriodByItem: PieChart
 

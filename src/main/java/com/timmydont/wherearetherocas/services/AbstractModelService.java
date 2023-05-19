@@ -99,12 +99,6 @@ public abstract class AbstractModelService<T extends Model> implements ModelServ
      * @return
      */
     protected List<T> filter(Map<String, Object> properties, List<T> items) {
-/*        List<T> filtered = new ArrayList<>();
-        items.forEach(item -> {
-            boolean filter = properties.keySet().stream().anyMatch(key -> !item.contains(key, properties.get(key)));
-            if (!filter) filtered.add(item);
-        });
-        return filtered;*/
         return items.stream()
                 .filter(item -> properties.keySet()
                         .stream()

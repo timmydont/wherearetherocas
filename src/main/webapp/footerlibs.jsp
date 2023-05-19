@@ -198,7 +198,7 @@
     }
     populateByItemsChart("\"c68f58bd-f17e-4878-afc6-afcf36ad99f1\"", "All", "byitems-account-a", "byitems-account-a-table");
 </script>
-
+<!--
 <script>
 
     function populateSummary(account, period) {
@@ -366,3 +366,4 @@
     populateChart("\"c68f58bd-f17e-4878-afc6-afcf36ad99f1\"", "Week", 0, "transactions-account-a", "account-a-table");
 
 </script>
+-->

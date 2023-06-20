@@ -30,6 +30,7 @@ public class Transaction implements Model, Comparable<Transaction> {
     private Date date;
     private float amount;
 
+    private Tag[] tags;
     private String[] references;
 
     /**
@@ -45,12 +46,14 @@ public class Transaction implements Model, Comparable<Transaction> {
      * @param item
      * @param date
      * @param amount
+     * @param tags
      * @param references
      */
-    public Transaction(String id, String account, String item, Date date, float amount, String[] references) {
+    public Transaction(String id, String account, String item, Date date, float amount, Tag[] tags, String[] references) {
         this.id = id;
         this.item = item;
         this.date = date;
+        this.tags = tags;
         this.amount = amount;
         this.account = account;
         this.references = references;
@@ -61,6 +64,9 @@ public class Transaction implements Model, Comparable<Transaction> {
     public boolean isValid() {
         return StringUtils.isNoneBlank(id, item);
     }
+
+    @JsonIgnore
+    public boolean hasTags() { return tags != null && tags.length > 0; }
 
     @JsonIgnore
     @Override

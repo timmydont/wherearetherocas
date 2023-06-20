@@ -6,6 +6,7 @@ import com.timmydont.wherearetherocas.factory.ModelServiceFactory;
 import com.timmydont.wherearetherocas.factory.impl.ChartFactoryImpl;
 import com.timmydont.wherearetherocas.factory.impl.ModelServiceFactoryImpl;
 import com.timmydont.wherearetherocas.fetcher.AccountDataFetcher;
+import com.timmydont.wherearetherocas.fetcher.TaggingDataFetcher;
 import com.timmydont.wherearetherocas.fetcher.impl.*;
 import com.timmydont.wherearetherocas.fetcher.ExcelLoadDataFetcher;
 import com.timmydont.wherearetherocas.lib.db.DBService;
@@ -28,6 +29,7 @@ public class WiringService implements GraphqlWiringService {
     private final ChartFactory chartFactory;
 
     private final ChartDataFetcher chartDataFetcher;
+    private final TaggingDataFetcher taggingDataFetcher;
     private final AccountDataFetcher accountDataFetcher;
     private final BalanceDataFetcher balanceDataFetcher;
     private final ExcelLoadDataFetcher loadDataFetcher;
@@ -52,6 +54,7 @@ public class WiringService implements GraphqlWiringService {
         chartDataFetcher = new ChartDataFetcher(dbService);
         accountDataFetcher = new AccountDataFetcher(serviceFactory.getService(Account.class));
         balanceDataFetcher = new BalanceDataFetcher(serviceFactory.getService(Balance.class), chartFactory);
+        taggingDataFetcher = new TaggingDataFetcher(serviceFactory.getService(Transaction.class));
         transactionDataFetcher = new TransactionDataFetcher(serviceFactory.getService(Transaction.class), chartFactory);
         transactionByItemDataFetcher = new TransactionByItemDataFetcher(serviceFactory.getService(TransactionByItem.class), chartFactory);
     }
@@ -85,6 +88,8 @@ public class WiringService implements GraphqlWiringService {
                         .dataFetcher("accountBalanceChart", balanceDataFetcher.fetchAccountBalanceChart())
 
                         .dataFetcher("balanceByText", transactionDataFetcher.fetchBalanceByText())
+                        // tagging queries
+                        .dataFetcher("toTag", taggingDataFetcher.fetchToTag())
                         // chart queries
                         .dataFetcher("chartExpensesByPeriodByItem", transactionByItemDataFetcher.fetchPieChart())
 

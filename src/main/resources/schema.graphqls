@@ -136,6 +136,9 @@ type Query {
     accountBalanceChart2(account: String, period: Period, start: String,
         end: String, text: String): Chart                                                           # retrieve a bar chart of account balance for each period of time, a period of time can be Day, Week, Month
 
+    ## this are tag queries
+    toTag(account: String): [Transaction]
+
     chartExpensesByPeriodByItem: PieChart
 
     chartBarByWeekByItem: Chart

@@ -47,14 +47,14 @@ public class WiringService implements GraphqlWiringService {
                 .amountIndex(3)
                 .descriptionIndex(1)
                 .build();
-        dbService = new JsonDBServiceImpl(new Class[] {Transaction.class, TransactionByItem.class, Balance.class, Account.class});
+        dbService = new JsonDBServiceImpl(new Class[] {Transaction.class, TransactionByItem.class, Balance.class, Account.class, Tag.class});
         chartFactory = new ChartFactoryImpl();
         serviceFactory = new ModelServiceFactoryImpl(dbService);
         loadDataFetcher = new ExcelLoadDataFetcher(serviceFactory, config);
         chartDataFetcher = new ChartDataFetcher(dbService);
         accountDataFetcher = new AccountDataFetcher(serviceFactory.getService(Account.class));
         balanceDataFetcher = new BalanceDataFetcher(serviceFactory.getService(Balance.class), chartFactory);
-        taggingDataFetcher = new TaggingDataFetcher(serviceFactory.getService(Transaction.class));
+        taggingDataFetcher = new TaggingDataFetcher(serviceFactory.getService(Tag.class), serviceFactory.getService(Transaction.class));
         transactionDataFetcher = new TransactionDataFetcher(serviceFactory.getService(Transaction.class), chartFactory);
         transactionByItemDataFetcher = new TransactionByItemDataFetcher(serviceFactory.getService(TransactionByItem.class), chartFactory);
     }
@@ -63,6 +63,7 @@ public class WiringService implements GraphqlWiringService {
     public RuntimeWiring getWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring(RequestType.MUTATION.id)
+                        .dataFetcher("tag", taggingDataFetcher.tag())
                         .dataFetcher("load", loadDataFetcher.load())
                         .dataFetcher("create", accountDataFetcher.create()))
                 .type(newTypeWiring(RequestType.QUERY.id)
@@ -90,6 +91,7 @@ public class WiringService implements GraphqlWiringService {
                         .dataFetcher("balanceByText", transactionDataFetcher.fetchBalanceByText())
                         // tagging queries
                         .dataFetcher("toTag", taggingDataFetcher.fetchToTag())
+                        .dataFetcher("toTagSimilar", taggingDataFetcher.fetchToTagSimilar())
                         // chart queries
                         .dataFetcher("chartExpensesByPeriodByItem", transactionByItemDataFetcher.fetchPieChart())
 

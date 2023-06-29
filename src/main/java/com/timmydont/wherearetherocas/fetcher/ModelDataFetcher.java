@@ -5,7 +5,15 @@ import graphql.schema.DataFetcher;
 
 import java.util.List;
 
-public interface ModelDataFetcher<T extends Model> {
+public interface ModelDataFetcher<T extends Model> extends com.timmydont.wherearetherocas.fetcher.DataFetcher {
+
+
+    /**
+     * Return an item from the DB based in the item id
+     *
+     * @return an item
+     */
+    DataFetcher<T> fetchById();
 
     /**
      * Return a list with all the items stored in the DB
@@ -21,6 +29,4 @@ public interface ModelDataFetcher<T extends Model> {
      * @return a list of items
      */
     DataFetcher<List<T>> fetchByPeriod();
-
-    DataFetcher<T> fetchById();
 }

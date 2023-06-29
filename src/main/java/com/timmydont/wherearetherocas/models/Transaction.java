@@ -9,9 +9,12 @@ import io.jsondb.annotation.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,14 +26,15 @@ public class Transaction implements Model, Comparable<Transaction> {
     @Id
     private String id;
 
-    private String account;
     private String item;
+    private String account;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date date;
     private float amount;
 
-    private Tag[] tags;
+    private List<Tag> tags;
+
     private String[] references;
 
     /**
@@ -49,7 +53,7 @@ public class Transaction implements Model, Comparable<Transaction> {
      * @param tags
      * @param references
      */
-    public Transaction(String id, String account, String item, Date date, float amount, Tag[] tags, String[] references) {
+    public Transaction(String id, String account, String item, Date date, float amount, List<Tag> tags, String[] references) {
         this.id = id;
         this.item = item;
         this.date = date;
@@ -66,7 +70,13 @@ public class Transaction implements Model, Comparable<Transaction> {
     }
 
     @JsonIgnore
-    public boolean hasTags() { return tags != null && tags.length > 0; }
+    public boolean hasTags() { return CollectionUtils.isNotEmpty(tags); }
+
+    @JsonIgnore
+    public void addTags(List<Tag> tags) {
+        if (this.tags == null) this.tags = new ArrayList<>();
+        this.tags.addAll(tags);
+    }
 
     @JsonIgnore
     @Override

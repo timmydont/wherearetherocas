@@ -138,6 +138,7 @@ type Query {
 
     ## this are tag queries
     toTag(account: String): [Transaction]
+    toTagSimilar(account: String, text: String, factor: Float): [Transaction]
 
     chartExpensesByPeriodByItem: PieChart
 
@@ -147,6 +148,7 @@ type Query {
 
 # Define mutations provided
 type Mutation {
+    tag(transactions: [String], tags: [String]): Boolean
     load (account: String, input: String): Boolean
     create(input: Account): Boolean
 }

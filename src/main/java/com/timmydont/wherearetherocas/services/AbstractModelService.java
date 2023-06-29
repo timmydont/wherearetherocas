@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.error;
 import static com.timmydont.wherearetherocas.lib.utils.LoggerUtils.info;
 
-public abstract class AbstractModelService<T extends Model> implements ModelService<T> {
+public abstract class  AbstractModelService<T extends Model> implements ModelService<T> {
 
     private final Logger logger = Logger.getLogger(getClass());
 

@@ -38,8 +38,7 @@ public class Balance implements Model, Comparable<Balance> {
     /**
      * Required for JsonDB storage
      */
-    public Balance() {
-    }
+    public Balance() { }
 
     /**
      * Full argument constructor, used by lombok builder
